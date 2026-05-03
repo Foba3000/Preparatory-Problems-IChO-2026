@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IChO 2026 – Problem 13: Mizellen – Vollständige Lösung</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 940px; margin: 0 auto; padding: 20px 30px; background: #f4f6fb; color: #1a1a2e; line-height: 1.8; }
+  h1 { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.35em; }
+  h2 { color: #1b5e20; border-left: 5px solid #2e7d32; padding-left: 13px; margin-top: 0; }
+  h3 { color: #37474f; margin-top: 20px; }
+  .aufgabe { background: white; border: 1px solid #dde; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+  .box { background: #e8f5e9; border-left: 4px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #e3f2fd; border-left: 5px solid #1565c0; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .formula { background: #f3e5f5; border: 1px solid #ce93d8; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #f3e5f5; border: 1px solid #ce93d8; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.02em; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #2e7d32; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c8e6c9; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f1f8e9; }
+  .step { margin: 11px 0; padding: 10px 15px; background: #fafafa; border-radius: 7px; border: 1px solid #e0e8e0; }
+  .schritt-nr { display: inline-block; background: #2e7d32; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  code { background: #eceff1; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  .highlight { background: #fff9c4; border-radius: 4px; padding: 1px 5px; font-weight: bold; }
+  ul li, ol li { margin: 7px 0; }
+  .shape-box { display: inline-block; border: 2px solid #2e7d32; border-radius: 8px; padding: 12px 18px; margin: 8px; background: #f9fff9; text-align: center; min-width: 160px; vertical-align: top; }
+  .shape-title { font-weight: bold; color: #1b5e20; font-size: 1.05em; }
+  .ns-badge { display: inline-block; background: #2e7d32; color: white; border-radius: 20px; padding: 3px 12px; font-size: 0.9em; margin: 4px 0; }
+  .molecule-box { background: #e8eaf6; border-left: 4px solid #3949ab; border-radius: 6px; padding: 12px 16px; margin: 10px 0; font-family: 'Courier New', monospace; }
+  .gen-box { display: inline-block; border: 2px solid #1565c0; border-radius: 8px; padding: 10px 14px; margin: 6px; background: #e3f2fd; text-align: center; min-width: 130px; vertical-align: top; }
+  .derive-step { background: #fafafa; border: 1px solid #ddd; border-radius: 6px; padding: 10px 16px; margin: 8px 0; }
+</style>
+</head>
+<body>
+
+<h1>🧪 IChO 2026 – Problem 13: Sind Sie an Mizellen interessiert?<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – mit allen Rechenwegen</span></h1>
+
+<!-- ========== EINLEITUNG: WAS SIND MIZELLEN ========== -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: Was sind Mizellen und der Packungsparameter?</h2>
+
+<p>Tenside (Surfactants) sind Moleküle mit einem <strong>hydrophilen Kopf</strong> (wasserlöslich) und einem <strong>hydrophoben Schwanz</strong> (wasserunlöslich). In Wasser ordnen sie sich spontan zu <strong>Mizellen</strong> an – der hydrophobe Schwanz zeigt ins Innere, der Kopf nach außen ins Wasser.</p>
+
+<p>Die <strong>Form</strong> der Mizelle hängt davon ab, wie gut die Tenside geometrisch „zusammenpassen". Das beschreibt der <strong>Packungsparameter N<sub>S</sub></strong>:</p>
+
+<div class="formula" style="font-size:1.2em;">
+N<sub>S</sub> = V<sub>C</sub> / (a<sub>0</sub> × L<sub>C</sub>)
+</div>
+
+<p>mit:</p>
+<ul>
+  <li><strong>V<sub>C</sub></strong> = Volumen der hydrophoben Kette</li>
+  <li><strong>L<sub>C</sub></strong> = Länge der hydrophoben Kette</li>
+  <li><strong>a<sub>0</sub></strong> = Gleichgewichtsfläche des hydrophilen Kopfes pro Molekül</li>
+</ul>
+
+<table>
+  <tr><th>Mizellform</th><th>N<sub>S</sub>-Wert</th><th>Geometrische Bedeutung</th></tr>
+  <tr><td><strong>Sphärisch</strong> (Kugel)</td><td>≤ 1/3</td><td>Großer Kopf, kleiner Schwanz → viel Krümmung</td></tr>
+  <tr><td><strong>Zylindrisch</strong></td><td>1/3 &lt; N<sub>S</sub> ≤ 1/2</td><td>Mittleres Verhältnis</td></tr>
+  <tr><td><strong>Bilayer</strong> (Doppelschicht)</td><td>1/2 &lt; N<sub>S</sub> ≤ 1</td><td>Gleicher Querschnitt über die Länge</td></tr>
+</table>
+</div>
+
+<!-- ========== AUFGABE 1 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Kegelförmige, keilförmige und zylindrische Tenside zuordnen</h2>
+
+<p>Gegeben sind drei Tensorformen aus der Aufgabe:</p>
+<ul>
+  <li><strong>(a) Kegel (Cone):</strong> Spitzes Ende (hydrophob), breiter Kopf (hydrophil)</li>
+  <li><strong>(b) Rechteckiger Keil (Rectangular Wedge):</strong> Dreieckiger Querschnitt – eine Seite breiter als die andere</li>
+  <li><strong>(c) Zylinder (Cylinder):</strong> Gleichmäßiger Querschnitt über die gesamte Länge</li>
+</ul>
+
+<p>Wir berechnen N<sub>S</sub> jeweils aus der Geometrie des Körpers. <em>Der hydrophile Kopf hat die Fläche a<sub>0</sub> (die breite Querschnittsfläche), die Länge ist L<sub>C</sub>.</em></p>
+
+<h3>Fall (a): Kegel</h3>
+<div class="step">
+Das Volumen eines Kegels mit Grundfläche a<sub>0</sub> und Höhe L<sub>C</sub> berechnet sich als:
+<div class="formula">V<sub>Kegel</sub> = ⅓ × Grundfläche × Höhe = ⅓ × a<sub>0</sub> × L<sub>C</sub></div>
+Daher:
+<div class="formula">N<sub>S</sub> = V<sub>C</sub> / (a<sub>0</sub> × L<sub>C</sub>) = (⅓ · a<sub>0</sub> · L<sub>C</sub>) / (a<sub>0</sub> · L<sub>C</sub>) = <strong>1/3</strong></div>
+</div>
+<div class="result">Kegel (a) → N<sub>S</sub> = 1/3 → <strong>Sphärische Mizelle</strong> (N<sub>S</sub> ≤ 1/3)</div>
+
+<h3>Fall (b): Rechteckiger Keil</h3>
+<div class="step">
+Ein Keil hat einen dreieckigen Querschnitt. Das Volumen eines dreieckigen Prismas (Länge L<sub>C</sub>, Dreieck mit Grundfläche a<sub>0</sub>) berechnet sich als:
+<div class="formula">V<sub>Keil</sub> = ½ × a<sub>0</sub> × L<sub>C</sub></div>
+Daher:
+<div class="formula">N<sub>S</sub> = (½ · a<sub>0</sub> · L<sub>C</sub>) / (a<sub>0</sub> · L<sub>C</sub>) = <strong>1/2</strong></div>
+</div>
+<div class="result">Keil (b) → N<sub>S</sub> = 1/2 → Grenzfall: <strong>Zylindrische Mizelle</strong> (genau an der Grenze 1/3 &lt; N<sub>S</sub> ≤ 1/2)</div>
+
+<h3>Fall (c): Zylinder</h3>
+<div class="step">
+Ein Zylinder hat über seine gesamte Länge denselben Querschnitt a<sub>0</sub>:
+<div class="formula">V<sub>Zylinder</sub> = a<sub>0</sub> × L<sub>C</sub></div>
+Daher:
+<div class="formula">N<sub>S</sub> = (a<sub>0</sub> · L<sub>C</sub>) / (a<sub>0</sub> · L<sub>C</sub>) = <strong>1</strong></div>
+</div>
+<div class="result">Zylinder (c) → N<sub>S</sub> = 1 → <strong>Bilayer / Doppelschicht</strong> (1/2 &lt; N<sub>S</sub> ≤ 1)</div>
+
+<div class="box">
+<strong>Intuition dahinter:</strong> Je spitzer/kegelförmiger das Tensid, desto mehr Krümmung kann es erzeugen → Kugeln bilden sich. Je flacher/zylindrischer das Tensid, desto flacher wird die Aggregate → Doppelschichten bilden sich (wie in Zellmembranen!).
+</div>
+</div>
+
+<!-- ========== AUFGABE 2 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Strukturen A1–A4, I1–I2, G1–G2 bestimmen</h2>
+
+<h3>A1 – Identifikation durch Massenbrüche</h3>
+<p>Gegeben: A1 ist eine cyclische Verbindung mit 3-zähliger Symmetrieachse, enthält P, N und Cl. Massenbrüche: P = 26,73%, N = 12,09%, Cl = 61,18%.</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Molares Verhältnis bestimmen</strong> (dividiere Massenbruch durch Molmasse des Elements):
+<div class="formula-left">
+Mol(P) = 26,73 / 30,97 = 0,8631<br>
+Mol(N) = 12,09 / 14,01 = 0,8630<br>
+Mol(Cl) = 61,18 / 35,45 = 1,7257
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Verhältnis normieren</strong> (alles durch kleinsten Wert):
+<div class="formula">P : N : Cl = 1 : 1 : 2</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Strukturformel der Wiederholungseinheit:</strong> NPCl<sub>2</sub><br>
+Überprüfung: M(NPCl<sub>2</sub>) = 14,01 + 30,97 + 2×35,45 = <strong>115,88 g/mol</strong>
+<div class="formula-left">
+P:  30,97 / 115,88 × 100 = 26,73% ✓<br>
+N:  14,01 / 115,88 × 100 = 12,09% ✓<br>
+Cl: 70,90 / 115,88 × 100 = 61,19% ✓ (sehr gut!)
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>3-zählige Symmetrie → cyclisches Trimer:</strong> (NPCl<sub>2</sub>)<sub>3</sub> = <strong>N<sub>3</sub>P<sub>3</sub>Cl<sub>6</sub></strong>
+</div>
+
+<div class="result">
+<strong>A1 = Hexachlorcyclotriposphazen (N<sub>3</sub>P<sub>3</sub>Cl<sub>6</sub>)</strong><br>
+M = 3 × 115,88 = 347,66 g/mol<br>
+Beschreibung: Ein 6-gliedriger Ring, abwechselnd N und P, an jedem P zwei Cl-Atome. Bekannte Verbindung, Ausgangsstoff für Phosphazen-Chemie.
+</div>
+
+<h3>A2 – Reaktion von A1 mit 4-Hydroxybenzaldehyd</h3>
+<div class="step">
+A1 hat <strong>6 P–Cl-Bindungen</strong>. Cs<sub>2</sub>CO<sub>3</sub> deprotoniert das Phenol (–OH → –O⁻), das dann nukleophil mit P–Cl reagiert (Substitution: P–Cl + ArO⁻ → P–OAr + Cl⁻).<br><br>
+Gefordert: Produkt A2 hat <strong>nur noch 1 Cl-Atom</strong>.<br>
+→ 5 von 6 Cl-Atomen werden durch –OAr-Gruppen ersetzt.<br>
+→ Es werden genau <strong>5 Äquivalente</strong> 4-Hydroxybenzaldehyd (HO–C₆H₄–CHO) benötigt.
+</div>
+
+<div class="result">
+<strong>A2</strong> = N<sub>3</sub>P<sub>3</sub>Cl(OC<sub>6</sub>H<sub>4</sub>CHO)<sub>5</sub><br>
+Der Phosphazen-Ring trägt 5 Phenoxy-Aldehyd-Gruppen (–O–C₆H₄–CHO) und 1 verbleibendes Cl-Atom.
+</div>
+
+<h3>A3 – Reaktion von A2 mit Amin (R₁R₂NH)</h3>
+<div class="step">
+Das verbliebene P–Cl in A2 reagiert mit einem sekundären Amin (R₁R₂NH) unter HCl-Abspaltung (NEt₃ als Base). Dabei entsteht eine P–N-Bindung.
+</div>
+<div class="result">
+<strong>A3</strong> = N<sub>3</sub>P<sub>3</sub>(NR₁R₂)(OC<sub>6</sub>H<sub>4</sub>CHO)<sub>5</sub><br>
+Das letzte Cl ist durch eine Amin-Gruppe ersetzt. Die 5 Aldehyd-Gruppen bleiben reaktiv.
+</div>
+
+<h3>I1 und I2 – die Intermediate</h3>
+<div class="step">
+Aus dem Reaktionsschema: I1 entsteht aus dem CH₃-N-P(=S)(Cl)-Baustein (Iminothiophosphorylchlorid-Derivat). Konkret:<br>
+<strong>I1</strong> = H₂N–N(CH₃)–P(=S)(Cl) → ein Amino-methylamino-thiophosphorylchlorid, mit freier NH₂-Gruppe, die mit Aldehyden kondensieren kann (Bildung von Imin/Schiff-Base).<br><br>
+<strong>I2</strong> = Analoges Derivat, das aus I1 + 4-Hydroxybenzaldehyd + Cs₂CO₃ entsteht, analog zu A2: Das Cl in I1 wird durch –OAr-Gruppen teilweise ersetzt. I2 trägt eine –OC₆H₄CHO-Gruppe für die weitere Dendron-Verzweigung.
+</div>
+<div class="result">
+<strong>I1</strong> = Aminomethylaminothiophosphorylchlorid (die freie NH₂-Gruppe reagiert als Aldehyd-Komponente per Kondensation)<br>
+<strong>I2</strong> = I1-Derivat mit zusätzlichem 4-Formylphenoxy-Substituenten (analog zu A2-Synthese)
+</div>
+
+<h3>A4 – Analog zu A2, aber aus I1</h3>
+<div class="result">
+<strong>A4</strong> = Analog zu A2: I1-Derivat, bei dem das Cl durch –OC₆H₄CHO-Gruppe ersetzt wird und eine freie NH₂-Gruppe verbleibt (für die weitere Iminbindung an Aldehydgruppen von A3).
+</div>
+
+<h3>G1 und G2 – die Phosphordendrone</h3>
+<div class="step">
+<strong>G1</strong> (1. Generation):<br>
+Kern A3 (mit 5 CHO-Gruppen) + 5 Äquivalente I1 (NH₂ reagiert mit CHO → Imin = C=N-Brücke)<br>
+Dann: Das P–Cl von jedem I1 reagiert mit Amin X (H₂N–CH₂CH₂–N&lt;Pyrrolidin&gt;, 2 Äquivalente pro I1)<br>
+Abschließend: HCl protoniert die tertiären N-Atome → kationische Gruppen<br><br>
+<strong>G2</strong> (2. Generation):<br>
+Kern A3 (mit 5 CHO) + I1/A4-Einheiten auf 1. Ebene + nochmals I1-Einheiten auf 2. Ebene<br>
+→ verzweigteres Dendron mit mehr terminalen Amin-Gruppen
+</div>
+<div class="result">
+<strong>G1</strong> = 1. Generation Phosphazen-Dendron: Kern N₃P₃ mit 5 Imin-verbrückten Phosphorthioamid-Einheiten, die je 2 Pyrrolidinyl-Ethylamin-Gruppen tragen → 10 protonierbare N-Atome → 10 kationische Ladungen nach HCl<br><br>
+<strong>G2</strong> = 2. Generation: Kern + 2 Ebenen → 20 kationische Ladungen nach HCl
+</div>
+</div>
+
+<!-- ========== AUFGABE 3 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Wie viele kationische Gruppen hat G10?</h2>
+
+<p>Wir erkennen das <strong>Verzweigungsmuster</strong>: Bei jedem Syntheseschritt werden die terminalen Gruppen verdoppelt, weil jede neue Phosphor-Einheit 2 reaktive Stellen für Amin X bietet.</p>
+
+<h3>Herleitung des Musters:</h3>
+<div class="step">
+Vom Kern (A1/A3) gehen <strong>5 Aldehyd-Gruppen</strong> aus.<br>
+In Generation 1: Jede CHO-Gruppe gibt über eine I1-Einheit 2 Bindungsstellen für Amin X.<br>
+→ G1: 5 × 2<sup>1</sup> = 10 kationische Gruppen
+</div>
+<div class="step">
+In Generation 2: Jede terminale Stelle von G1 wird wiederum verdoppelt.<br>
+→ G2: 5 × 2<sup>2</sup> = 20 kationische Gruppen
+</div>
+<div class="step">
+<strong>Allgemeine Formel:</strong>
+<div class="formula">G<sub>n</sub>: Anzahl kationischer Gruppen = 5 × 2<sup>n</sup></div>
+</div>
+
+<table>
+  <tr><th>Generation</th><th>5 × 2<sup>n</sup></th><th>Kationische Gruppen</th></tr>
+  <tr><td>G1</td><td>5 × 2 = 5 × 2¹</td><td>10</td></tr>
+  <tr><td>G2</td><td>5 × 4 = 5 × 2²</td><td>20</td></tr>
+  <tr><td>G3</td><td>5 × 8 = 5 × 2³</td><td>40</td></tr>
+  <tr><td>G5</td><td>5 × 32 = 5 × 2⁵</td><td>160</td></tr>
+  <tr><td><strong>G10</strong></td><td>5 × 1024 = 5 × 2<sup>10</sup></td><td><strong>5120</strong></td></tr>
+</table>
+
+<div class="result">
+G10 hat <strong>5 × 2<sup>10</sup> = 5 × 1024 = 5120 kationische Gruppen</strong>.<br>
+Diese exponentielle Zunahme ist typisch für Dendrimere – sie sind die einzigen Makromoleküle mit perfekt kontrollierbarer Architektur und exponentiell wachsender Funktionsgruppenanzahl!
+</div>
+</div>
+
+<!-- ========== AUFGABE 4 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Welchem Tensidtyp ähneln G1 und G2? Welche Aggregationsform?</h2>
+
+<p>G1 und G2 haben eine besondere Architektur: <strong>ein kompakter, geladener Kern</strong> (Phosphazen-Ring = hydrophil) und <strong>viele Phenylringe</strong> in der Peripherie (aromatisch-hydrophob).</p>
+
+<div class="box">
+<strong>Vergleich mit klassischen Tensiden:</strong><br><br>
+Klassisches Tensid: linearer hydrophober Schwanz + ein hydrophiler Kopf<br>
+G1/G2: <em>mehrere</em> aromatische/hydrophobe Äste + zentrales geladenes (kationisches) Phosphazen-Gerüst<br><br>
+→ G1 und G2 ähneln <strong>kationischen Bolaamphiphilen</strong> oder am ehesten <strong>kationischen Multiamphiphilen / dendritischen Tensiden</strong> mit einer umgekehrten Geometrie (polar innen, unpolar außen).
+</div>
+
+<p>Weil das polare (kationische) Zentrum <em>kompakt und klein</em> ist und die aromatischen Arme sich nach außen erstrecken, ergibt sich eine <strong>konusartige Form</strong> – ähnlich Kegel (a) aus Aufgabe 1.</p>
+
+<div class="result">
+G1 und G2 ähneln am ehesten <strong>kationischen Dendrimertensiden</strong> (multi-kationischer Kopf im Zentrum, aromatisch-hydrophobe Peripherie).<br><br>
+Erwartete Aggregationsform: <strong>Sphärische Mizellen</strong>, weil das kationische Zentrum klein und kompakt ist (kleines a<sub>0</sub> → warte: a<sub>0</sub> ist beim Kopf...) – das Dendron expandiert nach außen, sodass der effektive Querschnitt mit dem Abstand vom Zentrum zunimmt → <strong>sphärische oder vesikelförmige Aggregate</strong>. In der Literatur bilden solche Phosphazendendrone typischerweise sphärische Mizellen oder Vesikel in wässrigen Lösungen.
+</div>
+</div>
+
+<!-- ========== AUFGABE 5 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Hauptzweck der HCl-Zugabe am Ende</h2>
+
+<p>Am Ende der Synthese werden G1 und G2 mit HCl behandelt. Schauen wir uns die Optionen an:</p>
+
+<ul>
+  <li><strong>a)</strong> Hydrolyse unreagierter P–Cl-Bindungen → Bereits vor HCl-Zugabe werden alle P–Cl durch Substitution aufgebraucht. <em>Nicht der Hauptzweck.</em></li>
+  <li><strong>b)</strong> Fluoreszenzlabel heller machen → Es gibt kein Fluoreszenzlabel in G1/G2. <em>Falsch.</em></li>
+  <li><strong>c)</strong> Wasserlösliche, positiv geladene Form erzeugen, die biologische Aktivität zeigt → Die terminalen Pyrrolidin-Stickstoffatome sind tertiäre Amine. HCl protoniert sie: R₃N + HCl → R₃NH⁺ Cl⁻. Das macht G1/G2 zu <strong>kationischen, wasserlöslichen Dendronen</strong>, die mit negativ geladenen Zellmembranen und DNA interagieren können (biologische Aktivität!). <em>Richtig!</em></li>
+  <li><strong>d)</strong> Cyclisierung → Keine cyclisierende Reaktion ist vorgesehen. <em>Falsch.</em></li>
+</ul>
+
+<div class="result">
+Antwort: <strong>(c)</strong> – HCl protoniert die tertiären Aminogruppen der Pyrrolidin-Ringe zu positiven Ammonium-Ionen (R₃N → R₃NH⁺). Dies macht die Dendrone wasserlöslich (kationisch) und biologisch aktiv (z.B. als antimikrobielle Mittel oder Gentransfektionsreagenzien).
+</div>
+</div>
+
+<!-- ========== AUFGABE 6 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Mizellformen von Gen1, Gen2, Gen3 (PS-PPI-Diblockcopolymere)</h2>
+
+<p>Gegeben sind amphiphile Diblock-Copolymere: <strong>PS-Block</strong> (Polystyrol, hydrophob) + <strong>PPI-Block</strong> (Poly(propylenimin), hydrophil). Alle Copolymere haben <strong>denselben PS-Block</strong>, aber unterschiedlich große PPI-Dendrimerköpfe.</p>
+
+<div class="box">
+<strong>Analyse mit dem Packungsparameter:</strong><br><br>
+Da der PS-Block gleich ist für Gen1, Gen2, Gen3:<br>
+• V<sub>C</sub> = Volumen des PS-Blocks = <strong>konstant</strong> für alle<br>
+• L<sub>C</sub> = Länge des PS-Blocks = <strong>konstant</strong> für alle<br><br>
+Was ändert sich mit der Generation?<br>
+• a<sub>0</sub> = Kopfgruppenbereich des PPI-Dendrimers = <strong>wächst mit der Generation</strong> (mehr NH₂-Gruppen, mehr Verzweigungen → größere Kopfgruppe)
+</div>
+
+<h3>Konsequenz für N<sub>S</sub>:</h3>
+<div class="formula">N<sub>S</sub> = V<sub>C</sub> / (a<sub>0</sub> × L<sub>C</sub>)</div>
+<p>Da V<sub>C</sub> und L<sub>C</sub> konstant sind, und a<sub>0</sub> mit der Generation steigt, <strong>sinkt N<sub>S</sub> mit steigender Generation</strong>.</p>
+
+<div style="text-align:center; margin: 16px 0;">
+  <div class="gen-box">
+    <div style="font-weight:bold; color:#1565c0;">Gen1</div>
+    <div>kleine PPI-Kopfgruppe</div>
+    <div style="color:#666;">a<sub>0</sub> klein</div>
+    <div style="background:#c62828; color:white; border-radius:12px; padding:3px 10px; margin-top:8px;">N<sub>S</sub> groß ≈ ½–1</div>
+    <div style="margin-top:6px; font-weight:bold;">→ Bilayer</div>
+  </div>
+  <div class="gen-box">
+    <div style="font-weight:bold; color:#1565c0;">Gen2</div>
+    <div>mittlere PPI-Kopfgruppe</div>
+    <div style="color:#666;">a<sub>0</sub> mittel</div>
+    <div style="background:#e65100; color:white; border-radius:12px; padding:3px 10px; margin-top:8px;">N<sub>S</sub> mittel ≈ ⅓–½</div>
+    <div style="margin-top:6px; font-weight:bold;">→ Zylinder</div>
+  </div>
+  <div class="gen-box">
+    <div style="font-weight:bold; color:#1565c0;">Gen3</div>
+    <div>große PPI-Kopfgruppe</div>
+    <div style="color:#666;">a<sub>0</sub> groß</div>
+    <div style="background:#1b5e20; color:white; border-radius:12px; padding:3px 10px; margin-top:8px;">N<sub>S</sub> klein ≤ ⅓</div>
+    <div style="margin-top:6px; font-weight:bold;">→ Sphäre</div>
+  </div>
+</div>
+
+<div class="result">
+<strong>Gen1</strong> (kleine Kopfgruppe) → N<sub>S</sub> nähert sich 1 → <strong>Bilayer / Vesikel</strong><br>
+<strong>Gen2</strong> (mittlere Kopfgruppe) → N<sub>S</sub> ≈ ½ → <strong>Zylindrische Mizelle</strong><br>
+<strong>Gen3</strong> (große Kopfgruppe) → N<sub>S</sub> ≤ ⅓ → <strong>Sphärische Mizelle</strong>
+</div>
+
+<div class="box">
+<strong>Allgemeines Prinzip:</strong> Wenn der hydrophile Kopf im Verhältnis zum hydrophoben Schwanz wächst, nimmt die Krümmung der Mizelle zu. Bilayer → Zylinder → Kugeln: Das ist der Übergang vom flachen Lipiddoppelschicht-Modell (Membran) zu klassischen sphärischen Mizellen.
+</div>
+</div>
+
+<!-- ========== AUFGABE 7 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Herleitung – Anteil der Monomere in Mizellen</h2>
+
+<p>Gegeben ist das Gleichgewicht: n[M] ⇌ [M<sub>n</sub>], mit Gleichgewichtskonstante:</p>
+<div class="formula">K<sub>n</sub> = [M<sub>n</sub>] / [M]<sup>n</sup></div>
+
+<h3>Schritt-für-Schritt-Herleitung:</h3>
+
+<div class="derive-step">
+<strong>Schritt 1:</strong> Ausdruck für [M<sub>n</sub>]:<br>
+Umformen von K<sub>n</sub>:
+<div class="formula">[M<sub>n</sub>] = K<sub>n</sub> · [M]<sup>n</sup></div>
+</div>
+
+<div class="derive-step">
+<strong>Schritt 2:</strong> Gesamtkonzentration aller Monomere (frei + in Mizellen):<br>
+Jede Mizelle enthält <em>n</em> Monomere, also:
+<div class="formula">[M]<sub>gesamt</sub> = [M]<sub>frei</sub> + n · [M<sub>n</sub>]</div>
+Einsetzen:
+<div class="formula">[M]<sub>gesamt</sub> = [M] + n · K<sub>n</sub> · [M]<sup>n</sup></div>
+</div>
+
+<div class="derive-step">
+<strong>Schritt 3:</strong> Anzahl der Monomere in Mizellen:
+<div class="formula">Monomere in Mizellen = n · [M<sub>n</sub>] = n · K<sub>n</sub> · [M]<sup>n</sup></div>
+</div>
+
+<div class="derive-step">
+<strong>Schritt 4:</strong> Anteil f der Monomere, die sich in Mizellen befinden:
+<div class="formula" style="font-size:1.1em;">
+f = (n · K<sub>n</sub> · [M]<sup>n</sup>) / ([M] + n · K<sub>n</sub> · [M]<sup>n</sup>)
+</div>
+Dies lässt sich umschreiben zu:
+<div class="formula">f = 1 / (1 + 1 / (n · K<sub>n</sub> · [M]<sup>n-1</sup>))</div>
+</div>
+
+<div class="result">
+<strong>Ergebnis:</strong>
+<div style="text-align:center; margin:10px 0; font-size:1.15em;">
+f = n · K<sub>n</sub> · [M]<sup>n</sup> / ([M] + n · K<sub>n</sub> · [M]<sup>n</sup>)
+</div>
+Interpretation: f wird größer, wenn n · K<sub>n</sub> · [M]<sup>n-1</sup> groß ist. Das ist der Schlüssel zu Aufgabe 8!
+</div>
+</div>
+
+<!-- ========== AUFGABE 8 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 8: Bei welchen Bedingungen sind die meisten Monomere in Mizellen?</h2>
+
+<p>Wir maximieren f = 1 / (1 + 1/(n · K<sub>n</sub> · [M]<sup>n-1</sup>)).</p>
+<p>f ist maximal, wenn der Term <strong>n · K<sub>n</sub> · [M]<sup>n-1</sup></strong> maximal ist.</p>
+
+<div class="warning">
+<strong>Wichtige Überlegung:</strong> Die Aufgabe sagt [M] &lt; 1 mol/dm³.<br>
+Bei [M] &lt; 1 gilt: [M]<sup>n-1</sup> <em>sinkt</em> mit steigendem n (höhere Potenz einer Zahl kleiner 1 ergibt eine kleinere Zahl).<br>
+Das bedeutet: Ein großes n macht [M]<sup>n-1</sup> extrem klein!
+</div>
+
+<h3>Zahlenmäßige Überprüfung (K<sub>n</sub> = 1 für alle Fälle):</h3>
+
+<table>
+  <tr><th>Fall</th><th>[M]</th><th>n</th><th>n · [M]<sup>n-1</sup></th><th>f (Anteil in Mizellen)</th></tr>
+  <tr><td>(a) niedrig [M], niedrig n</td><td>0,001</td><td>5</td><td>5 × (0,001)⁴ = 5×10⁻¹²</td><td>≈ 0%</td></tr>
+  <tr><td>(b) niedrig [M], hoch n</td><td>0,001</td><td>50</td><td>50 × (0,001)⁴⁹ ≈ 5×10⁻¹⁴⁶</td><td>≈ 0%</td></tr>
+  <tr style="background:#c8e6c9;"><td><strong>(c) hoch [M], niedrig n</strong></td><td>0,9</td><td>5</td><td>5 × (0,9)⁴ = 3,28</td><td><strong>≈ 76,6%</strong></td></tr>
+  <tr><td>(d) hoch [M], hoch n</td><td>0,9</td><td>50</td><td>50 × (0,9)⁴⁹ = 0,286</td><td>≈ 22,3%</td></tr>
+</table>
+
+<div class="result">
+Antwort: <strong>(c) Hohe Konzentration der Monomere mit niedriger Aggregationszahl</strong><br><br>
+<strong>Begründung:</strong> Da [M] &lt; 1, wird [M]<sup>n-1</sup> mit steigendem n <em>kleiner</em>. Ein höheres n schadet also! Die optimale Bedingung ist: hohe [M] (damit [M]<sup>n-1</sup> möglichst groß bleibt) + kleines n (damit kein extremer Abfall durch [M]<sup>n-1</sup> entsteht).
+</div>
+</div>
+
+<!-- ========== AUFGABE 9 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 9: CMC als Funktion der Aggregationszahl</h2>
+
+<p>Die <strong>kritische Mizellkonzentration (CMC)</strong> ist die Monomerkonzentration, bei der der Anteil der Monomere in Mizellen genauso groß ist wie der Anteil der freien Monomere – d.h. genau die Hälfte aller Monomere befinden sich in Mizellen.</p>
+
+<h3>Herleitung des CMC-Ausdrucks:</h3>
+
+<div class="derive-step">
+<strong>Definition des CMC-Punkts:</strong> Monomere in Mizellen = freie Monomere:
+<div class="formula">n · [M<sub>n</sub>] = [M] bei [M] = CMC</div>
+</div>
+<div class="derive-step">
+<strong>Einsetzen von [M<sub>n</sub>] = K<sub>n</sub> · [M]<sup>n</sup>:</strong>
+<div class="formula">n · K<sub>n</sub> · CMC<sup>n</sup> = CMC</div>
+</div>
+<div class="derive-step">
+<strong>Umformen:</strong>
+<div class="formula">n · K<sub>n</sub> · CMC<sup>n-1</sup> = 1</div>
+<div class="formula">CMC<sup>n-1</sup> = 1 / (n · K<sub>n</sub>)</div>
+<div class="formula" style="font-size:1.1em; background:#e8f5e9; border-color:#2e7d32;">
+CMC = (1 / (n · K<sub>n</sub>))<sup>1/(n-1)</sup>
+</div>
+</div>
+
+<div class="derive-step">
+<strong>Näherung für großes n</strong> (da K<sub>n</sub> = exp(−ΔrG°/(RT))):
+<div class="formula">CMC ≈ exp(ΔrG° / (n · RT)) = K<sub>n</sub><sup>−1/n</sup></div>
+Da ΔrG° &lt; 0 (Mizellbildung ist thermodynamisch begünstigt), ist ΔrG°/(n·RT) negativ.<br>
+→ CMC &lt; 1, und CMC sinkt mit steigendem n.
+</div>
+
+<div class="result">
+<strong>CMC = (1 / (n · K<sub>n</sub>))<sup>1/(n−1)</sup></strong><br><br>
+Je größer die Aggregationszahl n, desto <strong>kleiner ist die CMC</strong>: Tenside mit großen Mizellen (z.B. n = 100) beginnen schon bei sehr niedrigen Konzentrationen zu aggregieren. Kleinere Mizellen (z.B. n = 5) benötigen höhere Konzentrationen.<br><br>
+Das macht physikalisch Sinn: Je mehr Moleküle in einer Mizelle sind, desto kooperativer und begünstigter ist der Aggregationsprozess.
+</div>
+</div>
+
+<!-- ========== AUFGABE 10 ========== -->
+<div class="aufgabe">
+<h2>Aufgabe 10: Vergleich von T1 und T2 aus dem Leitfähigkeitsgraphen</h2>
+
+<p>Der Graph zeigt die spezifische Leitfähigkeit in Abhängigkeit von der Tensidkonzentration bei zwei Temperaturen T1 (Quadrate) und T2 (Kreise).</p>
+
+<h3>Was sehen wir im Graphen?</h3>
+<div class="step">
+<strong>Vor dem CMC:</strong> Die Leitfähigkeit steigt steil mit der Konzentration – die freien Monomere (Ionentenside) tragen voll zur Leitfähigkeit bei.<br>
+<strong>Nach dem CMC:</strong> Die Steigung nimmt ab – Monomere werden in Mizellen eingebaut. Mizellen sind groß und bewegen sich langsam → geringerer Beitrag zur Leitfähigkeit pro Ladung.<br>
+<strong>Der CMC-Punkt</strong> ist daher der Knickpunkt im Graphen.
+</div>
+
+<h3>Thermodynamische Analyse:</h3>
+<div class="derive-step">
+K<sub>n</sub> = exp(−ΔrG°/(RT)) = konstant (laut Aufgabe: ΔrG° und n konstant)<br><br>
+Wenn ΔrG° = konstant und n = konstant, dann:
+<div class="formula">CMC = (1/(n · K<sub>n</sub>))<sup>1/(n-1)</sup> = konstant bei gleicher ΔrG° und n</div>
+→ Die CMC ist bei T1 und T2 <strong>gleich</strong> (da ΔrG° und n nicht von T abhängen laut Voraussetzung).<br>
+→ Beide Kurven zeigen denselben Knickpunkt auf der x-Achse.
+</div>
+
+<div class="derive-step">
+Was unterscheidet die Kurven dann?<br><br>
+<strong>Die Leitfähigkeit selbst</strong> hängt von der Temperatur ab:<br>
+Höhere Temperatur → höhere Ionenmobilität → höhere spezifische Leitfähigkeit<br>
+<div class="formula">κ ∝ T (für ionische Tenside in Wasser)</div>
+</div>
+
+<div class="step">
+Aus dem Graphen: T1 (Quadrate) zeigt <strong>höhere Leitfähigkeit</strong> bei gleicher Konzentration → T1 ist die höhere Temperatur.
+</div>
+
+<div class="result">
+<strong>T1 &gt; T2</strong><br><br>
+Begründung: Da ΔrG° und n konstant sind, ist die CMC bei beiden Temperaturen identisch – der Knickpunkt liegt bei derselben Konzentration. Der einzige Unterschied ist die höhere spezifische Leitfähigkeit bei T1 (Quadrate), weil bei höherer Temperatur die Ionen in Lösung schneller diffundieren (höhere Mobilität) → größere Leitfähigkeit.
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background: #f1f8e9;">
+<h2>📋 Zusammenfassung aller Antworten</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage</th></tr>
+  <tr><td><strong>1</strong></td><td>Kegel → N<sub>S</sub>=1/3 → Sphäre; Keil → N<sub>S</sub>=1/2 → Zylinder; Zylinder → N<sub>S</sub>=1 → Bilayer</td></tr>
+  <tr><td><strong>2</strong></td><td>A1=N₃P₃Cl₆ (Hexachlorcyclotriposphazen); A2=N₃P₃Cl(OC₆H₄CHO)₅; A3: letztes Cl durch Amin ersetzt; G1/G2 = kationische Phosphazendendrone</td></tr>
+  <tr><td><strong>3</strong></td><td>G10 hat 5 × 2¹⁰ = <strong>5120</strong> kationische Gruppen</td></tr>
+  <tr><td><strong>4</strong></td><td>G1/G2 ähneln kationischen dendritischen Tensiden; wahrscheinliche Aggregate: sphärische Mizellen oder Vesikel</td></tr>
+  <tr><td><strong>5</strong></td><td>Antwort <strong>(c)</strong>: HCl protoniert tertiäre N-Atome → wasserlösliche, biologisch aktive Kationen</td></tr>
+  <tr><td><strong>6</strong></td><td>Gen1 → Bilayer; Gen2 → Zylinder; Gen3 → Sphäre (wachsende Kopfgruppe → sinkender N<sub>S</sub>)</td></tr>
+  <tr><td><strong>7</strong></td><td>f = n·K<sub>n</sub>·[M]ⁿ / ([M] + n·K<sub>n</sub>·[M]ⁿ)</td></tr>
+  <tr><td><strong>8</strong></td><td>Antwort <strong>(c)</strong>: Hohe [M], niedrige Aggregationszahl n (wegen [M]&lt;1: [M]<sup>n-1</sup> sinkt mit n)</td></tr>
+  <tr><td><strong>9</strong></td><td>CMC = (1/(n·K<sub>n</sub>))<sup>1/(n-1)</sup>; CMC sinkt mit steigendem n</td></tr>
+  <tr><td><strong>10</strong></td><td>T1 &gt; T2 (höhere Leitfähigkeit = höhere Temperatur; CMC bleibt gleich da ΔrG°, n konstant)</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #ddd; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 13 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>

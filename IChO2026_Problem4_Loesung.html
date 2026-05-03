@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IChO 2026 – Problem 4: Nanozyme – Vollständige Lösung</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 940px; margin: 0 auto; padding: 20px 30px; background: #f5f0fb; color: #1a1a2e; line-height: 1.8; }
+  h1 { background: linear-gradient(135deg, #4a148c, #6a1b9a); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.35em; }
+  h2 { color: #4a148c; border-left: 5px solid #7b1fa2; padding-left: 13px; margin-top: 0; }
+  h3 { color: #37474f; margin-top: 20px; }
+  .aufgabe { background: white; border: 1px solid #e1d5f0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(74,20,140,0.07); }
+  .box { background: #f3e5f5; border-left: 4px solid #7b1fa2; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .formula { background: #ede7f6; border: 1px solid #b39ddb; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.06em; }
+  .formula-left { background: #ede7f6; border: 1px solid #b39ddb; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.02em; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #6a1b9a; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #e1bee7; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #fce4ec; }
+  .step { margin: 11px 0; padding: 12px 16px; background: #fafafa; border-radius: 7px; border: 1px solid #e8e0f0; }
+  .schritt-nr { display: inline-block; background: #6a1b9a; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  code { background: #eceff1; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  .check { color: #2e7d32; font-weight: bold; }
+  .cross { color: #c62828; font-weight: bold; }
+  .highlight { background: #fff9c4; border-radius: 4px; padding: 1px 5px; font-weight: bold; }
+  ul li, ol li { margin: 7px 0; }
+  .reaction { background: #1a1a2e; color: #e8f5e9; border-radius: 8px; padding: 14px 20px; font-family: 'Courier New', monospace; font-size: 1.1em; text-align: center; margin: 14px 0; }
+  .derive-step { background: #fafafa; border: 1px solid #ddd; border-radius: 6px; padding: 11px 16px; margin: 9px 0; }
+  .answer-box { background: #4a148c; color: white; border-radius: 8px; padding: 14px 20px; text-align: center; font-size: 1.1em; margin: 14px 0; }
+</style>
+</head>
+<body>
+
+<h1>⚗️ IChO 2026 – Problem 4: Nanozyme<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – mit allen Rechenwegen</span></h1>
+
+<!-- GRUNDWISSEN -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: Was sind Nanozyme?</h2>
+<p>Nanozyme sind <strong>Nanopartikel</strong>, die enzymatische Aktivität zeigen – sie beschleunigen chemische Reaktionen wie natürliche Enzyme, sind aber stabiler, günstiger und in ihrer Aktivität einstellbar. In dieser Aufgabe untersuchen wir:</p>
+<ul>
+  <li>Ein Eisenoxid-Nanozym (X<sub>n</sub>O<sub>m</sub>) mit <strong>Peroxidase-Aktivität</strong>: Oxidiert Substrate mit H₂O₂ via Fenton-Reaktion</li>
+  <li>Ein C₆₀-Fullerene-Nanozym mit vielseitiger Enzymaktivität</li>
+</ul>
+<p>Die <strong>Michaelis-Menten-Kinetik</strong> beschreibt, wie schnell ein Enzym (oder Nanozym) ein Substrat umsetzt:</p>
+<div class="formula" style="font-size:1.15em;">r = r<sub>max</sub> · [S] / (K<sub>M</sub> + [S])</div>
+<ul>
+  <li><strong>r</strong> = momentane Reaktionsgeschwindigkeit</li>
+  <li><strong>r<sub>max</sub></strong> = maximale Geschwindigkeit (alle Bindungsstellen besetzt)</li>
+  <li><strong>K<sub>M</sub></strong> = Michaelis-Konstante ([S] bei der r = r<sub>max</sub>/2)</li>
+</ul>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Element X und Salze S1, S2 bestimmen</h2>
+
+<h3>Schritt 1: Element X aus der Massenspektrometrie von S1</h3>
+<p>Das ESI-MS von S1 zeigt zwei intensive Peaks:</p>
+<ul>
+  <li>Positives Ion <strong>[XHal₂(H₂O)₄]⁺</strong> mit m/z = 198</li>
+  <li>Negatives Ion <strong>[XHal₄]⁻</strong> mit m/z = 196</li>
+</ul>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Gleichungssystem aufstellen:</strong>
+<div class="formula-left">
+(I)  M(X) + 4·M(Hal) = 196  → aus [XHal₄]⁻<br>
+(II) M(X) + 2·M(Hal) + 4·M(H₂O) = 198 → aus [XHal₂(H₂O)₄]⁺<br>
+     M(X) + 2·M(Hal) + 4·18 = 198<br>
+     M(X) + 2·M(Hal) = 126
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Subtrahieren (I) − (II):</strong>
+<div class="formula">2·M(Hal) = 196 − 126 = 70  →  M(Hal) = 35  →  <strong>Hal = Cl</strong> (M = 35,45)</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>M(X) berechnen:</strong>
+<div class="formula">M(X) = 126 − 2·35 = 56  →  <strong>X = Fe</strong> (Eisen, M = 55,85 g/mol)</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Überprüfung:</strong>
+<div class="formula-left">
+[FeCl₂(H₂O)₄]⁺: 55,85 + 2·35,45 + 4·18,02 = <strong>198,82 ≈ 198</strong> ✓<br>
+[FeCl₄]⁻:       55,85 + 4·35,45 = <strong>197,65 ≈ 196</strong> ✓
+</div>
+</div>
+
+<h3>Schritt 2: Salz S1 bestimmen</h3>
+<p>Das positive Ion [FeCl₂(H₂O)₄]⁺ ist charakteristisch für Fe³⁺ in Lösung (verliert im ESI-Prozess ein Cl⁻ und koordiniert 4 Wassermoleküle). Das negative Ion [FeCl₄]⁻ entsteht durch Anlagerung von Cl⁻ an FeCl₃.</p>
+
+<div class="box">Beide Ionen stammen aus <strong>FeCl₃</strong> (Eisen(III)-chlorid). In wässriger Lösung / ESI:
+<br>FeCl₃ → [FeCl₂(H₂O)₄]⁺ (Kation) und [FeCl₄]⁻ (Anion, durch Cl⁻-Anlagerung)</div>
+
+<p>Überprüfung mit der Einwaage 2,7025 g S1 = FeCl₃·6H₂O:</p>
+<div class="formula-left">
+M(FeCl₃·6H₂O) = 55,85 + 3·35,45 + 6·18,02 = <strong>270,29 g/mol</strong><br>
+n(FeCl₃·6H₂O) = 2,7025 / 270,29 = <strong>0,01000 mol Fe³⁺</strong>
+</div>
+
+<h3>Schritt 3: Salz S2 bestimmen</h3>
+<p>Gegebene Eigenschaften: <strong>grün → weiß</strong> oberhalb 300°C, Massenverlust 45,36%, Massenanteil Fe = 20,09%.</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Molare Masse berechnen:</strong>
+<div class="formula">M(S2) = M(Fe) / w(Fe) = 55,85 / 0,2009 = <strong>277,97 g/mol</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Wasseranteil:</strong>
+<div class="formula">Masse H₂O = 0,4536 · 277,97 = 126,10 g/mol → n(H₂O) = 126,10 / 18,02 = <strong>7</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Restliche Masse:</strong>
+<div class="formula">M(S2 ohne H₂O) = 277,97 − 7·18,02 = 151,85 ≈ M(FeSO₄) = 151,91 g/mol ✓</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Vollständige Überprüfung FeSO₄·7H₂O:</strong>
+<div class="formula-left">
+M(FeSO₄·7H₂O) = 55,85 + 32,06 + 4·16,00 + 7·18,02 = <strong>278,01 g/mol</strong><br>
+w(Fe) = 55,85 / 278,01 = <strong>20,09%</strong> ✓ (gegeben: 20,09%)<br>
+Verlust 7H₂O = 7·18,02 / 278,01 = <strong>45,36%</strong> ✓ (gegeben: 45,36%)<br>
+Farbe FeSO₄·7H₂O: <strong>grün</strong>; wasserfreies FeSO₄: <strong>weiß</strong> ✓
+</div>
+</div>
+
+<p>Einwaage: n(FeSO₄·7H₂O) = 1,3901 / 278,01 = <strong>0,00500 mol Fe²⁺</strong></p>
+
+<div class="result">
+<strong>X = Fe (Eisen)</strong><br>
+<strong>S1 = FeCl₃·6H₂O</strong> (Eisen(III)-chlorid-Hexahydrat) → liefert Fe³⁺<br>
+<strong>S2 = FeSO₄·7H₂O</strong> (Eisen(II)-sulfat-Heptahydrat, Vitriol) → liefert Fe²⁺
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: n und m in X<sub>n</sub>O<sub>m</sub> bestimmen</h2>
+
+<h3>Molenverhältnis Fe³⁺ : Fe²⁺</h3>
+<div class="formula-left">
+n(Fe³⁺) = 2,7025 g / 270,29 g·mol⁻¹ = <strong>0,01000 mol</strong><br>
+n(Fe²⁺) = 1,3901 g / 278,01 g·mol⁻¹ = <strong>0,00500 mol</strong><br>
+Verhältnis Fe³⁺ : Fe²⁺ = 0,01000 : 0,00500 = <strong>2 : 1</strong>
+</div>
+
+<div class="box">
+Das Verhältnis 2 Fe³⁺ : 1 Fe²⁺ entspricht genau der Zusammensetzung von <strong>Fe₃O₄</strong> (Magnetit):<br>
+Fe₃O₄ = FeO · Fe₂O₃ = 1 Fe²⁺ + 2 Fe³⁺ pro Formeleinheit
+</div>
+
+<h3>Massenüberprüfung</h3>
+<div class="formula-left">
+n(Fe gesamt) = 0,01000 + 0,00500 = 0,01500 mol<br>
+n(Fe₃O₄) = 0,01500 / 3 = 0,00500 mol<br>
+M(Fe₃O₄) = 3·55,85 + 4·16,00 = <strong>231,55 g/mol</strong><br>
+m(Fe₃O₄) = 0,00500 · 231,55 = <strong>1,1575 g ≈ 1,1578 g</strong> ✓ (gegeben)
+</div>
+
+<div class="result">
+<strong>X<sub>n</sub>O<sub>m</sub> = Fe₃O₄ (Magnetit)</strong><br>
+n = 3, m = 4<br>
+Dies ist das bekannte Eisenmineral Magnetit, ein gemischtes Eisen(II/III)-oxid.
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Ionische Reaktionsgleichung der Co-Fällung</h2>
+
+<p>Bei der Co-Fällung werden Fe²⁺ und Fe³⁺ durch Tetramethylammoniumhydroxid (TMAOH) als Base gefällt. Die Hydroxid-Ionen deprotonieren und bilden mit den Eisen-Ionen das Oxid.</p>
+
+<h3>Herleitung der Gleichung:</h3>
+<div class="step">
+<span class="schritt-nr">1</span> Edukte: 1 Fe²⁺ + 2 Fe³⁺ + ? OH⁻ → Fe₃O₄ + ? H₂O
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Sauerstoffbilanz:</strong> Fe₃O₄ hat 4 O-Atome → kommen alle aus OH⁻ → 8 OH⁻ nötig (da 8 OH → 4 O in Oxid + 4 O in H₂O)
+</div>
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Wasserstoffbilanz:</strong> 8 OH⁻ → 4 H₂O ✓
+</div>
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Ladungsbilanz:</strong> (+2) + 2·(+3) + 8·(−1) = 2 + 6 − 8 = 0 ✓
+</div>
+
+<div class="reaction">
+Fe²⁺ + 2 Fe³⁺ + 8 OH⁻  →  Fe₃O₄↓ + 4 H₂O
+</div>
+
+<div class="box">
+<strong>Warum funktioniert diese Reaktion?</strong><br>
+Fe₃O₄ ist extrem schwerlöslich (K<sub>sp</sub> ≈ 10⁻⁴⁰). In alkalischer Lösung (hoher OH⁻-Überschuss) werden die Fe-Ionen vollständig ausgefällt. Die gleichzeitige Fällung von Fe²⁺ und Fe³⁺ im Verhältnis 1:2 ergibt direkt die gewünschte Magnetit-Stöchiometrie.
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Welches Oxid entsteht nach dem Aktivitätsverlust?</h2>
+
+<h3>Die Peroxidase-Reaktion (Fenton-ähnlich):</h3>
+<div class="reaction">
+Fe²⁺ + H₂O₂  →  Fe³⁺ + OH• + OH⁻
+</div>
+<p>In dieser Reaktion wird Fe²⁺ zu Fe³⁺ oxidiert. Damit funktioniert der Katalyse-Zyklus: das Fe³⁺ muss wieder zu Fe²⁺ reduziert werden.</p>
+
+<div class="box">
+<strong>Problem:</strong> In wässriger Lösung mit Luftsauerstoff und überschüssigem H₂O₂ kann Fe²⁺ nicht effizient regeneriert werden. Mit der Zeit wird das gesamte Fe²⁺ im Fe₃O₄ zu Fe³⁺ oxidiert → es entsteht ein reines Fe³⁺-Oxid.
+</div>
+
+<h3>Massenanteil-Vergleich der Eisenoxide:</h3>
+<table>
+  <tr><th>Verbindung</th><th>Formel</th><th>M [g/mol]</th><th>w(Fe)</th></tr>
+  <tr><td>Magnetit</td><td>Fe₃O₄</td><td>231,55</td><td>3·55,85/231,55 = <strong>72,36%</strong></td></tr>
+  <tr><td>Hämatit</td><td>Fe₂O₃</td><td>159,69</td><td>2·55,85/159,69 = <strong>69,94%</strong></td></tr>
+  <tr><td>Wüstit</td><td>FeO</td><td>71,85</td><td>55,85/71,85 = <strong>77,73%</strong></td></tr>
+</table>
+
+<p>Gesucht: w(Fe) kleiner als in Fe₃O₄ (72,36%) → nur <strong>Fe₂O₃</strong> (69,94%) erfüllt das.</p>
+
+<div class="step">
+<strong>Chemische Begründung:</strong> Fe₃O₄ enthält Fe²⁺ und Fe³⁺. Durch vollständige Oxidation von Fe²⁺ zu Fe³⁺ entsteht:
+<div class="formula">4 Fe₃O₄ + O₂  →  6 Fe₂O₃</div>
+Fe₂O₃ enthält <em>nur</em> Fe³⁺. Da die Peroxidase-Reaktion Fe²⁺ als Reduktionsmittel benötigt, ist Fe₂O₃ katalytisch inaktiv.
+</div>
+
+<div class="result">
+Das nach dem Aktivitätsverlust entstehende Oxid ist <strong>Fe₂O₃ (Hämatit)</strong>.<br>
+w(Fe) = 69,94% &lt; 72,36% (Fe₃O₄) ✓
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Welche Reagenzien erhalten die katalytische Aktivität?</h2>
+
+<p>Das Problem: Fe²⁺ wird in der Fenton-Reaktion zu Fe³⁺ oxidiert und nicht regeneriert. Um die katalytische Aktivität zu erhalten, brauchen wir ein Reagenz, das <strong>Fe³⁺ wieder zu Fe²⁺ reduziert</strong>.</p>
+
+<h3>Analyse der Optionen:</h3>
+
+<div class="step">
+<strong>a) NaIO₄ (Natriumperiodat):</strong><br>
+IO₄⁻ ist ein starkes <span style="color:#c62828">OXIDATIONSMITTEL</span>. Es würde Fe²⁺ weiter zu Fe³⁺ oxidieren – das Gegenteil von dem, was wir brauchen.<br>
+<span class="cross">✗ NEIN</span>
+</div>
+
+<div class="step">
+<strong>b) NaBH₄ (Natriumborhydrid):</strong><br>
+BH₄⁻ ist ein starkes <span style="color:#2e7d32">REDUKTIONSMITTEL</span>. Es kann Fe³⁺ zu Fe²⁺ reduzieren:<br>
+<code>Fe³⁺ + e⁻ → Fe²⁺</code><br>
+Damit wird das verbrauchte Fe²⁺ regeneriert. Allerdings ist NaBH₄ sehr stark und könnte bei Überschuss Fe vollständig zu Fe⁰ reduzieren.<br>
+<span class="check">✓ JA (mit Vorsicht)</span>
+</div>
+
+<div class="step">
+<strong>c) Na₃C₆H₅O₇ (Natriumcitrat):</strong><br>
+Citrat wirkt als <span style="color:#2e7d32">mildes REDUKTIONSMITTEL</span> und Komplexbildner. Es kann:<br>
+① Fe³⁺ schonend zu Fe²⁺ reduzieren<br>
+② Als Ligand die Fe-Ionen an der Oberfläche der NPs stabilisieren<br>
+③ Agglomeration der Nanopartikel verhindern<br>
+<span class="check">✓ JA (ideal – mild und selektiv)</span>
+</div>
+
+<div class="step">
+<strong>d) Na₃PO₄ (Natriumphosphat):</strong><br>
+Phosphat hat keine Redoxaktivität gegenüber Eisen. Es ist eine Base und wirkt als Fällungsmittel für Fe-Ionen (Fe-Phosphate sind schwerlöslich). Kann die NPs sogar zerstören.<br>
+<span class="cross">✗ NEIN</span>
+</div>
+
+<div class="result">
+Richtige Antworten: <strong>b) NaBH₄</strong> und <strong>c) Na₃C₆H₅O₇ (Natriumcitrat)</strong><br><br>
+Beide sind Reduktionsmittel, die Fe³⁺ → Fe²⁺ regenerieren und damit den Fenton-Zyklus aufrechterhalten. Citrat ist selektiver und milder – daher in der Praxis bevorzugt.
+</div>
+</div>
+
+<!-- AUFGABE 6 -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Element Y und Zahl p bestimmen</h2>
+
+<p>Gegeben: Y<sub>p</sub> hat eine kovalente sphärische Struktur mit:</p>
+<ul>
+  <li>Volumen: V = 1,128 × 10⁻⁴ m³·mol⁻¹</li>
+  <li>Oberfläche: A = 1,324 × 10⁶ m²·kg⁻¹</li>
+</ul>
+
+<div class="box">
+<strong>Idee:</strong> Wenn Y<sub>p</sub> eine <em>Kugel</em> ist, können wir aus dem molaren Volumen den <strong>Radius</strong> berechnen. Aus der spezifischen Oberfläche erhalten wir die <strong>molare Masse</strong>. Das ergibt zusammen die Identität des Moleküls.
+</div>
+
+<h3>Schritt 1: Radius aus dem molaren Volumen</h3>
+<div class="step">
+Das molare Volumen ist das Volumen <em>einer</em> Kugel mal N<sub>A</sub>:
+<div class="formula">V<sub>mol</sub> = (4/3)·π·r³ · N<sub>A</sub></div>
+Umformen nach r:
+<div class="formula">r = ∛(3·V<sub>mol</sub> / (4·π·N<sub>A</sub>))</div>
+<div class="formula-left">
+r = ∛(3 × 1,128×10⁻⁴ / (4 × π × 6,022×10²³))<br>
+r = ∛(3,386×10⁻⁴ / 7,560×10²⁴)<br>
+r = ∛(4,479×10⁻²⁹ m³)<br>
+r = <strong>3,549 × 10⁻¹⁰ m = 0,355 nm = 3,55 Å</strong>
+</div>
+</div>
+
+<h3>Schritt 2: Molare Masse aus der spezifischen Oberfläche</h3>
+<div class="step">
+Die spezifische Oberfläche = Oberfläche pro kg Substanz:
+<div class="formula">A<sub>spez</sub> = (4·π·r²·N<sub>A</sub>) / M</div>
+Umformen nach M:
+<div class="formula">M = (4·π·r²·N<sub>A</sub>) / A<sub>spez</sub></div>
+<div class="formula-left">
+M = (4 × π × (3,549×10⁻¹⁰)² × 6,022×10²³) / 1,324×10⁶<br>
+M = (4 × π × 1,260×10⁻¹⁹ × 6,022×10²³) / 1,324×10⁶<br>
+M = 9,523×10⁵ / 1,324×10⁶<br>
+M = <strong>0,7192 kg/mol = 719,2 g/mol</strong>
+</div>
+</div>
+
+<h3>Schritt 3: Identifikation</h3>
+<div class="step">
+<strong>Welches kovalent-sphärische Molekül hat M ≈ 720 g/mol?</strong><br><br>
+<strong>Buckminsterfullerene C₆₀!</strong><br>
+M(C₆₀) = 60 × 12,011 = <strong>720,66 g/mol ≈ 720 g/mol</strong> ✓<br><br>
+C₆₀ ist ein fußballförmiges Molekül aus 60 Kohlenstoffatomen, die 20 Hexagone und 12 Pentagone bilden. Sein Radius beträgt ~3,5 Å (Kohlenstoffgerüst) ✓<br><br>
+Es ist das bekannteste Fullerene und wurde 1996 mit dem Nobelpreis für Chemie ausgezeichnet (Curl, Kroto, Smalley).
+</div>
+
+<div class="result">
+<strong>Y = C (Kohlenstoff), p = 60</strong><br>
+Y<sub>p</sub> = <strong>C₆₀ (Buckminsterfullerene / „Buckyball")</strong><br>
+Radius: 3,55 Å ✓ &nbsp;|&nbsp; Molare Masse: 720,1 g/mol ≈ 720,7 g/mol ✓
+</div>
+</div>
+
+<!-- AUFGABE 7 -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Substratkonzentration bei gegebener Reaktionsrate</h2>
+
+<p>Gegeben: K<sub>M</sub> = 1,03 mM = 1,03 × 10⁻³ mol/L, r<sub>max</sub> = 3,73 nM/s = 3,73 × 10⁻⁹ mol/L/s</p>
+<p>Aufgabe: r = 0,001 µM/min → [S] = ?</p>
+
+<h3>Schritt 1: Einheitenumrechnung</h3>
+<div class="formula">r = 0,001 µM/min = 0,001 × 10⁻⁶ mol/L / 60 s = <strong>1,667 × 10⁻¹¹ mol/L/s</strong></div>
+
+<h3>Schritt 2: Michaelis-Menten nach [S] umformen</h3>
+<div class="derive-step">
+<div class="formula">r = r<sub>max</sub> · [S] / (K<sub>M</sub> + [S])</div>
+Multipliziere beide Seiten mit (K<sub>M</sub> + [S]):
+<div class="formula">r · K<sub>M</sub> + r · [S] = r<sub>max</sub> · [S]</div>
+Terme mit [S] auf eine Seite:
+<div class="formula">r · K<sub>M</sub> = (r<sub>max</sub> − r) · [S]</div>
+<div class="formula" style="font-size:1.1em; background: #e8f5e9; border-color: #66bb6a;">[S] = r · K<sub>M</sub> / (r<sub>max</sub> − r)</div>
+</div>
+
+<h3>Schritt 3: Einsetzen</h3>
+<div class="formula-left">
+[S] = (1,667×10⁻¹¹ × 1,03×10⁻³) / (3,73×10⁻⁹ − 1,667×10⁻¹¹)<br>
+[S] = 1,717×10⁻¹⁴ / 3,713×10⁻⁹<br>
+[S] = <strong>4,623 × 10⁻⁶ mol/L = 4,62 µM</strong>
+</div>
+
+<div class="warning">
+<strong>Warum geht die Näherung r<sub>max</sub> − r ≈ r<sub>max</sub> auch?</strong><br>
+r = 1,667×10⁻¹¹ ist 224-mal kleiner als r<sub>max</sub> = 3,73×10⁻⁹ → r ≪ r<sub>max</sub> → Näherung sehr gut:<br>
+[S] ≈ r·K<sub>M</sub>/r<sub>max</sub> = 1,667×10⁻¹¹ × 1,03×10⁻³ / 3,73×10⁻⁹ = 4,60 µM (≈ 4,62 µM ✓)
+</div>
+
+<div class="result">
+<strong>[S] ≈ 4,62 µM</strong><br>
+Die Rate 0,001 µM/min entspricht einer sehr niedrigen Substratkonzentration von 4,62 µM – weit unter K<sub>M</sub> = 1030 µM. Das Nanozym arbeitet also im linearen (substrat-limitierten) Bereich.
+</div>
+</div>
+
+<!-- AUFGABE 8 -->
+<div class="aufgabe">
+<h2>Aufgabe 8: Zeit zur Bildung von 0,025 µM Produkt</h2>
+
+<p>Gegeben: [S]₀ = 0,025 mM = 2,5 × 10⁻⁵ mol/L, Ziel: [P] = 0,025 µM = 2,5 × 10⁻⁸ mol/L</p>
+
+<h3>Schritt 1: Ist [S] ≫ K<sub>M</sub> oder [S] ≪ K<sub>M</sub>?</h3>
+<div class="formula">[S]₀ / K<sub>M</sub> = 0,025 mM / 1,03 mM = <strong>0,0243</strong></div>
+<p>→ [S]₀ ≪ K<sub>M</sub>! Das Substrat ist im Verhältnis zur Michaelis-Konstante sehr gering.</p>
+
+<h3>Schritt 2: Wird [S] während der Reaktion signifikant verbraucht?</h3>
+<div class="formula">Umgesetzter Anteil = [P]<sub>Ziel</sub> / [S]₀ = 0,025 µM / 25 µM = <strong>0,1%</strong></div>
+<div class="box">
+Nur 0,1% des Substrats werden verbraucht! Daher bleibt [S] ≈ [S]₀ während der gesamten Reaktion. Die Rate ist <strong>praktisch konstant</strong> – wir können einfach t = [P] / r berechnen.
+</div>
+
+<h3>Schritt 3: Reaktionsrate bei [S]₀ berechnen</h3>
+<div class="formula-left">
+r = r<sub>max</sub> · [S]₀ / (K<sub>M</sub> + [S]₀)<br>
+r = 3,73×10⁻⁹ × 2,5×10⁻⁵ / (1,03×10⁻³ + 2,5×10⁻⁵)<br>
+r = 9,325×10⁻¹⁴ / 1,055×10⁻³<br>
+r = <strong>8,839 × 10⁻¹¹ mol/L/s</strong>
+</div>
+
+<div class="warning">
+<strong>Vereinfachung</strong> (da [S]₀ ≪ K<sub>M</sub>): r ≈ r<sub>max</sub>·[S]₀/K<sub>M</sub> = 3,73×10⁻⁹ × 2,5×10⁻⁵ / 1,03×10⁻³ = 9,05×10⁻¹¹ mol/L/s (sehr nah am exakten Wert ✓)
+</div>
+
+<h3>Schritt 4: Zeit berechnen</h3>
+<div class="formula-left">
+t = [P]<sub>Ziel</sub> / r<br>
+t = 2,5×10⁻⁸ mol/L / 8,839×10⁻¹¹ mol/L/s<br>
+t = <strong>282,8 s = 4,71 min</strong>
+</div>
+
+<div class="result">
+<strong>t ≈ 4,71 Minuten</strong><br><br>
+In knapp 5 Minuten produziert das C₆₀-Nanozym 0,025 µM Produkt aus einer 0,025 mM Substratlösung. Die Rechnung war einfach, weil:<br>
+① Der Umsatz extrem gering ist (0,1%) → konstante Rate<br>
+② [S] ≪ K<sub>M</sub> → erste Ordnung in [S] (Linearität)
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background: #f9f0ff;">
+<h2>📋 Zusammenfassung aller Antworten</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage</th></tr>
+  <tr><td><strong>1</strong></td><td>X = Fe; S1 = FeCl₃·6H₂O (aus ESI-MS: Hal=Cl, M(X)=56); S2 = FeSO₄·7H₂O (w(Fe)=20,09%, Verlust=45,36%)</td></tr>
+  <tr><td><strong>2</strong></td><td>Fe³⁺:Fe²⁺ = 2:1 → <strong>Fe₃O₄</strong> (Magnetit); n=3, m=4; Masse: 1,1575 g ≈ 1,1578 g ✓</td></tr>
+  <tr><td><strong>3</strong></td><td>Fe²⁺ + 2 Fe³⁺ + 8 OH⁻ → Fe₃O₄↓ + 4 H₂O</td></tr>
+  <tr><td><strong>4</strong></td><td><strong>Fe₂O₃</strong> (Hämatit): w(Fe)=69,94% &lt; 72,36% (Fe₃O₄); Fe²⁺ oxidiert → kein Fenton-Zyklus möglich</td></tr>
+  <tr><td><strong>5</strong></td><td><strong>b) NaBH₄</strong> und <strong>c) Na₃-Citrat</strong> (beide Reduktionsmittel, regenerieren Fe²⁺)</td></tr>
+  <tr><td><strong>6</strong></td><td>Y = C, p = 60 → <strong>C₆₀ (Buckminsterfullerene)</strong>; r=3,55 Å, M=720,1 g/mol</td></tr>
+  <tr><td><strong>7</strong></td><td>[S] = r·K<sub>M</sub>/(r<sub>max</sub>−r) = <strong>4,62 µM</strong></td></tr>
+  <tr><td><strong>8</strong></td><td>t = [P]/r (konstante Rate, da Umsatz nur 0,1%) = <strong>4,71 min</strong></td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #ddd; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 4 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>

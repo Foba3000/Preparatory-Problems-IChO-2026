@@ -1,0 +1,1 @@
+Erweiterung: Wenn du Problem 14 fertig hast, musst du im Script-Teil der index.html nur in der Zeile const isActive = (i === 12 || i === 13); die Nummer 14 hinzufügen (z.B. [12, 13, 14].includes(i)), damit der Link klickbar wird.

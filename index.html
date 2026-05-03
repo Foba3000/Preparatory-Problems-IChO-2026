@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IChO 2026 – Lösungsverzeichnis</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  :root {
+    --color-1: #1a237e; /* Dunkelblau */
+    --color-2: #2e7d32; /* Waldgrün */
+    --color-3: #6a1b9a; /* Lila */
+    --color-4: #ef6c00; /* Orange */
+    --color-5: #00838f; /* Petrol/Teal */
+  }
+
+  body { 
+    font-family: 'Segoe UI', Arial, sans-serif; 
+    max-width: 1000px; 
+    margin: 0 auto; 
+    padding: 20px 30px; 
+    background: #f9f9fb; 
+    color: #1a1a2e; 
+    line-height: 1.6; 
+  }
+
+  header {
+    background: linear-gradient(135deg, #1a237e, #283593);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  h1 { margin: 0; font-size: 1.8em; }
+  p.subtitle { margin: 10px 0 0; opacity: 0.9; font-weight: 300; }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Aktive Links */
+  .card.active:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border-color: transparent;
+  }
+
+  .card.active::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 5px; height: 100%;
+  }
+
+  /* Platzhalter-Stil */
+  .card.disabled {
+    opacity: 0.6;
+    background: #f0f0f0;
+    cursor: not-allowed;
+  }
+
+  .card-nr {
+    font-size: 0.85em;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .card-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  .status {
+    font-size: 0.75em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    align-self: flex-start;
+    background: #eee;
+  }
+
+  .active .status { background: #e8f5e9; color: #2e7d32; }
+
+  /* Farb-Variationen für die Karten-Akzente */
+  .color-1::before { background-color: var(--color-1); }
+  .color-1 .card-nr { color: var(--color-1); }
+  
+  .color-2::before { background-color: var(--color-2); }
+  .color-2 .card-nr { color: var(--color-2); }
+
+  .color-3::before { background-color: var(--color-3); }
+  .color-3 .card-nr { color: var(--color-3); }
+
+  .color-4::before { background-color: var(--color-4); }
+  .color-4 .card-nr { color: var(--color-4); }
+
+  .color-5::before { background-color: var(--color-5); }
+  .color-5 .card-nr { color: var(--color-5); }
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🔬 IChO 2026 – Vorbereitungsaufgaben</h1>
+  <p class="subtitle">Zentrales Lösungsverzeichnis (Problem 1–30)</p>
+</header>
+
+<div class="grid-container" id="grid">
+  </div>
+
+<script>
+  const grid = document.getElementById('grid');
+  const totalProblems = 30;
+  
+  // Alle Titel übersetzt aus dem IChO-Dokument
+  const titles = {
+    1: "Khoja Nasreddin ist jetzt Chemiker",
+    2: "Avicenna",
+    3: "Ungewöhnliche anorganische Synthese",
+    4: "Nanozyme",
+    5: "Haber-Bosch-Verfahren",
+    6: "Wasserstoff-Brennstoff",
+    7: "150 Jahre Urease",
+    8: "Schritt für Schritt",
+    9: "Wirt-Gast-Chemie von Cucurbiturilen als usbekische Gastfreundschaft",
+    10: "Präbiotisches Leben",
+    11: "Fluoreszenz, Phosphoreszenz und Quenching",
+    12: "Photosäuren",
+    13: "Interesse an Mizellen?",
+    14: "Grundlagen metallorganischer Gerüstverbindungen (MOFs)",
+    15: "Mikroskopie in der Chemie",
+    16: "Kinase-Inhibitoren",
+    17: "Kohlenhydratchemie",
+    18: "Inositol",
+    19: "Kohlenhydrate als chirale Pools",
+    20: "Pacman, Hangman, Cageman",
+    21: "Katalysator C",
+    22: "Übergangsmetalle in der metallorganischen Katalyse",
+    23: "HAT und XAT (HalAT)",
+    24: "Antikrebs-Komplexe",
+    25: "Gleichgewichte in der DNA",
+    26: "Nachweis von Acetaldehyd",
+    27: "Stoffwechsel der Archaeen",
+    28: "Nicht-archaische Lebensformen",
+    29: "Archaeo-Logie",
+    30: "Pilaw-Zutaten"
+  };
+
+  for (let i = 1; i <= totalProblems; i++) {
+    const card = document.createElement('a');
+    const colorNum = ((i-1) % 5) + 1; // Zyklus durch 5 Farben
+    
+    // Status prüfen (aktuell aktiv für 12 und 13)
+    const isActive = (i === 4 || i === 12 || i === 13);
+    
+    card.className = `card color-${colorNum} ${isActive ? 'active' : 'disabled'}`;
+    
+    if (isActive) {
+      card.href = `IChO2026_Problem${i}_Loesung.html`;
+    }
+
+    card.innerHTML = `
+      <span class="card-nr">Problem ${i}</span>
+      <span class="card-title">${titles[i] || 'Thema in Vorbereitung...'}</span>
+      <span class="status">${isActive ? '✅ Verfügbar' : '⏳ Ausstehend'}</span>
+    `;
+    
+    grid.appendChild(card);
+  }
+</script>
+
+</body>
+</html>

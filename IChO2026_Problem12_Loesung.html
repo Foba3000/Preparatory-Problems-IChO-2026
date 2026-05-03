@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IChO 2026 – Problem 12: Photosäuren – Vollständige Lösung</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px 30px; background: #f9f9fb; color: #1a1a2e; line-height: 1.75; }
+  h1 { background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 18px 24px; border-radius: 10px; font-size: 1.4em; }
+  h2 { color: #1565c0; border-left: 5px solid #1565c0; padding-left: 12px; margin-top: 40px; }
+  h3 { color: #37474f; margin-top: 24px; }
+  .aufgabe { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px 26px; margin: 24px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .aufgabe h2 { margin-top: 0; }
+  .box { background: #e3f2fd; border-left: 4px solid #1976d2; border-radius: 6px; padding: 14px 18px; margin: 14px 0; }
+  .result { background: #e8f5e9; border-left: 4px solid #388e3c; border-radius: 6px; padding: 14px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 12px 16px; margin: 10px 0; }
+  .formula { background: #f3e5f5; border: 1px solid #ce93d8; border-radius: 6px; padding: 10px 16px; font-family: 'Courier New', monospace; margin: 10px 0; text-align: center; font-size: 1.05em; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #1565c0; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #ddd; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f5f5f5; }
+  .step { margin: 12px 0; padding: 10px 14px; background: #fafafa; border-radius: 6px; border: 1px solid #e8e8e8; }
+  .schritt-nr { display: inline-block; background: #1565c0; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  .jablonski-container { background: #1a237e; color: #e8eaf6; border-radius: 12px; padding: 24px; margin: 20px 0; }
+  .energy-level { border-top: 2px solid #90caf9; margin: 8px 0; padding: 4px 8px; }
+  .process { color: #ffcc80; font-style: italic; }
+  code { background: #eceff1; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  .highlight { background: #fff3e0; border-radius: 4px; padding: 2px 5px; }
+  ul li, ol li { margin: 6px 0; }
+  .greek { font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>🔬 IChO 2026 – Problem 12: Photosäuren<br><span style="font-size:0.85em;font-weight:normal">Vollständige Lösung auf Deutsch</span></h1>
+
+<!-- ============================= JABLONSKI ============================= -->
+<div class="aufgabe">
+<h2>📊 Vorwissen: Das Förster-Jablonski-Diagramm erklärt</h2>
+
+<p>Bevor wir die Aufgaben lösen, erklären wir das Diagramm Schritt für Schritt – denn es ist der Schlüssel zu allem.</p>
+
+<h3>Was zeigt das Diagramm?</h3>
+<p>Das Diagramm zeigt die <strong>Energieniveaus</strong> von zwei chemischen Teilchen:</p>
+<ul>
+  <li><strong>ROH</strong> (links) = die Photosäure in protonierter Form (z.B. 2-Naphthol, ArOH)</li>
+  <li><strong>RO⁻</strong> (rechts) = die deprotonierte Form (Naphtholatanion, ArO⁻)</li>
+</ul>
+
+<p>Jedes dieser Teilchen hat mehrere Energieniveaus:</p>
+<ul>
+  <li><strong>S₀</strong> = Grundzustand (niedrigste Energie)</li>
+  <li><strong>S₁</strong> = erster angeregter Zustand</li>
+  <li><strong>Sₙ</strong> = höhere angeregte Zustände</li>
+</ul>
+<p>Innerhalb jedes elektronischen Zustands gibt es noch <strong>Schwingungsunterniveaus</strong> (die vielen kleinen horizontalen Striche).</p>
+
+<h3>Die Prozesse von links nach rechts – was passiert wann?</h3>
+
+<div class="step">
+  <span class="schritt-nr">1</span>
+  <strong>Absorption (Abs.)</strong> – Ein Photon trifft auf ROH (S₀) und befördert es in einen <em>höheren</em> angeregten Zustand Sₙ. Das Molekül springt schlagartig „nach oben". Dieser Prozess dauert nur ~10⁻¹⁵ Sekunden.
+</div>
+
+<div class="step">
+  <span class="schritt-nr">2</span>
+  <strong>Innere Umwandlung – Internal Conversion (IC)</strong> – Das Molekül fällt strahlungslos von Sₙ nach S₁ hinunter. <em>Kein Licht wird dabei emittiert!</em> IC ist sehr schnell (~10⁻¹² s).
+</div>
+
+<div class="step">
+  <span class="schritt-nr">3</span>
+  <strong>Schwingungsrelaxation – Vibrational Relaxation (VR)</strong> – Innerhalb von S₁ fällt das Molekül zum <em>niedrigsten Schwingungsniveau</em> von S₁ hinunter. Auch das passiert strahlungslos und sehr schnell (ebenfalls ~10⁻¹² s). Nach VR sitzt das Molekül am „Boden" von S₁.
+</div>
+
+<div class="step">
+  <span class="schritt-nr">4a</span>
+  <strong>Fluoreszenz (ROH*)</strong> – Von S₁ fällt ROH* strahlend nach S₀ zurück. Dabei wird ein Photon mit Wellenlänge <strong>λ₁</strong> ausgesandt (Frequenz ν₁). <em>Wichtig:</em> Die emittierte Wellenlänge ist <em>länger</em> (niederenergetischer) als die absorbierte, weil Energie durch VR und IC verloren geht. Man nennt das den <strong>Stokes-Shift</strong>.
+</div>
+
+<div class="step">
+  <span class="schritt-nr">4b</span>
+  <strong>Protonenübertragung im angeregten Zustand – ESPT</strong> – <em>Alternativ</em> zu Fluoreszenz kann ROH* in S₁ das Proton abgeben und zu RO⁻* (S₁) werden. Das ist nur möglich, weil im angeregten Zustand die Bindung O–H viel schwächer ist. Die Energiedifferenz dieser Reaktion ist <strong>ΔH*</strong>.
+</div>
+
+<div class="step">
+  <span class="schritt-nr">5</span>
+  <strong>Fluoreszenz (RO⁻*)</strong> – Wenn RO⁻* in S₁ vorliegt (egal ob durch ESPT aus ROH* oder durch direkte Anregung von RO⁻), emittiert es ein Photon mit Wellenlänge <strong>λ₂</strong>. Da RO⁻ in S₁ <em>weniger</em> Energie hat als ROH* in S₁ (es liegt tiefer auf der Energieskala), ist λ₂ > λ₁ (längere Wellenlänge = rötlicheres Licht).
+</div>
+
+<div class="box">
+<strong>Warum ist das so wichtig für Photosäuren?</strong><br>
+Im Grundzustand (S₀) ist ROH eine <em>schwache</em> Säure (pKₐ ≈ 9.5 für 2-Naphthol). Im angeregten Zustand (S₁) ist dieselbe Verbindung eine <em>viel stärkere</em> Säure (pKₐ* ≈ −0.5!). Das Diagramm zeigt uns graphisch, warum: Im angeregten Zustand liegt ROH* energetisch viel höher als RO⁻*, d.h. die Abgabe des Protons ist im angeregten Zustand stark begünstigt.
+</div>
+
+<h3>Die Wellenlängen λ₁ und λ₂ – der 0-0-Übergang</h3>
+<p>Der sogenannte <strong>0-0-Übergang</strong> (ausgesprochen: Null-Null) ist der Übergang vom tiefsten Schwingungsniveau in S₁ zum tiefsten Schwingungsniveau in S₀. In der Praxis verwendet man die <em>Fluoreszenz-Emissionsmaxima</em> als Näherung für diese Wellenlängen. In der Lösung zu Aufgabe 5 lesen wir also die Fluoreszenzpeaks aus den Spektren ab.</p>
+</div>
+
+<!-- ============================= AUFGABE 1 ============================= -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Endkonzentration von 2-Naphthol</h2>
+
+<p>Alle 5 Lösungen werden nach demselben Schema hergestellt: <strong>5 mL Lösung Z</strong> werden mit <strong>20 mL</strong> des jeweiligen Mediums gemischt → Gesamtvolumen = 25 mL.</p>
+
+<div class="box">
+<strong>Verdünnungsgesetz:</strong> c₁ · V₁ = c₂ · V₂<br><br>
+c₁ = 2,1 mM = 2,1 × 10⁻³ mol/L (Lösung Z)<br>
+V₁ = 5 mL<br>
+V₂ = 25 mL
+</div>
+
+<div class="formula">
+c₂ = (c₁ × V₁) / V₂ = (2,1 × 10⁻³ mol/L × 5 mL) / 25 mL = <strong>4,2 × 10⁻⁴ mol/L</strong>
+</div>
+
+<div class="result">
+Ergebnis: Die Endkonzentration von 2-Naphthol beträgt in <em>allen 5 Lösungen gleich</em>:<br>
+c = 4,2 × 10⁻⁴ mol/L = 0,42 mM
+</div>
+</div>
+
+<!-- ============================= AUFGABE 2 ============================= -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Molare Extinktionskoeffizienten ε</h2>
+
+<p>Wir nutzen das <strong>Lambert-Beer-Gesetz</strong>: A = ε · c · l</p>
+<p>Dabei ist A die Absorption, ε der molare Extinktionskoeffizient [L·mol⁻¹·cm⁻¹], c die Konzentration [mol/L], l die Schichtdicke [cm].</p>
+
+<p><strong>Der Trick:</strong> In Lösung 1 (stark sauer: HCl, pH ≈ 1,7) liegt praktisch <em>ausschließlich</em> ArOH vor (da pKₐ ≈ 9,5 ≫ 1,7). In Lösung 2 (stark basisch: NaOH, pH ≈ 12,7) liegt praktisch <em>ausschließlich</em> ArO⁻ vor.</p>
+
+<h3>Für ε(ArOH) – aus Lösung 1:</h3>
+<div class="formula">
+ε<sub>ArOH</sub> = A₁ / (c · l) = 0,219 / (4,2 × 10⁻⁴ mol/L × 1,0 cm)
+= <strong>521 L·mol⁻¹·cm⁻¹</strong>
+</div>
+
+<h3>Für ε(ArO⁻) – aus Lösung 2:</h3>
+<div class="formula">
+ε<sub>ArO⁻</sub> = A₂ / (c · l) = 0,440 / (4,2 × 10⁻⁴ mol/L × 1,0 cm)
+= <strong>1048 L·mol⁻¹·cm⁻¹</strong>
+</div>
+
+<div class="result">
+ε<sub>ArOH</sub> ≈ 521 L·mol⁻¹·cm⁻¹<br>
+ε<sub>ArO⁻</sub> ≈ 1048 L·mol⁻¹·cm⁻¹<br><br>
+ArO⁻ absorbiert bei 344 nm also etwa <em>doppelt so stark</em> wie ArOH.
+</div>
+</div>
+
+<!-- ============================= AUFGABE 3 ============================= -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Graph pH vs. log([ArO⁻]/[ArOH]) und pKₐ</h2>
+
+<h3>Schritt 1: pH der Pufferlösungen berechnen</h3>
+<p>Wir nutzen die Henderson-Hasselbalch-Gleichung für NH₃/NH₄⁺-Puffer:</p>
+
+<div class="formula">
+pH = pKₐ(NH₄⁺) + log([NH₃] / [NH₄⁺])
+</div>
+
+<p>pKₐ(NH₄⁺) = 14 − pKb(NH₃) = 14 − 4,75 = <strong>9,25</strong></p>
+
+<p>Das Verhältnis NH₄Cl : NH₃ gibt an, welches Verhältnis im Puffer vorliegt. Da beide 20 mL Pufferlösung sind und gleich verdünnt werden, bleibt das Verhältnis erhalten:</p>
+
+<table>
+  <tr><th>Lösung</th><th>NH₄Cl : NH₃</th><th>log([NH₃]/[NH₄⁺])</th><th>pH</th></tr>
+  <tr><td>3</td><td>3 : 1</td><td>log(1/3) = −0,477</td><td>9,25 − 0,477 = <strong>8,77</strong></td></tr>
+  <tr><td>4</td><td>2 : 1</td><td>log(1/2) = −0,301</td><td>9,25 − 0,301 = <strong>8,95</strong></td></tr>
+  <tr><td>5</td><td>1 : 1</td><td>log(1/1) = 0</td><td>9,25 + 0 = <strong>9,25</strong></td></tr>
+</table>
+
+<h3>Schritt 2: [ArO⁻]/[ArOH] aus den Absorptionswerten berechnen</h3>
+<p>In einer Mischung aus ArOH und ArO⁻ gilt (additives Lambert-Beer):</p>
+<div class="formula">
+A = ε<sub>ArOH</sub> · [ArOH] · l + ε<sub>ArO⁻</sub> · [ArO⁻] · l
+</div>
+<p>Da [ArOH] + [ArO⁻] = c = const., lässt sich zeigen:</p>
+<div class="formula">
+[ArO⁻]/[ArOH] = (A − A₁) / (A₂ − A)
+</div>
+<p>wobei A₁ = 0,219 (Absorption bei 100% ArOH) und A₂ = 0,440 (Absorption bei 100% ArO⁻).</p>
+
+<p><strong>Herleitung:</strong> Man setzt [ArOH] = c − [ArO⁻] ein und löst nach dem Verhältnis auf:</p>
+<div class="formula">
+A = A₁ + (A₂ − A₁) · ([ArO⁻]/c) ⟹ [ArO⁻]/c = (A − A₁)/(A₂ − A₁) ⟹ [ArO⁻]/[ArOH] = (A − A₁)/(A₂ − A)
+</div>
+
+<table>
+  <tr><th>Lösung</th><th>A</th><th>(A − A₁)</th><th>(A₂ − A)</th><th>[ArO⁻]/[ArOH]</th><th>log([ArO⁻]/[ArOH])</th></tr>
+  <tr><td>3</td><td>0,256</td><td>0,037</td><td>0,184</td><td>0,201</td><td>−0,697</td></tr>
+  <tr><td>4</td><td>0,273</td><td>0,054</td><td>0,167</td><td>0,323</td><td>−0,491</td></tr>
+  <tr><td>5</td><td>0,300</td><td>0,081</td><td>0,140</td><td>0,579</td><td>−0,237</td></tr>
+</table>
+
+<h3>Schritt 3: pKₐ bestimmen</h3>
+<p>Nach Henderson-Hasselbalch gilt: <code>pH = pKₐ + log([ArO⁻]/[ArOH])</code></p>
+<p>Wenn man den Graphen (pH auf y-Achse, log([ArO⁻]/[ArOH]) auf x-Achse) zeichnet, schneidet die Gerade die pH-Achse genau bei <strong>log = 0</strong>, was pKₐ entspricht. Alternativ berechnet man direkt:</p>
+
+<table>
+  <tr><th>Lösung</th><th>pH</th><th>log([ArO⁻]/[ArOH])</th><th>pKₐ = pH − log([ArO⁻]/[ArOH])</th></tr>
+  <tr><td>3</td><td>8,77</td><td>−0,697</td><td>8,77 + 0,697 = 9,47</td></tr>
+  <tr><td>4</td><td>8,95</td><td>−0,491</td><td>8,95 + 0,491 = 9,44</td></tr>
+  <tr><td>5</td><td>9,25</td><td>−0,237</td><td>9,25 + 0,237 = 9,49</td></tr>
+</table>
+
+<div class="result">
+Mittlerer pKₐ von 2-Naphthol ≈ <strong>9,47</strong> (Literaturwert: ~9,5 ✓)<br><br>
+Im Graphen: Die drei Datenpunkte liegen annähernd auf einer Geraden. Der pKₐ ist der pH-Wert, bei dem log([ArO⁻]/[ArOH]) = 0, d.h. die Gerade die x-Achse schneidet – das ergibt pH ≈ 9,47.
+</div>
+</div>
+
+<!-- ============================= AUFGABE 4 ============================= -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Herleitung der Förster-Gleichung (ΔpKₐ, λ₁, λ₂, T)</h2>
+
+<h3>Grundidee: Der thermodynamische Kreisprozess</h3>
+<p>Wir betrachten vier Zustände im Jablonski-Diagramm und verwenden den <strong>Hess'schen Wärmesatz</strong> (Energieerhaltung im Kreisprozess):</p>
+
+<div class="box">
+<strong>Kreisprozess (im Uhrzeigersinn):</strong><br>
+① ROH (S₀) → ROH* (S₁): Energie = +N<sub>A</sub>hc/λ₁ (Anregung)<br>
+② ROH* (S₁) → RO⁻* (S₁) + H⁺: Energie = ΔH°* (Dissoziation im angeregten Zustand)<br>
+③ RO⁻* (S₁) → RO⁻ (S₀): Energie = −N<sub>A</sub>hc/λ₂ (Emission)<br>
+④ RO⁻ (S₀) + H⁺ → ROH (S₀): Energie = −ΔH° (Rückreaktion der Grundzustandsdissoziation)
+</div>
+
+<p>Die Summe aller Energiebeiträge im Kreislauf muss Null ergeben:</p>
+<div class="formula">
+N<sub>A</sub>hc/λ₁ + ΔH°* − N<sub>A</sub>hc/λ₂ − ΔH° = 0
+</div>
+<div class="formula">
+ΔH°* − ΔH° = N<sub>A</sub>hc · (1/λ₂ − 1/λ₁)
+</div>
+
+<h3>Übergang zu Gibbs'scher freier Energie</h3>
+<p>Laut Aufgabenstellung gilt: <strong>ΔH°* − ΔH° = ΔG°* − ΔG°</strong></p>
+<p>Aus der Thermodynamik der Säure-Base-Gleichgewichte folgt:</p>
+<div class="formula">
+ΔG° = 2,303 · R · T · pKₐ &nbsp;&nbsp;&nbsp; (für ROH ⇌ RO⁻ + H⁺)
+</div>
+<div class="formula">
+ΔG°* = 2,303 · R · T · pKₐ*
+</div>
+
+<p>Einsetzen:</p>
+<div class="formula">
+2,303 · R · T · (pKₐ* − pKₐ) = N<sub>A</sub>hc · (1/λ₂ − 1/λ₁)
+</div>
+<div class="formula">
+−2,303 · R · T · ΔpKₐ = N<sub>A</sub>hc · (1/λ₂ − 1/λ₁)
+</div>
+
+<p>Weil ΔpKₐ = pKₐ − pKₐ*, ergibt sich die <strong>Förster-Gleichung</strong>:</p>
+
+<div class="formula" style="font-size:1.15em; background: #ede7f6; border-color: #7b1fa2;">
+ΔpKₐ = pKₐ − pKₐ* = (N<sub>A</sub> · h · c) / (2,303 · R · T) · (1/λ₁ − 1/λ₂)
+</div>
+
+<div class="box">
+<strong>Interpretation:</strong><br>
+λ₁ = Emissionswellenlänge von ArOH* (kürzere Wellenlänge) → 1/λ₁ größer<br>
+λ₂ = Emissionswellenlänge von ArO⁻* (längere Wellenlänge) → 1/λ₂ kleiner<br>
+→ (1/λ₁ − 1/λ₂) > 0 → ΔpKₐ > 0 → pKₐ* &lt; pKₐ → Säure ist im Anregungszustand stärker ✓
+</div>
+</div>
+
+<!-- ============================= AUFGABE 5 ============================= -->
+<div class="aufgabe">
+<h2>Aufgabe 5: pKₐ* des angeregten Zustands und [ArOH*]/[ArO⁻*] bei pH = 5</h2>
+
+<h3>Schritt 1: Wellenlängen aus den Fluoreszenzspektren ablesen</h3>
+<p>Aus dem Fluoreszenzspektrum von <strong>Lösung 1</strong> (sauer, ArOH-Form): Emissionsmaximum bei ca. <strong>λ₁ ≈ 350 nm</strong></p>
+<p>Aus dem Fluoreszenzspektrum von <strong>Lösung 2</strong> (basisch, ArO⁻-Form): Emissionsmaximum bei ca. <strong>λ₂ ≈ 420 nm</strong></p>
+
+<h3>Schritt 2: ΔpKₐ berechnen</h3>
+<p>Verwendete Konstanten: h = 6,626 × 10⁻³⁴ J·s, c = 2,998 × 10⁸ m/s, N<sub>A</sub> = 6,022 × 10²³ mol⁻¹, R = 8,314 J·mol⁻¹·K⁻¹, T = 298 K</p>
+
+<div class="formula">
+Vorfaktor = (N<sub>A</sub> · h · c) / (2,303 · R · T)
+= (6,022×10²³ · 6,626×10⁻³⁴ · 2,998×10⁸) / (2,303 · 8,314 · 298)
+= 0,1197 J·m·mol⁻¹ / 5709 J·mol⁻¹ = 2,10 × 10⁻⁵ m
+</div>
+
+<div class="formula">
+1/λ₁ − 1/λ₂ = 1/(350×10⁻⁹ m) − 1/(420×10⁻⁹ m)
+= (2,857 − 2,381) × 10⁶ m⁻¹
+= 4,76 × 10⁵ m⁻¹
+</div>
+
+<div class="formula">
+ΔpKₐ = 2,10 × 10⁻⁵ m × 4,76 × 10⁵ m⁻¹ ≈ <strong>10,0</strong>
+</div>
+
+<h3>Schritt 3: pKₐ* berechnen</h3>
+<div class="formula">
+pKₐ* = pKₐ − ΔpKₐ = 9,47 − 10,0 ≈ <strong>−0,5</strong>
+</div>
+
+<div class="warning">
+<strong>Hinweis:</strong> Der Förster-Kreiszyklus liefert eine Näherung. Der experimentell gemessene pKₐ* von 2-Naphthol liegt bei etwa 2,8. Die Abweichung entsteht, weil (a) die Fluoreszenzpeaks nicht exakt den 0-0-Übergängen entsprechen, (b) die Annahme ΔH° − ΔH°* ≈ ΔG° − ΔG°* nicht perfekt gilt (ΔS-Beiträge werden vernachlässigt). Für die Aufgabe verwenden wir die Förster-Näherung.
+</div>
+
+<h3>Schritt 4: [ArOH*]/[ArO⁻*] bei pH = 5</h3>
+<p>Für das Gleichgewicht im angeregten Zustand gilt ebenfalls Henderson-Hasselbalch:</p>
+<div class="formula">
+pH = pKₐ* + log([ArO⁻*]/[ArOH*])
+5 = −0,5 + log([ArO⁻*]/[ArOH*])
+log([ArO⁻*]/[ArOH*]) = 5,5
+</div>
+<div class="formula">
+[ArOH*]/[ArO⁻*] = 10⁻⁵'⁵ ≈ <strong>3,2 × 10⁻⁶</strong>
+</div>
+
+<div class="result">
+pKₐ* ≈ −0,5 (Förster-Näherung)<br>
+[ArOH*]/[ArO⁻*] bei pH = 5 ≈ 3,2 × 10⁻⁶<br><br>
+<em>Bedeutung:</em> Bei pH = 5 liegt 2-Naphthol im Grundzustand fast vollständig als ArOH vor (pH ≪ pKₐ = 9,5). Im Angeregten Zustand hingegen liegt es zu &gt;99,999% als ArO⁻* vor – es ist dort eine extrem starke Säure!
+</div>
+</div>
+
+<!-- ============================= AUFGABE 6 ============================= -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Baird-aromatisch vs. Baird-antiaromatisch – Photosäure-Kandidaten</h2>
+
+<h3>Theoretischer Rahmen: Baird-Regeln</h3>
+<div class="box">
+<strong>Im angeregten Zustand S₁ gilt:</strong><br>
+• Konjugierte Ringe mit <strong>4n π-Elektronen</strong> sind <span class="highlight">Baird-AROMATISCH</span> (stabil) – das Gegenteil des Grundzustands!<br>
+• Konjugierte Ringe mit <strong>(4n+2) π-Elektronen</strong> sind <span class="highlight">Baird-ANTIAROMATISCH</span> (destabilisiert)<br><br>
+<strong>Photosäuren</strong> sind Baird-antiaromatische Moleküle (4n+2 π-e im angeregten Zustand), die durch Deprotonierung die „Antiaromaten-Spannung" abbauen: Das O⁻ des entstehenden Anions gibt Elektronendichte in den Ring ab und stabilisiert so das System.
+</div>
+
+<h3>Analyse der Strukturen (a) bis (e):</h3>
+
+<p><strong>(a) 6-Cyano-2-naphthol:</strong><br>
+Das Naphthalin-System hat <strong>10 π-Elektronen</strong> (4×2+2 = 10, also 4n+2 mit n=2).<br>
+→ Grundzustand S₀: Hückel-aromatisch (stabil) ✓<br>
+→ Angeregter Zustand S₁: <span class="highlight">Baird-ANTIAROMATISCH</span> (destabilisiert)<br>
+→ Hat eine OH-Gruppe, die deprotoniert werden kann<br>
+→ Das entstehende ArO⁻ gibt Elektronendichte in den Ring und reduziert die Antiaromatizität<br>
+→ <strong>Potenzielle Photosäure ✓</strong></p>
+
+<p><strong>(b) Porphyrin-ähnliche Struktur (mit N-H-Gruppen):</strong><br>
+Wenn es sich um ein porphyrin-ähnliches Makrozyklus handelt: <strong>18 π-Elektronen</strong> (4×4+2 = 18).<br>
+→ S₀: Hückel-aromatisch (aromatischer Geruch des Porphyrins ist bekannt) ✓<br>
+→ S₁: <span class="highlight">Baird-ANTIAROMATISCH</span><br>
+→ Hat N-H-Gruppen, die als Protonendonoren wirken können<br>
+→ <strong>Potenzielle Photosäure ✓</strong></p>
+
+<p><strong>(c) Squarain- oder malondialdehyd-ähnliche Verbindung (4-Ring mit OH):</strong><br>
+Wenn es sich um ein cyclisches 4-Membran-System handelt: <strong>4 π-Elektronen</strong> (4×1 = 4n mit n=1).<br>
+→ S₀: Hückel-antiaromatisch (destabilisiert)<br>
+→ S₁: <span class="highlight">Baird-AROMATISCH</span> (stabil im angeregten Zustand)<br>
+→ Im angeregten Zustand gibt es keinen Anteil zur Spannung → <strong>KEINE Photosäure</strong><br>
+Falls es ein Phenol-System mit 6π ist: 4n+2 → Baird-antiaromatisch → Potenzielle Photosäure</p>
+
+<p><strong>(d) Pyren-Derivat mit SO₂NMe₂-Gruppen:</strong><br>
+Pyren hat <strong>16 π-Elektronen</strong> (4×4 = 16, also 4n mit n=4).<br>
+→ S₀: formal Hückel-antiaromatisch (aber durch Cross-Konjugation stabil)<br>
+→ S₁: <span class="highlight">Baird-AROMATISCH</span> (im angeregten Zustand stabilisiert)<br>
+→ Keine leicht deprotonierbaren sauren Gruppen (SO₂NMe₂ ist keine Säure)<br>
+→ <strong>KEINE Photosäure</strong></p>
+
+<p><strong>(e) Phenyl-substituiertes Cyclopentadienyl-Derivat mit N-H:</strong><br>
+Wenn der 5-Ring ein Isoindol- oder Cyclopentadienyl-System mit <strong>6 π-Elektronen</strong> (4×1+2) hat:<br>
+→ S₀: Hückel-aromatisch (wenn entsprechend geladen)<br>
+→ S₁: <span class="highlight">Baird-ANTIAROMATISCH</span><br>
+→ Hat N-H als saure Gruppe<br>
+→ <strong>Potenzielle Photosäure ✓</strong> (wenn N-H-Deprotonierung Baird-Antiaromatizität abbaut)</p>
+
+<div class="result">
+Zusammenfassung:<br>
+• (a): Baird-ANTIAROMATISCH → Photosäure ✓<br>
+• (b): Baird-ANTIAROMATISCH (porphyrin-ähnlich) → Photosäure ✓<br>
+• (c): Baird-AROMATISCH (4π-Ring) → keine Photosäure<br>
+• (d): Baird-AROMATISCH (Pyren, 16π) → keine Photosäure ✗<br>
+• (e): Baird-ANTIAROMATISCH (6π-Ring mit N-H) → Photosäure ✓
+</div>
+</div>
+
+<!-- ============================= AUFGABE 7 ============================= -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Warum ist 2-Naphthalencarbonsäure eine „Photobasse" (ΔpKₐ &lt; 0)?</h2>
+
+<p>Bei 2-Naphthalencarbonsäure gilt ΔpKₐ = pKₐ − pKₐ* &lt; 0, d.h. pKₐ* &gt; pKₐ. Die Säure wird im angeregten Zustand <strong>schwächer</strong>, nicht stärker!</p>
+
+<h3>Erklärung:</h3>
+
+<p><strong>Der entscheidende Unterschied zur Photosäure 2-Naphthol:</strong></p>
+
+<div class="box">
+<strong>2-Naphthol (Photosäure):</strong><br>
+Die O-H-Gruppe ist <em>direkt am aromatischen Ring</em> gebunden. Das entstehende Phenolat-Anion ArO⁻ hat ein freies Elektronenpaar am Sauerstoff, das <em>direkt in das Naphthalin-π-System</em> delokalisiert werden kann. Dies verteilt die negative Ladung auf den Ring und baut so die Baird-Antiaromatizität im angeregten Zustand ab. Die Deprotonierung ist im S₁ stark begünstigt.
+</div>
+
+<div class="box" style="background: #fce4ec; border-color: #c62828;">
+<strong>2-Naphthalencarbonsäure (keine Photosäure):</strong><br>
+Die saure Gruppe ist −COOH. Nach Deprotonierung entsteht −COO⁻ (Carboxylat). Die negative Ladung ist <em>hauptsächlich im Carboxylat lokalisiert</em> (über C und die zwei O-Atome). Der sp²-Kohlenstoff der Carboxylgruppe steht zwischen Ring und O⁻ und <em>verhindert eine effektive Injektion der Elektronendichte in den aromatischen Ring</em>.<br><br>
+Da die Carboxylat-Deprotonierung die Baird-Antiaromatizität des Naphthalin-Rings nicht abbaut, ist sie im angeregten Zustand nicht begünstigt. Im Gegenteil: Im angeregten Zustand ist der Ring elektronenarmer, was die Dissoziation der Carbonsäure erschwert → pKₐ* > pKₐ.
+</div>
+
+<div class="result">
+Kurz: Bei ArOH kann ArO⁻ die Antiaromatizität des angeregten Rings „heilen" (Elektronen fließen in den Ring). Bei ArCOOH kann ArCOO⁻ das nicht – die Ladung bleibt außerhalb des Rings isoliert. Daher ist die Carbonsäure im angeregten Zustand schwächer.
+</div>
+</div>
+
+<!-- ============================= AUFGABE 8 ============================= -->
+<div class="aufgabe">
+<h2>Aufgabe 8: Struktur des Spiropyrans</h2>
+
+<h3>Was passiert bei der Umwandlung?</h3>
+<p>Das Merocyanin (offene, planare, stark farbige Zwitterionen-Form) wandelt sich unter Lichteinwirkung in das <strong>Spiropyran</strong> (geschlossene, farblose Form) um. Gleichzeitig wird ein Proton H⁺ abgegeben.</p>
+
+<h3>Der Ringschluss-Mechanismus:</h3>
+<p>Im Merocyanin sind zwei Ringsysteme über eine C=C-Brücke (Methinkette) verbunden:</p>
+<ul>
+  <li>Das <strong>Indolinium-System</strong> (mit quaternärem N⁺, R₁, R₂)</li>
+  <li>Der <strong>Phenol-Ring</strong> (mit HO-Gruppe und R₃-Substituent)</li>
+</ul>
+
+<p>Beim Ringschluss:</p>
+<ol>
+  <li>Das Phenolat-Sauerstoffatom (nach Verlust von H⁺) greift <strong>nucleophil</strong> am elektrophilen Kohlenstoff der Methinkette an</li>
+  <li>Es entsteht eine neue <strong>C–O-Bindung</strong></li>
+  <li>Der zuvor sp²-hybridisierte Methylen-Kohlenstoff wird jetzt <strong>sp³-hybridisiert</strong> – das ist das <strong>Spirozentrum</strong></li>
+  <li>Das N⁺ verliert seine positive Ladung (wird wieder tertiäres Amin, sp³-N)</li>
+  <li>Die Konjugation zwischen beiden Ringen ist vollständig unterbrochen</li>
+</ol>
+
+<h3>Beschreibung der Spiropyran-Struktur:</h3>
+<div class="box">
+Das Spiropyran besteht aus zwei Ringsystemen, die durch einen einzigen <strong>sp³-Kohlenstoff</strong> (das Spirozentrum) verbunden sind und senkrecht zueinander stehen:<br><br>
+<strong>Ring 1:</strong> Indolin-Teil (5-gliedriger Ring mit tertiärem N-Atom, an das R₁ und R₂ gebunden sind; der Ring hat zwei Methylgruppen am Spiro-C)<br><br>
+<strong>Ring 2:</strong> 2H-Chromen-Teil (Sauerstoff-enthaltender 6-gliedriger Ring, fusioniert mit dem Phenyl-Ring des ehemaligen Phenols; R₃ befindet sich am Phenyl-Ring)<br><br>
+Da das Spirozentrum sp³ ist, gibt es <em>keine Konjugation</em> zwischen beiden Ringen → das Spiropyran ist farblos.
+</div>
+
+<p>Im Unterschied dazu: Das Merocyanin ist vollständig konjugiert, planar, stark farbig (meist blau/lila) – das ist der reversible, lichtschaltbare Unterschied!</p>
+</div>
+
+<!-- ============================= AUFGABE 9 ============================= -->
+<div class="aufgabe">
+<h2>Aufgabe 9: Strukturen A bis F und X</h2>
+
+<h3>Ausgangsmaterial und Syntheseplan</h3>
+<p>Ausgangsstoff: <strong>4-Hydroxybenzylamin</strong> (HO–C₆H₄–CH₂–NH₂, OH und NH₂ in para-Stellung zueinander)</p>
+
+<hr style="border-color: #e0e0e0;">
+
+<h3>Schritt 1: 4-Hydroxybenzylamin + 2 Acryloylchlorid + NEt₃ → [A + B]</h3>
+<p>Das 4-Hydroxybenzylamin hat zwei nukleophile Gruppen: die <strong>Aminogruppe (−NH₂)</strong> und die <strong>Phenolgruppe (−OH)</strong>. Beide können mit Acryloylchlorid (CH₂=CH–COCl) acyliert werden. NEt₃ dient als Base zur Neutralisation von HCl.</p>
+
+<div class="step">
+<strong>Verbindung A</strong> = das <em>diacylierte Produkt</em>: sowohl NH₂ als auch OH sind acyliert:<br>
+(CH₂=CH–CO)–O–C₆H₄–CH₂–NH–(CO–CH=CH₂)<br>
+<em>→ Phenolester (ArO–CO–CH=CH₂) + Acrylamid (–NH–CO–CH=CH₂)</em>
+</div>
+
+<div class="step">
+<strong>Verbindung B</strong> = das <em>monoacylierte Produkt</em>: nur die NH₂-Gruppe ist acyliert:<br>
+HO–C₆H₄–CH₂–NH–CO–CH=CH₂<br>
+<em>→ N-(4-Hydroxybenzyl)acrylamid</em>
+</div>
+
+<div class="box">
+<strong>Warum bilden sich A und B gleichzeitig?</strong> Die Aminogruppe reagiert schneller als das Phenol. Mit exakt 2 Equiv. Acryloylchlorid wird sowohl A (beides acyliert) als auch B (nur Amin acyliert) gebildet.
+<br><br>
+<strong>NaOH-Schritt:</strong> NaOH hydrolysiert <em>selektiv</em> den Ester in A (Phenolester ist viel leichter hydrolysierbar als das Amid). Das Acrylamid bleibt intakt → aus A wird B. → Nur <strong>B</strong> bleibt über.
+</div>
+
+<hr style="border-color: #e0e0e0;">
+
+<h3>Schritt 2: B + (CH₂O)ₙ + MgCl₂/KOH → C</h3>
+<p>Paraformaldehyd (CH₂O)ₙ wird als Formaldehyd-Quelle eingesetzt. Unter Lewis-Säure-Katalyse (MgCl₂) und Base (KOH) reagiert das Phenol am aromatischen Ring durch elektrophile aromatische Substitution.</p>
+
+<div class="step">
+<strong>Verbindung C</strong> = ortho-formyliertes Phenol (Salicylaldehyd-Derivat):<br>
+2-Formyl-4-(acrylamidomethyl)phenol<br>
+<em>Der Phenolring trägt jetzt ortho zur OH-Gruppe eine CHO-Gruppe</em><br>
+(Aktivierte aromatische Ringe reagieren mit CH₂O unter diesen Bedingungen zur Einführung einer Aldehydfunktion)
+</div>
+
+<div class="box">
+<strong>Bestätigung durch den Hinweis:</strong> C kann mit NaClO₂ (Pinnick-Oxidation) in C' mit Carbonsäure-Gruppe umgewandelt werden. Da NaClO₂ spezifisch Aldehyde (−CHO) zu Carbonsäuren (−COOH) oxidiert, muss C einen Aldehyd enthalten. C' = 2-Carboxy-4-(acrylamidomethyl)phenol.
+</div>
+
+<hr style="border-color: #e0e0e0;">
+
+<h3>Verbindung X – der Indolium-Baustein</h3>
+<div class="step">
+<strong>X</strong> = 1-(3-Sulfonatopropyl)-2,3,3-trimethylindolium-Salz<br>
+<em>Dies ist ein quaternäres Indolinium-Salz (sogenannte Fischer-Base als Kation):</em><br>
+• 5-gliedriger Indolin-Ring mit N⁺<br>
+• An N⁺: Propylsulfonat-Kette (–(CH₂)₃–SO₃⁻)<br>
+• An C3 (= Spiro-C-Position): zwei Methylgruppen (3,3-Dimethyl)<br>
+• An C2: eine Methylgruppe (= aktive Methylgruppe!)<br><br>
+Die <strong>aktive CH₃-Gruppe an C2</strong> des Indoliums ist die entscheidende reaktive Stelle für die Kondensation mit dem Aldehyd in C.
+</div>
+
+<hr style="border-color: #e0e0e0;">
+
+<h3>Schritt 3: C + X + NH₄OAc → D</h3>
+<p>Dies ist eine <strong>Knoevenagel-Kondensation</strong> (Aldehyd + aktive Methylenverbindung unter Basenkatalyse): Der CHO von C reagiert mit der aktiven CH₃-Gruppe von X.</p>
+
+<div class="step">
+<strong>Verbindung D</strong> = Styrilindolium-Salz:<br>
+Der Aldehyd (−CHO) und die aktive Methylgruppe (−CH₃) kondensieren unter Wasserabspaltung zu einer −CH=CH− Brücke.<br>
+Ergebnis: Indolium–CH=CH–Ar(OH)(CH₂–NH–CO–CH=CH₂), mit SO₃⁻ am N.<br>
+D liegt als Ammoniumsalz vor (das HNEt₃⁺ entsteht im nächsten Schritt).
+</div>
+
+<hr style="border-color: #e0e0e0;">
+
+<h3>Schritt 4: D + NEt₃ → [Merocyanin-Monomer]</h3>
+<p>NEt₃ deprotoniert D (Neutralisierung des sauren Protons im System) und ergibt das Zwitterion mit NHEt₃⁺ als Gegenion. Dies ist das eigentliche Merocyanin-Monomer mit der Acrylamid-Gruppe für die spätere Polymerisation.</p>
+
+<hr style="border-color: #e0e0e0;">
+
+<h3>Schritt 5: Merocyanin-Monomer + MA + AIBN → [E]</h3>
+<p>Radikalische Copolymerisation: Das Merocyanin-Monomer (hat CH=CH₂ der Acrylamidgruppe) und <strong>Methylacrylat (MA)</strong> werden mit <strong>AIBN</strong> als Radikalstarter copolymerisiert.</p>
+
+<div class="step">
+<strong>Verbindung E</strong> = statistisches Copolymer aus:<br>
+• Merocyanin-Acrylamid-Einheiten (mit Indolium- und Phenol-Gruppen hängend)<br>
+• Methylacrylat-Einheiten (–CH₂–CH(CO₂Me)–)<br>
+Das Polymer E liegt noch in der zwitterionischen Merocyanin-Form (offene, konjugierte Form) vor.
+</div>
+
+<hr style="border-color: #e0e0e0;">
+
+<h3>Schritt 6: E + AcOH → F (Spiropyran-Polymer)</h3>
+<p>Essigsäure (AcOH) protoniert die Phenolat-Gruppe und fördert den <strong>Ringschluss zum Spiropyran</strong>: Das Phenol-OH greift intramolekular an der Methinkette an und bildet die C–O-Bindung des Spiropyrans.</p>
+
+<div class="step">
+<strong>Verbindung F</strong> = Polymer mit Spiropyran-Seitengruppen (geschlossene Form):<br>
+Der Polymerstrang hat nun abwechselnd:<br>
+• Spiropyran-Einheiten (bicyclisch, sp³-Spiro-C, farblos, nicht-konjugiert)<br>
+• Methylacrylat-Einheiten<br>
+Das Polymer kann durch Licht (hν) reversibel zwischen Spiropyran-Form und Merocyanin-Form geschaltet werden → photoschaltzbare Photosäure-Polymere!
+</div>
+
+<h3>Zusammenfassung aller Strukturen:</h3>
+<table>
+  <tr><th>Verbindung</th><th>Beschreibung</th></tr>
+  <tr><td><strong>A</strong></td><td>N,O-Diacryloyl-4-aminophenol: beides (OH und NH₂) mit Acryloylchlorid acyliert → Phenolester + Acrylamid</td></tr>
+  <tr><td><strong>B</strong></td><td>N-(4-Hydroxybenzyl)acrylamid: nur NH₂ acyliert, freies Phenol (Hydrolyse des Esters in A)</td></tr>
+  <tr><td><strong>C</strong></td><td>2-Formyl-4-(acrylamidomethyl)phenol: B mit CHO ortho zur OH-Gruppe (Aldehyd-Funktionalität)</td></tr>
+  <tr><td><strong>D</strong></td><td>Styrylindolium-Salz: Knoevenagel-Produkt aus C (CHO) + X (aktive CH₃), mit CH=CH-Brücke zwischen Indolium und Phenolring</td></tr>
+  <tr><td><strong>E</strong></td><td>Merocyanin/Methylacrylat-Copolymer (offene Merocyanin-Form, in Polymer eingebaut)</td></tr>
+  <tr><td><strong>F</strong></td><td>Spiropyran-Copolymer (geschlossene Form, durch AcOH Ringschluss ausgelöst)</td></tr>
+  <tr><td><strong>X</strong></td><td>1-(3-Sulfonatopropyl)-2,3,3-trimethylindolium: quaternäres Indolinium-Salz mit aktiver 2-Methyl-Gruppe und Propylsulfonat-Kette am N</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding: 20px; color: #666; font-size: 0.9em; border-top: 1px solid #ddd; margin-top: 30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 12 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
