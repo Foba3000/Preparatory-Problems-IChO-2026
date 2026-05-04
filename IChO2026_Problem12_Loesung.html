@@ -4,7 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IChO 2026 – Problem 12: Photosäuren – Vollständige Lösung</title>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+
 <style>
+  /* ZURÜCK-BUTTON STYLE (Angepasst an das blaue IChO-Design) */
+  .back-nav { margin: 0 0 25px 0; font-family: 'Segoe UI', Arial, sans-serif; }
+  .back-button { 
+    text-decoration: none; display: inline-flex; align-items: center; 
+    background: white; border: 1.5px solid #1a237e; color: #1a237e; 
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .back-button:hover { 
+    background: #1a237e; color: white; transform: translateX(-3px); 
+    box-shadow: 0 4px 10px rgba(26,35,126,0.2);
+  }
+  .back-button span { margin-right: 8px; font-size: 1.2em; }
+
+  /* DEINE ORIGINALEN STYLES */
   body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px 30px; background: #f9f9fb; color: #1a1a2e; line-height: 1.75; }
   h1 { background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 18px 24px; border-radius: 10px; font-size: 1.4em; }
   h2 { color: #1565c0; border-left: 5px solid #1565c0; padding-left: 12px; margin-top: 40px; }
@@ -32,9 +50,12 @@
 </head>
 <body>
 
+<nav class="back-nav">
+  <a href="index.html" class="back-button"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
 <h1>🔬 IChO 2026 – Problem 12: Photosäuren<br><span style="font-size:0.85em;font-weight:normal">Vollständige Lösung auf Deutsch</span></h1>
 
-<!-- ============================= JABLONSKI ============================= -->
 <div class="aufgabe">
 <h2>📊 Vorwissen: Das Förster-Jablonski-Diagramm erklärt</h2>
 
