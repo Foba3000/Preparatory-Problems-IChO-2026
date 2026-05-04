@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 6 – Wasserstoff als Brennstoff | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 950px; margin: 0 auto; padding: 20px 30px; background: #f0f4ff; color: #1a1a2e; line-height: 1.8; }
+
+  /* Zurück-Button */
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1a237e; color: #1a237e;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1a237e; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.35em; margin-top: 0; }
+  h2 { color: #1a237e; border-left: 5px solid #3949ab; padding-left: 13px; margin-top: 0; }
+  h3 { color: #37474f; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #c5cae9; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(26,35,126,0.07); }
+  .box { background: #e8eaf6; border-left: 4px solid #3949ab; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #e3f2fd; border-left: 5px solid #0d47a1; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .formula { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.02em; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #283593; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c5cae9; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #e8eaf6; }
+
+  .step { margin: 11px 0; padding: 11px 16px; background: #fafafa; border-radius: 7px; border: 1px solid #e0e0e8; }
+  .schritt-nr { display: inline-block; background: #283593; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #eceff1; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  ul li, ol li { margin: 7px 0; }
+
+  .reaction-box { background: #1a237e; color: white; border-radius: 8px; padding: 12px 20px; text-align: center; font-size: 1.15em; font-family: 'Courier New', monospace; margin: 12px 0; letter-spacing: 0.5px; }
+  .iter-box { background: #f3e5f5; border: 1px solid #9c27b0; border-radius: 8px; padding: 14px 18px; margin: 12px 0; }
+  .answer-option { padding: 8px 14px; margin: 5px 0; border-radius: 6px; border: 1px solid #ddd; }
+  .answer-yes { background: #e8f5e9; border-color: #4caf50; }
+  .answer-no  { background: #ffebee; border-color: #ef5350; }
+  .badge { display: inline-block; border-radius: 20px; padding: 2px 12px; font-weight: bold; font-size: 0.85em; margin-right: 8px; }
+  .badge-yes { background: #4caf50; color: white; }
+  .badge-no  { background: #ef5350; color: white; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="../index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🔥 Problem 6 – Wasserstoff als Brennstoff<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – mit allen Rechenwegen</span></h1>
+
+<!-- ===== EINLEITUNG ===== -->
+<div class="aufgabe">
+<h2>📚 Überblick: Worum geht es?</h2>
+<p>Wasserstoff gilt als einer der vielversprechendsten sauberen Energieträger. Diese Aufgabe untersucht seine thermodynamischen Eigenschaften im Vergleich zu Methan und Isooctan, berechnet CO₂-Einsparungen in Usbekistan, und analysiert die Hochtemperaturchemie bei der Verbrennung – inklusive der problematischen NO-Bildung.</p>
+<div class="box">
+<strong>Zentrale Themen:</strong> Verbrennungsthermodynamik · Energiedichte · Gleichgewichtsberechnungen · adiabatische Flammentemperatur · iterative Gleichgewichtslösung · NO-Bildung
+</div>
+</div>
+
+<!-- ===== AUFGABE 1 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Verbrennungsreaktionen und ΔcH°</h2>
+<p>Die Standardverbrennungsenthalpie ΔcH° wird nach dem <strong>Satz von Hess</strong> berechnet: ΔcH° = ΣΔfH°(Produkte) − ΣΔfH°(Edukte). Als Produkte entstehen CO₂(g) und H₂O(<em>l</em>) – flüssiges Wasser entspricht dem thermodynamischen Standard.</p>
+
+<h3>a) Wasserstoff</h3>
+<div class="reaction-box">H₂(g) + ½ O₂(g) → H₂O(l)</div>
+<div class="formula">ΔcH° = ΔfH°(H₂O,l) − ΔfH°(H₂) − ½·ΔfH°(O₂) = −285,8 − 0 − 0 = <strong>−285,8 kJ/mol</strong></div>
+
+<h3>b) Methan</h3>
+<div class="reaction-box">CH₄(g) + 2 O₂(g) → CO₂(g) + 2 H₂O(l)</div>
+<div class="formula">ΔcH° = ΔfH°(CO₂) + 2·ΔfH°(H₂O,l) − ΔfH°(CH₄) − 2·ΔfH°(O₂)<br>= −393,5 + 2·(−285,8) − (−74,8) − 0 = −393,5 − 571,6 + 74,8 = <strong>−890,3 kJ/mol</strong></div>
+
+<h3>c) Isooctan (C₈H₁₈)</h3>
+<div class="reaction-box">C₈H₁₈(l) + 12½ O₂(g) → 8 CO₂(g) + 9 H₂O(l)</div>
+<div class="formula">ΔcH° = 8·(−393,5) + 9·(−285,8) − (−260,2) − 0<br>= −3148,0 − 2572,2 + 260,2 = <strong>−5460,0 kJ/mol</strong></div>
+
+<div class="result">
+  ΔcH°(H₂) = −285,8 kJ/mol &nbsp;|&nbsp; ΔcH°(CH₄) = −890,3 kJ/mol &nbsp;|&nbsp; ΔcH°(C₈H₁₈) = −5460,0 kJ/mol
+</div>
+</div>
+
+<!-- ===== AUFGABE 2 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Energiedichte (MJ·kg⁻¹)</h2>
+<p>Die <strong>massenspezifische Energiedichte</strong> ergibt sich aus: e = |ΔcH°| / M (Molmasse in kg/mol).</p>
+
+<table>
+  <tr><th>Brennstoff</th><th>|ΔcH°| [kJ/mol]</th><th>M [g/mol]</th><th>Energiedichte [MJ/kg]</th></tr>
+  <tr><td>H₂</td><td>285,8</td><td>2,016</td><td><strong>141,8</strong></td></tr>
+  <tr><td>CH₄</td><td>890,3</td><td>16,04</td><td>55,5</td></tr>
+  <tr><td>C₈H₁₈</td><td>5460,0</td><td>114,23</td><td>47,8</td></tr>
+</table>
+
+<div class="step">
+<strong>Beispielrechnung H₂:</strong>
+<div class="formula">e(H₂) = 285 800 J/mol ÷ 0,002016 kg/mol = 141 766 kJ/kg ≈ <strong>141,8 MJ/kg</strong></div>
+</div>
+
+<div class="result">
+<strong>Wasserstoff (H₂) hat mit 141,8 MJ/kg die bei weitem höchste Energiedichte</strong> – fast 3× höher als Methan und knapp 3× höher als Isooctan.<br><br>
+H₂ ist daher bezogen auf die Masse der ideale Brennstoff – allerdings hat er eine sehr geringe volumetrische Dichte, was die Speicherung erschwert.
+</div>
+</div>
+
+<!-- ===== AUFGABE 3 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Benötigtes Luftvolumen (1 kW, 1 h, η = 36%)</h2>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Benötigte chemische Energie:</strong>
+<div class="formula">W_nutz = P · t = 1 kW · 3600 s = 3600 kJ</div>
+<div class="formula">W_chem = W_nutz / η = 3600 / 0,36 = <strong>10 000 kJ</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Mol Wasserstoff benötigt</strong> (im Motor: Abgase gasförmig → H₂O(g), ΔcH° = −241,8 kJ/mol):
+<div class="formula">n(H₂) = 10 000 kJ / 241,8 kJ·mol⁻¹ = <strong>41,36 mol</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Mol O₂ benötigt:</strong> H₂ + ½O₂ → H₂O → stöchiometrisch ½ mol O₂ pro mol H₂:
+<div class="formula">n(O₂) = ½ · 41,36 = 20,68 mol</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Mol Luft</strong> (Luft: 20 mol% O₂):
+<div class="formula">n(Luft) = n(O₂) / 0,20 = 20,68 / 0,20 = 103,4 mol</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">5</span> <strong>Volumen der Luft</strong> (ideales Gas bei 298 K, 1 bar):
+<div class="formula">V = nRT/P = 103,4 · 8,314 · 298 / 100 000 = <strong>2,56 m³ = 2560 L</strong></div>
+</div>
+
+<div class="result">
+Benötigtes Luftvolumen: <strong>V ≈ 2,56 m³</strong> pro Stunde Betrieb bei 1 kW und η = 36%.
+</div>
+</div>
+
+<!-- ===== AUFGABE 4 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Vermiedene CO₂-Emissionen in Usbekistan (Mio. Tonnen/Jahr)</h2>
+
+<p>Gegebene Flotte: 3,75 Mio. Fahrzeuge | 65% Methan | 35% Isooctan | je 22 000 km/Jahr</p>
+
+<h3>Methan-Fahrzeuge (2,4375 Mio. Fahrzeuge)</h3>
+<div class="step">
+<span class="schritt-nr">1</span> Verbrauch: 5 m³/100 km bei 298 K, 1 bar → n(CH₄) pro 100 km:
+<div class="formula">n(CH₄) = PV/RT = 100 000 Pa · 5 m³ / (8,314 · 298) = 201,8 mol</div>
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> Gesamtkilometer: 2,4375 × 10⁶ × 22 000 = 5,3625 × 10¹⁰ km/Jahr
+</div>
+<div class="step">
+<span class="schritt-nr">3</span> n(CH₄) gesamt: 201,8 × (5,3625×10¹⁰/100) = 1,082 × 10¹¹ mol<br>
+CH₄ + 2O₂ → CO₂ + 2H₂O: <strong>1 mol CO₂ pro mol CH₄</strong>
+<div class="formula">m(CO₂) = 1,082×10¹¹ mol × 44,01 g/mol = 4,76 × 10¹² g = <strong>4,76 Mio. Tonnen</strong></div>
+</div>
+
+<h3>Isooctan-Fahrzeuge (1,3125 Mio. Fahrzeuge)</h3>
+<div class="step">
+<span class="schritt-nr">1</span> Verbrauch: 9 L/100km × 0,72 kg/L = 6,48 kg C₈H₁₈/100km<br>
+n(C₈H₁₈) = 6480 g / 114,23 g/mol = 56,73 mol pro 100 km
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> Gesamtkilometer: 1,3125 × 10⁶ × 22 000 = 2,8875 × 10¹⁰ km/Jahr
+</div>
+<div class="step">
+<span class="schritt-nr">3</span> n(C₈H₁₈) gesamt: 56,73 × (2,8875×10¹⁰/100) = 1,638 × 10¹⁰ mol<br>
+C₈H₁₈ + 12½O₂ → 8CO₂ + 9H₂O: <strong>8 mol CO₂ pro mol C₈H₁₈</strong>
+<div class="formula">m(CO₂) = 8 × 1,638×10¹⁰ × 44,01 g/mol = 5,77 × 10¹² g = <strong>5,77 Mio. Tonnen</strong></div>
+</div>
+
+<div class="result">
+Gesamt vermiedene CO₂-Emissionen: 4,76 + 5,77 = <strong>≈ 10,5 Mio. Tonnen CO₂ pro Jahr</strong><br><br>
+Das entspricht etwa den jährlichen Emissionen eines mittelgroßen europäischen Landes!
+</div>
+</div>
+
+<!-- ===== AUFGABE 5 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Mol N₂ bei Endtemperatur 800 K (mit Luftüberschuss)</h2>
+
+<p>1 mol H₂ verbrennt mit <em>Überschuss</em>-Luft. Das System ist isoliert (adiabatisch) bei konstantem Druck. Die gesamte Reaktionswärme heizt die Produkte auf T = 800 K.</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Stöchiometrie:</strong> 1 mol H₂ + ½ mol O₂ → 1 mol H₂O(g), ΔH = −241 800 J<br>
+Überschuss-Luft liefert: 0,5 mol O₂ (stöchiometrisch) + x mol O₂ (Überschuss) + 4·(0,5+x) mol N₂ <br>
+<em>(da Luft: n(N₂)/n(O₂) = 80/20 = 4)</em>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Produkte nach Verbrennung:</strong> 1 mol H₂O + x mol O₂ + (2+4x) mol N₂
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Energiebilanz</strong> (adiabatisch, isoliert, isobar):
+<div class="formula">Q = [n(H₂O)·Cp(H₂O) + n(O₂)·Cp(O₂) + n(N₂)·Cp(N₂)] · (T_final − T_initial)</div>
+<div class="formula-left">
+241 800 J = [1·37,4 + x·29,4 + (2+4x)·29,1] · (800 − 298)<br>
+241 800 = [37,4 + 29,4x + 58,2 + 116,4x] · 502<br>
+241 800 = [95,6 + 145,8x] · 502<br>
+481,67 = 95,6 + 145,8x<br>
+x = (481,67 − 95,6) / 145,8 = <strong>2,648 mol O₂-Überschuss</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Mol N₂:</strong>
+<div class="formula">n(N₂) = 4 · (0,5 + x) = 4 · (0,5 + 2,648) = 4 · 3,148 = <strong>12,59 mol</strong></div>
+</div>
+
+<div class="result">
+n(N₂) ≈ <strong>12,6 mol</strong> Stickstoff im System<br><br>
+Das zeigt: Um die Endtemperatur auf nur 800 K zu begrenzen (statt ~6763 K bei reinem O₂!), wird eine riesige Menge Luft als „Kühler" benötigt.
+</div>
+</div>
+
+<!-- ===== AUFGABE 6 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Adiabatische Flammentemperatur – stöchiometrisches H₂/O₂-Gemisch</h2>
+<p>Diese Aufgabe lösen wir in vier Schritten: einfachste Näherung → Gleichgewichtskorrektur → Energiebilanz → iterative Lösung.</p>
+
+<h3>6a: Einfachste Näherung (vollständige Verbrennung)</h3>
+<p>1 mol H₂ + ½ mol O₂ → 1 mol H₂O(g): Q = 241 800 J erwärmt nur das Produkt H₂O(g).</p>
+<div class="formula">ΔT = Q / Cp(H₂O) = 241 800 J / 37,4 J·mol⁻¹·K⁻¹ = 6465 K</div>
+<div class="formula">T_ad = 298 + 6465 = <strong>6763 K</strong></div>
+<div class="result">T(6a) = <strong>6763 K</strong> (obere Grenze – vollständige Verbrennung angenommen)</div>
+
+<h3>6b: Gleichgewichtszusammensetzung bei T = 6763 K</h3>
+<p>Bei so hoher Temperatur dissoziiert H₂O zurück: H₂O ⇌ H₂ + ½O₂. Mit Fortschrittsgrad ξ (Rückreaktion):</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Kp bei 6763 K berechnen</strong> (Kirchhoff: ΔCp = 37,4 − 28,8 − ½·29,4 = −6,1 J/mol/K):
+<div class="formula-left">
+ΔrH°(6763K) = −241 800 + (−6,1)·(6763−298) = −281 238 J/mol<br>
+ΔrS°(6763K) = (188,7−130,7−½·205,2) + (−6,1)·ln(6763/298) = −44,6 − 19,0 = −63,6 J/mol/K<br>
+ΔrG°(6763K) = −281 238 − 6763·(−63,6) = +149 210 J/mol<br>
+Kp = exp(−149210 / (8,314·6763)) = <strong>0,0704</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Gleichgewicht lösen</strong> (bei P = 1 bar): <br>
+Zusammensetzung: n(H₂O) = 1−ξ, n(H₂) = ξ, n(O₂) = ξ/2, n_ges = 1+ξ/2
+<div class="formula">Kp = y(H₂O) / [y(H₂) · y(O₂)^½] = 0,0704 → ξ = 0,961</div>
+</div>
+
+<table>
+  <tr><th>Spezies</th><th>mol</th><th>Molenbruch y</th></tr>
+  <tr><td>H₂O</td><td>0,039</td><td>2,6%</td></tr>
+  <tr><td>H₂</td><td>0,961</td><td>64,9%</td></tr>
+  <tr><td>O₂</td><td>0,481</td><td>32,5%</td></tr>
+</table>
+
+<div class="warning">
+Bei 6763 K ist fast das gesamte H₂O dissoziiert (96,1%)! Das zeigt: Die Temperatur 6763 K ist weit überschätzt.
+</div>
+
+<h3>6c: Korrigierte Temperatur mit Gleichgewichtszusammensetzung</h3>
+<div class="step">
+Nur (1−ξ) = 0,039 mol H₂O wurden tatsächlich gebildet → Q_rxn = 0,039 · 241 800 = 9325 J<br>
+Cp_mix = 0,039·37,4 + 0,961·28,8 + 0,481·29,4 = 43,3 J/mol/K
+<div class="formula">T_f(6c) = 298 + 9325 / 43,3 = <strong>513 K</strong></div>
+</div>
+
+<div class="box">
+<strong>Vergleich:</strong> T(6a) = 6763 K vs. T(6c) = 513 K – die Realität liegt irgendwo dazwischen! Wir brauchen eine iterative Lösung.
+</div>
+
+<h3>6d: Iterative Lösung – echte Endtemperatur</h3>
+<div class="iter-box">
+<strong>Algorithmus:</strong><br>
+1. Rate T → 2. Berechne Kp(T) → 3. Löse Gleichgewicht → erhalte ξ(T) → 4. Berechne T_neu aus Energiebilanz → 5. Vergleiche T mit T_neu → 6. Wiederhole bis Konvergenz
+</div>
+
+<table>
+  <tr><th>Geprüfte T [K]</th><th>ξ (Dissoziationsgrad)</th><th>T_energie [K]</th><th>Differenz [K]</th></tr>
+  <tr><td>3900</td><td>0,484</td><td>3393</td><td>−507 (zu hoch)</td></tr>
+  <tr><td>3850</td><td>0,462</td><td>3533</td><td>−317 (zu hoch)</td></tr>
+  <tr style="background:#e8eaf6;"><td><strong>3800</strong></td><td>0,440</td><td>3676</td><td>−124 (etwas zu hoch)</td></tr>
+  <tr style="background:#c5cae9; font-weight:bold;"><td><strong>3750</strong></td><td>0,418</td><td>3821</td><td>+71 (knapp zu niedrig)</td></tr>
+  <tr><td>3700</td><td>0,396</td><td>3966</td><td>+266 (zu niedrig)</td></tr>
+</table>
+
+<p>Der Kreuzungspunkt (T = T_energie) liegt zwischen 3750 und 3800 K, näher an 3750 K (Differenz nur +71 K vs. −124 K).</p>
+
+<div class="result">
+<strong>Antwort 6d: iv) T_f ≈ 3750 K</strong><br><br>
+Die echte adiabatische Flammentemperatur von H₂/O₂ (stöchiometrisch) beträgt ca. <strong>3750–3800 K</strong>. Das ist weit unter den naiv angenommenen 6763 K, weil Dissoziation sehr viel Energie verbraucht.
+</div>
+</div>
+
+<!-- ===== AUFGABE 7 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 7: NO-Bildung bei 3200 K (stöchiometrisches H₂/Luft-Gemisch)</h2>
+
+<p>Ausgangssituation: 1 mol H₂ + ½ mol O₂ + 2 mol N₂ (stöchiometrische Luft: 20% O₂, 80% N₂).<br>
+Bei 3200 K laufen gleichzeitig zwei Gleichgewichte ab:</p>
+
+<div class="reaction-box">R1: H₂ + ½ O₂ ⇌ H₂O &nbsp;&nbsp;&nbsp; Kp₁(3200K) = 14,1</div>
+<div class="reaction-box">R2: N₂ + O₂ ⇌ 2 NO &nbsp;&nbsp;&nbsp;&nbsp; Kp₂(3200K) = 0,0280</div>
+
+<h3>Berechnung von Kp₂ bei 3200 K:</h3>
+<div class="step">
+<div class="formula-left">
+ΔrH°(298K) = 2·90 300 − 0 − 0 = 180 600 J/mol<br>
+ΔrS°(298K) = 2·210,8 − 191,6 − 205,2 = +24,8 J/mol/K<br>
+ΔCp = 2·29,9 − 29,1 − 29,4 = +1,3 J/mol/K<br><br>
+ΔrH°(3200K) = 180 600 + 1,3·(3200−298) = 184 373 J/mol<br>
+ΔrS°(3200K) = 24,8 + 1,3·ln(3200/298) = 27,89 J/mol/K<br>
+ΔrG°(3200K) = 184 373 − 3200·27,89 = 95 138 J/mol<br>
+Kp₂ = exp(−95138/(8,314·3200)) = <strong>0,0280</strong>
+</div>
+</div>
+
+<h3>Gleichgewichtslösung (beide Reaktionen simultan):</h3>
+<p>Variablen: ξ₁ = mol H₂O gebildet, ξ₂ = mol NO / 2 gebildet</p>
+<table>
+  <tr><th>Spezies</th><th>mol im GG</th></tr>
+  <tr><td>H₂</td><td>1 − ξ₁</td></tr>
+  <tr><td>O₂</td><td>½ − ½ξ₁ − ξ₂</td></tr>
+  <tr><td>H₂O</td><td>ξ₁</td></tr>
+  <tr><td>N₂</td><td>2 − ξ₂</td></tr>
+  <tr><td>NO</td><td>2ξ₂</td></tr>
+</table>
+
+<div class="step">
+Numerische Lösung: ξ₁ = 0,7189, ξ₂ = 0,0376<br>
+n(NO) = 2·0,0376 = 0,0752 mol, n_ges = 3,141 mol
+</div>
+
+<table>
+  <tr><th>Spezies</th><th>Molenbruch y</th></tr>
+  <tr><td>H₂O</td><td>0,2289 (22,9%)</td></tr>
+  <tr><td>N₂</td><td>0,6249 (62,5%)</td></tr>
+  <tr><td>H₂</td><td>0,0895 (8,95%)</td></tr>
+  <tr><td>O₂</td><td>0,0328 (3,28%)</td></tr>
+  <tr style="background:#ffcdd2; font-weight:bold;"><td>NO</td><td>0,0239 (<strong>2,39%</strong>)</td></tr>
+</table>
+
+<div class="result">
+Molenbruch NO ≈ <strong>2,4%</strong> bei 3200 K.<br><br>
+Das ist ein erheblicher Anteil! NO ist ein gefährliches Luftschadstoff (Smog, saurer Regen, Ozonabbau) und entsteht bei hohen Verbrennungstemperaturen aus N₂ und O₂.
+</div>
+</div>
+
+<!-- ===== AUFGABE 8 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 8: Maßnahmen zur Reduktion der NO-Bildung</h2>
+<p>NO-Bildung: N₂ + O₂ ⇌ 2 NO – begünstigt durch hohe Temperaturen (Kp steigt mit T) und hohe O₂/N₂-Partialdrücke.</p>
+
+<div class="answer-option answer-yes">
+  <span class="badge badge-yes">✓ JA</span>
+  <strong>a) Niedrigere Verbrennungstemperatur</strong><br>
+  Kp₂ sinkt stark mit sinkender Temperatur (ΔrH° > 0, endotherm). Weniger NO wird gebildet. Dies ist die wichtigste Maßnahme (z.B. durch Wassereinspritzung, Abgasrückführung, oder mageres Gemisch).
+</div>
+
+<div class="answer-option answer-yes">
+  <span class="badge badge-yes">✓ JA</span>
+  <strong>b) Großer Luftüberschuss</strong><br>
+  Viel Luft verdünnt das Gemisch → niedrigere Flammentemperatur (wie in Aufgabe 5 gesehen, benötigt viel N₂ zur Kühlung) → weniger NO. Außerdem sinken die Partialdrücke von N₂ und O₂ relativ zum Gesamtdruck weniger stark als die Temperatur.
+</div>
+
+<div class="answer-option answer-no">
+  <span class="badge badge-no">✗ NEIN</span>
+  <strong>c) Höheres Verdichtungsverhältnis</strong><br>
+  Ein höheres Verdichtungsverhältnis erhöht Druck und Temperatur im Zylinder → höhere Flammentemperatur → <em>mehr</em> NO. Außerdem: höherer Druck begünstigt die NO-Reaktion (Δn = 2−1−1 = 0, kein Druckeffekt, aber T-Effekt dominiert).
+</div>
+
+<div class="answer-option answer-yes">
+  <span class="badge badge-yes">✓ JA</span>
+  <strong>d) Schnellere Kraftstoffströmung</strong><br>
+  Kürzere Verweildauer der heißen Gase im Reaktionsbereich → weniger Zeit für die (kinetisch langsamere) NO-Bildungsreaktion. NO-Bildung ist stark zeitabhängig; schnelle Abkühlung „friert" das Gleichgewicht ein (quenching).
+</div>
+
+<div class="result">
+Richtige Antworten: <strong>a), b) und d)</strong><br><br>
+In der Praxis kombiniert man alle drei: Mageres Gemisch (b), Abgasrückführung (a), schnelle Verbrennung (d) – das sind die Grundprinzipien moderner schadstoffarmer Verbrennungsmotoren.
+</div>
+</div>
+
+<!-- ===== ZUSAMMENFASSUNG ===== -->
+<div class="aufgabe" style="background: #e8eaf6;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+  <tr><td><strong>1a</strong></td><td>H₂ + ½O₂ → H₂O(l): ΔcH° = −285,8 kJ/mol</td></tr>
+  <tr><td><strong>1b</strong></td><td>CH₄ + 2O₂ → CO₂ + 2H₂O(l): ΔcH° = −890,3 kJ/mol</td></tr>
+  <tr><td><strong>1c</strong></td><td>C₈H₁₈ + 12½O₂ → 8CO₂ + 9H₂O(l): ΔcH° = −5460,0 kJ/mol</td></tr>
+  <tr><td><strong>2</strong></td><td>H₂: 141,8 MJ/kg | CH₄: 55,5 MJ/kg | C₈H₁₈: 47,8 MJ/kg → <strong>H₂ ist Sieger</strong></td></tr>
+  <tr><td><strong>3</strong></td><td>V(Luft) = <strong>2,56 m³</strong> für 1 kW, 1 h, η=36%</td></tr>
+  <tr><td><strong>4</strong></td><td>Vermiedene CO₂-Emissionen: <strong>≈ 10,5 Mio. Tonnen/Jahr</strong></td></tr>
+  <tr><td><strong>5</strong></td><td>n(N₂) ≈ <strong>12,6 mol</strong> bei Endtemperatur 800 K</td></tr>
+  <tr><td><strong>6a</strong></td><td>T_ad (vollständig) = <strong>6763 K</strong> (Näherung)</td></tr>
+  <tr><td><strong>6b</strong></td><td>Bei 6763 K: 96,1% Dissoziation von H₂O, y(H₂)=64,9%</td></tr>
+  <tr><td><strong>6c</strong></td><td>Korrigierte T = <strong>513 K</strong> (stark unterschätzt – Iteration nötig)</td></tr>
+  <tr><td><strong>6d</strong></td><td>Echte Flammentemperatur: <strong>iv) ≈ 3750 K</strong></td></tr>
+  <tr><td><strong>7</strong></td><td>Molenbruch NO bei 3200 K: <strong>y(NO) ≈ 2,4%</strong></td></tr>
+  <tr><td><strong>8</strong></td><td>NO-Reduktion: <strong>a) b) d)</strong> (niedrigere T, Luftüberschuss, schnelle Strömung)</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #c5cae9; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 6 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
