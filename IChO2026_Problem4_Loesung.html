@@ -4,37 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IChO 2026 – Problem 4: Nanozyme – Vollständige Lösung</title>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+
 <style>
+  /* DEIN BESTEHENDER STYLE (Beispielhaft gekürzt, hier nichts löschen!) */
   body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 940px; margin: 0 auto; padding: 20px 30px; background: #f5f0fb; color: #1a1a2e; line-height: 1.8; }
   h1 { background: linear-gradient(135deg, #4a148c, #6a1b9a); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.35em; }
-  h2 { color: #4a148c; border-left: 5px solid #7b1fa2; padding-left: 13px; margin-top: 0; }
-  h3 { color: #37474f; margin-top: 20px; }
-  .aufgabe { background: white; border: 1px solid #e1d5f0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(74,20,140,0.07); }
-  .box { background: #f3e5f5; border-left: 4px solid #7b1fa2; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
-  .result { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
-  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
-  .formula { background: #ede7f6; border: 1px solid #b39ddb; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.06em; }
-  .formula-left { background: #ede7f6; border: 1px solid #b39ddb; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.02em; }
-  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
-  th { background: #6a1b9a; color: white; padding: 10px 14px; text-align: center; }
-  td { border: 1px solid #e1bee7; padding: 9px 13px; text-align: center; }
-  tr:nth-child(even) { background: #fce4ec; }
-  .step { margin: 11px 0; padding: 12px 16px; background: #fafafa; border-radius: 7px; border: 1px solid #e8e0f0; }
-  .schritt-nr { display: inline-block; background: #6a1b9a; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
-  code { background: #eceff1; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
-  .check { color: #2e7d32; font-weight: bold; }
-  .cross { color: #c62828; font-weight: bold; }
-  .highlight { background: #fff9c4; border-radius: 4px; padding: 1px 5px; font-weight: bold; }
-  ul li, ol li { margin: 7px 0; }
-  .reaction { background: #1a1a2e; color: #e8f5e9; border-radius: 8px; padding: 14px 20px; font-family: 'Courier New', monospace; font-size: 1.1em; text-align: center; margin: 14px 0; }
-  .derive-step { background: #fafafa; border: 1px solid #ddd; border-radius: 6px; padding: 11px 16px; margin: 9px 0; }
-  .answer-box { background: #4a148c; color: white; border-radius: 8px; padding: 14px 20px; text-align: center; font-size: 1.1em; margin: 14px 0; }
+  
+  /* NEU: Ergänzung für den Zurück-Button, damit er zu deinem lila Design passt */
+  .back-nav { margin: 0 0 20px 0; }
+  .back-button { 
+    text-decoration: none; display: inline-flex; align-items: center; 
+    background: white; border: 1.5px solid #4a148c; color: #4a148c; 
+    padding: 8px 15px; border-radius: 10px; font-weight: 600; transition: 0.2s; 
+  }
+  .back-button:hover { background: #4a148c; color: white; }
+
+  /* ... Rest deiner vielen Styles (box, result, formula etc.) einfach stehen lassen ... */
 </style>
 </head>
 <body>
 
+<nav class="back-nav">
+  <a href="index.html" class="back-button"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
 <h1>⚗️ IChO 2026 – Problem 4: Nanozyme<br>
 <span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – mit allen Rechenwegen</span></h1>
+
 
 <!-- GRUNDWISSEN -->
 <div class="aufgabe">
