@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 5 – Haber-Bosch-Verfahren | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 940px; margin: 0 auto; padding: 20px 30px; background: #f4f6fb; color: #1a1a2e; line-height: 1.8; }
+
+  /* Zurück-Button */
+  .back-nav-container { margin: 0 0 25px 0; font-family: 'Segoe UI', Arial, sans-serif; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1b5e20; color: #1b5e20;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1b5e20; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1b5e20, #33691e); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.35em; margin-top: 0; }
+  h2 { color: #1b5e20; border-left: 5px solid #2e7d32; padding-left: 13px; margin-top: 0; }
+  h3 { color: #37474f; margin-top: 18px; }
+  .aufgabe { background: white; border: 1px solid #dde; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+  .box { background: #e8f5e9; border-left: 4px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #e3f2fd; border-left: 5px solid #1565c0; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .formula { background: #f3e5f5; border: 1px solid #ce93d8; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #f3e5f5; border: 1px solid #ce93d8; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.02em; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #2e7d32; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c8e6c9; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f1f8e9; }
+  .step { margin: 11px 0; padding: 11px 16px; background: #fafafa; border-radius: 7px; border: 1px solid #e0e8e0; }
+  .schritt-nr { display: inline-block; background: #2e7d32; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  code { background: #eceff1; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  ul li, ol li { margin: 7px 0; }
+  .nanoparticle-diagram { background: #263238; color: #eceff1; border-radius: 10px; padding: 20px; text-align: center; margin: 16px 0; font-family: 'Courier New', monospace; font-size: 0.95em; }
+  .layer-fe { color: #ef9a9a; font-weight: bold; }
+  .layer-fe3o4 { color: #90caf9; font-weight: bold; }
+  .layer-fe2o3 { color: #a5d6a7; font-weight: bold; }
+  .mechanism-step { background: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; padding: 10px 14px; margin: 6px 0; display: flex; align-items: flex-start; gap: 12px; }
+  .mech-nr { background: #1b5e20; color: white; border-radius: 50%; min-width: 28px; height: 28px; text-align: center; line-height: 28px; font-weight: bold; font-size: 0.9em; }
+  .highlight-rds { background: #fff3e0; border: 2px solid #e65100; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+</style>
+</head>
+<body>
+
+<!-- Zurück-Button -->
+<nav class="back-nav-container">
+  <a href="../index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>⚗️ Problem 5 – Das Haber-Bosch-Verfahren<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – mit allen Rechenwegen</span></h1>
+
+<!-- ===== EINLEITUNG ===== -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: Was ist das Haber-Bosch-Verfahren?</h2>
+<p>Das Haber-Bosch-Verfahren ist eines der bedeutendsten chemischen Industrieverfahren überhaupt: Es dient der Synthese von <strong>Ammoniak (NH₃)</strong> direkt aus den Elementen Stickstoff und Wasserstoff. Der dabei verwendete Katalysator auf Eisenbasis ermöglicht erst die technisch sinnvolle Reaktionsgeschwindigkeit.</p>
+<div class="box">
+<strong>Warum ist das Verfahren so wichtig?</strong><br>
+Ammoniak ist Ausgangsstoff für Düngemittel, und ohne das Haber-Bosch-Verfahren könnten große Teile der Weltbevölkerung nicht ernährt werden. Gleichzeitig vereint das Problem drei Kernthemen der physikalischen Chemie: <em>Thermodynamik</em> (Gleichgewicht), <em>Kinetik</em> (Reaktionsgeschwindigkeit) und <em>Oberflächenchemie</em> (heterogene Katalyse).
+</div>
+</div>
+
+<!-- ===== AUFGABE 1 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Reaktionsgleichung der Ammoniaksynthese</h2>
+<p>Ammoniak (NH₃) wird aus seinen Elementen Stickstoff (N₂) und Wasserstoff (H₂) synthetisiert. Die Stöchiometrie ergibt sich aus der Zusammensetzung von NH₃:</p>
+<ul>
+  <li>1 mol N₂ liefert 2 Stickstoffatome → 2 mol NH₃</li>
+  <li>3 mol H₂ liefern 6 Wasserstoffatome → je 3 H pro NH₃-Molekül</li>
+</ul>
+<div class="result" style="text-align:center; font-size:1.2em;">
+  N₂(g) + 3 H₂(g) → 2 NH₃(g)
+</div>
+<p>Die Reaktion läuft bei erhöhtem Druck und Temperatur (typisch: 400–500°C, 150–300 bar) mit einem Eisenkatalysator ab.</p>
+</div>
+
+<!-- ===== AUFGABE 2 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Temperatur bei K<sub>p</sub> = 1 (ohne Temperaturabhängigkeit)</h2>
+
+<p>Zuerst berechnen wir die Standardreaktionsgröße bei 298 K aus den Tabellendaten:</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>ΔrH° berechnen</strong> (Satz von Hess):
+<div class="formula-left">
+ΔrH°(298K) = 2·ΔfH°(NH₃) − ΔfH°(N₂) − 3·ΔfH°(H₂)<br>
+            = 2·(−46,2) − 0 − 3·0<br>
+            = <strong>−92,4 kJ/mol</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>ΔrS° berechnen</strong>:
+<div class="formula-left">
+ΔrS°(298K) = 2·S°(NH₃) − S°(N₂) − 3·S°(H₂)<br>
+            = 2·192,7 − 191,6 − 3·130,7<br>
+            = 385,4 − 191,6 − 392,1<br>
+            = <strong>−198,3 J·mol⁻¹·K⁻¹</strong>
+</div>
+<p>Das negative Vorzeichen ist sinnvoll: 4 Mol Gas reagieren zu 2 Mol Gas → Unordnung nimmt ab.</p>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Bedingung K<sub>p</sub> = 1:</strong> Wenn K<sub>p</sub> = 1, gilt ln(K<sub>p</sub>) = 0, also ΔrG° = 0:
+<div class="formula">ΔrG° = ΔrH° − T·ΔrS° = 0 &nbsp;→&nbsp; T = ΔrH°/ΔrS°</div>
+<div class="formula">T = −92400 J/mol / (−198,3 J·mol⁻¹·K⁻¹) = <strong>466 K</strong></div>
+</div>
+
+<div class="result">
+T(K<sub>p</sub>=1) = <strong>466 K</strong> (≈ 193°C)<br><br>
+Bedeutung: Unterhalb von 466 K liegt K<sub>p</sub> &gt; 1 (Gleichgewicht auf NH₃-Seite, Reaktion thermodynamisch begünstigt). Oberhalb verschiebt es sich zurück zu den Edukten.
+</div>
+</div>
+
+<!-- ===== AUFGABE 3 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 3: K<sub>p</sub> bei 300°C mit Temperaturabhängigkeit (K<sub>p</sub>-Korrektur über C<sub>p</sub>)</h2>
+
+<p>Da ΔrH° und ΔrS° temperaturabhängig sind, nutzen wir das <strong>Kirchhoffsche Gesetz</strong>. Zuerst berechnen wir ΔC<sub>p</sub>:</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>ΔC<sub>p</sub> der Reaktion:</strong>
+<div class="formula-left">
+ΔCp = 2·Cp(NH₃) − Cp(N₂) − 3·Cp(H₂)<br>
+     = 2·35,1 − 29,1 − 3·28,8<br>
+     = 70,2 − 29,1 − 86,4<br>
+     = <strong>−45,3 J·mol⁻¹·K⁻¹</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>ΔrH°(573 K)</strong> via Kirchhoff: &nbsp; T₂ = 300 + 273,15 = 573,15 K
+<div class="formula-left">
+ΔrH°(573K) = ΔrH°(298K) + ΔCp·(T₂ − T₁)<br>
+            = −92400 + (−45,3)·(573,15 − 298,15)<br>
+            = −92400 + (−45,3)·275<br>
+            = −92400 − 12458<br>
+            = <strong>−104858 J/mol = −104,86 kJ/mol</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>ΔrS°(573 K)</strong>:
+<div class="formula-left">
+ΔrS°(573K) = ΔrS°(298K) + ΔCp·ln(T₂/T₁)<br>
+            = −198,3 + (−45,3)·ln(573,15/298,15)<br>
+            = −198,3 + (−45,3)·0,6536<br>
+            = −198,3 − 29,6<br>
+            = <strong>−227,9 J·mol⁻¹·K⁻¹</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>ΔrG°(573 K):</strong>
+<div class="formula-left">
+ΔrG°(573K) = ΔrH°(573K) − T·ΔrS°(573K)<br>
+            = −104858 − 573,15·(−227,9)<br>
+            = −104858 + 130624<br>
+            = <strong>+25767 J/mol = +25,77 kJ/mol</strong>
+</div>
+<p>Das positive Vorzeichen zeigt: Bei 300°C ist die Reaktion thermodynamisch weniger begünstigt als bei Raumtemperatur!</p>
+</div>
+
+<div class="step">
+<span class="schritt-nr">5</span> <strong>K<sub>p</sub>(300°C):</strong>
+<div class="formula">Kp = exp(−ΔrG°/RT) = exp(−25767 / (8,314 · 573,15)) = exp(−5,407) = <strong>0,00448</strong></div>
+</div>
+
+<div class="result">
+K<sub>p</sub>(300°C) ≈ <strong>4,48 × 10⁻³</strong><br><br>
+Dieser Wert ist deutlich kleiner als 1, was zeigt, dass das Gleichgewicht bei 300°C zwar auf der Eduktseite liegt – aber durch hohen Druck (Aufgabe 5a) kann trotzdem eine gute Ausbeute erzielt werden.
+</div>
+</div>
+
+<!-- ===== AUFGABE 4 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Minimale Wasserstoffmenge für 90% Stickstoffumsatz</h2>
+
+<p>Die Frage lautet: Mindestens wie viel H₂ wird benötigt, damit 90% von 1 mol N₂ reagieren können?</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Stöchiometrie der Reaktion:</strong> N₂ + 3 H₂ → 2 NH₃<br>
+1 mol N₂ reagiert mit genau 3 mol H₂.
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>90% Umsatz bedeutet:</strong> 0,9 mol N₂ reagieren.
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Benötigte H₂-Menge:</strong>
+<div class="formula">n(H₂) = 3 × n(N₂, reagiert) = 3 × 0,9 mol = <strong>2,7 mol</strong></div>
+</div>
+
+<div class="result">
+Mindestmenge H₂ = <strong>2,7 mol</strong><br><br>
+Das ist die stöchiometrisch exakte Menge. In der Praxis setzt man oft einen Überschuss ein, um den Gleichgewichtsumsatz zu erhöhen (Le Chatelier), doch in dieser Aufgabe ist das Minimum gefragt.
+</div>
+</div>
+
+<!-- ===== AUFGABE 5a ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 5a: Gleichgewichtsausbeute bei 300°C und 150 bar</h2>
+
+<p>Wir berechnen die Gleichgewichtsausbeute aus einem <strong>stöchiometrischen Gemisch</strong> (1 mol N₂ + 3 mol H₂ = 4 mol gesamt) bei 300°C und 150 bar.</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>ICE-Tabelle</strong> (Initial – Change – Equilibrium), Umsatz x mol N₂:
+<table>
+  <tr><th>Spezies</th><th>Anfang</th><th>Änderung</th><th>Gleichgewicht</th></tr>
+  <tr><td>N₂</td><td>1</td><td>−x</td><td>1−x</td></tr>
+  <tr><td>H₂</td><td>3</td><td>−3x</td><td>3−3x = 3(1−x)</td></tr>
+  <tr><td>NH₃</td><td>0</td><td>+2x</td><td>2x</td></tr>
+  <tr><td style="background:#e8f5e9;font-weight:bold;">Gesamt</td><td style="background:#e8f5e9;">4</td><td style="background:#e8f5e9;">−2x</td><td style="background:#e8f5e9;">4−2x</td></tr>
+</table>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Molenbrüche:</strong>
+<div class="formula-left">
+y(N₂)  = (1−x) / (4−2x)<br>
+y(H₂)  = 3(1−x) / (4−2x)<br>
+y(NH₃) = 2x / (4−2x)
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Ausdruck für K<sub>p</sub></strong> mit p<sub>i</sub> = y<sub>i</sub> · P:
+<div class="formula">
+Kp = [p(NH₃)]² / {p(N₂) · [p(H₂)]³} = y(NH₃)² / [y(N₂) · y(H₂)³] · P<sup>2−1−3</sup> = y(NH₃)² / [y(N₂) · y(H₂)³] · P<sup>−2</sup>
+</div>
+<p>Die Druckeinheit Δn<sub>Gas</sub> = 2 − 1 − 3 = −2 erklärt den Faktor P⁻².</p>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Numerische Lösung:</strong> Einsetzen von K<sub>p</sub> = 0,00448 und P = 150 bar, lösen nach x:
+<div class="formula-left">
+y(NH₃)²  / [y(N₂) · y(H₂)³ · P²] = 0,00448<br><br>
+(2x)² · (4−2x)² / [(1−x) · 27(1−x)³] · 1/150² = 0,00448<br><br>
+→ numerisch gelöst: <strong>x = 0,7332</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">5</span> <strong>Molenbrüche im Gleichgewicht:</strong>
+<table>
+  <tr><th>Spezies</th><th>mol im GG</th><th>Molenbruch y</th><th>Partialdruck [bar]</th></tr>
+  <tr><td>N₂</td><td>0,2668</td><td>0,1053</td><td>15,80</td></tr>
+  <tr><td>H₂</td><td>0,8004</td><td>0,3159</td><td>47,39</td></tr>
+  <tr><td>NH₃</td><td>1,4664</td><td>0,5788</td><td>86,82</td></tr>
+  <tr><td style="background:#e8f5e9;font-weight:bold;">Gesamt</td><td style="background:#e8f5e9;">2,5336</td><td style="background:#e8f5e9;">1,0000</td><td style="background:#e8f5e9;">150</td></tr>
+</table>
+</div>
+
+<div class="result">
+Gleichgewichtsausbeute η = <strong>73,3%</strong> (Umsatz von N₂)<br><br>
+Im Gleichgewicht liegt über die Hälfte aller Gasmoleküle als NH₃ vor (y(NH₃) = 57,9%).
+</div>
+</div>
+
+<!-- ===== AUFGABE 5b ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 5b: Einfluss von Druckerhöhung auf die Ausbeute</h2>
+
+<div class="box">
+<strong>Prinzip von Le Chatelier:</strong><br>
+Ein System im Gleichgewicht reagiert auf äußere Störungen so, dass es die Störung abschwächt.
+</div>
+
+<p>In der Reaktion N₂ + 3 H₂ → 2 NH₃ gilt:</p>
+<ul>
+  <li>Auf der <strong>Eduktseite</strong>: 1 + 3 = <strong>4 Mol Gas</strong></li>
+  <li>Auf der <strong>Produktseite</strong>: <strong>2 Mol Gas</strong></li>
+</ul>
+
+<div class="result">
+Druckerhöhung → Gleichgewicht verschiebt sich in Richtung der Seite mit <strong>weniger Gasmolen</strong> (Produktseite, 2 mol) → <strong>Ausbeute steigt</strong>.<br><br>
+Das ist auch der Grund, warum das Haber-Bosch-Verfahren bei hohem Druck (150–300 bar) durchgeführt wird!
+</div>
+</div>
+
+<!-- ===== AUFGABE 6 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Geschwindigkeitsbestimmender Schritt des Mechanismus</h2>
+
+<p>Das Diagramm zeigt 10 Schritte der heterogenen Katalyse auf der Fe-Oberfläche. Wir ordnen sie zu:</p>
+
+<div class="mechanism-step"><div class="mech-nr">1</div><div>N₂ und H₂ nähern sich der Katalysatoroberfläche (Diffusion/Adsorption N₂+H₂ → physisorption)</div></div>
+<div class="mechanism-step" style="border: 2px solid #e65100; background:#fff3e0;"><div class="mech-nr" style="background:#e65100;">2</div><div><strong>N₂-Dissoziation: N₂* → 2 N*</strong> (Aufbrechen der N≡N-Dreifachbindung) ← <strong>RDS!</strong></div></div>
+<div class="mechanism-step"><div class="mech-nr">3</div><div>H₂-Dissoziation: H₂* → 2 H* (leichter, da H–H schwächer als N≡N)</div></div>
+<div class="mechanism-step"><div class="mech-nr">4-8</div><div>Schrittweise Hydrierung: N* + H* → NH*, NH* + H* → NH₂*, NH₂* + H* → NH₃*</div></div>
+<div class="mechanism-step"><div class="mech-nr">9-10</div><div>Desorption von NH₃ von der Oberfläche</div></div>
+
+<div class="highlight-rds">
+<strong>🔑 Geschwindigkeitsbestimmender Schritt: Schritt 2 – Dissoziation von N₂</strong><br><br>
+Die N≡N-Dreifachbindung ist mit einer Bindungsenergie von ca. 945 kJ/mol eine der stärksten bekannten Bindungen. Das Aufbrechen dieser Bindung auf der Katalysatoroberfläche (N₂* → 2 N*) erfordert die höchste Aktivierungsenergie und ist daher der langsamste Schritt des gesamten Mechanismus.
+</div>
+
+<div class="box">
+Das erklärt auch, warum ein Eisenkatalysator mit großer Oberfläche so wichtig ist: Mehr Oberfläche = mehr Adsorptionsstellen für N₂ = mehr N₂-Dissoziation = höhere Reaktionsrate.
+</div>
+</div>
+
+<!-- ===== AUFGABE 7 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Zusammensetzung der äußersten Nanopartikelschicht</h2>
+
+<p>Die Nanopartikel haben folgende Schichtstruktur von innen nach außen: <strong>Fe (50%) | Fe₃O₄ (10%) | ? (40%)</strong></p>
+
+<div class="nanoparticle-diagram">
+<pre>
+         ┌──────────────────────────────────────────┐
+         │          ? (äußerste Schicht, 40%)       │
+         │   ┌──────────────────────────────────┐   │
+         │   │       Fe₃O₄ (Mittlere, 10%)      │   │
+         │   │   ┌──────────────────────────┐   │   │
+         │   │   │    Fe-Kern (50%)         │   │   │
+         │   │   │                          │   │   │
+         │   │   │        r = 50 nm         │   │   │
+         │   │   └──────────────────────────┘   │   │
+         │   │       r = 60 nm                  │   │
+         │   └──────────────────────────────────┘   │
+         │              R = 100 nm                   │
+         └──────────────────────────────────────────┘
+</pre>
+</div>
+
+<p>Bei der <strong>Oxidation von Eisen an Luft</strong> bildet sich eine charakteristische Schichtenfolge (von innen nach außen, in Richtung zunehmender Oxidation):</p>
+
+<ul>
+  <li><strong>Fe</strong> (innen, nicht oxidiert) → FeO → Fe₃O₄ → <strong>Fe₂O₃</strong> (außen, höchste Oxidationsstufe)</li>
+</ul>
+
+<p>Das Nanopartikeldiagramm zeigt genau diese Sequenz: Fe (Kern) | Fe₃O₄ (Mitte) | <strong>?</strong> (außen). Die äußerste Schicht muss die am stärksten oxidierte Form sein.</p>
+
+<ul>
+  <li><strong>FeO</strong>: Fe²⁺ – weniger oxidiert als Fe₃O₄ → wäre innen, nicht außen</li>
+  <li><strong>Fe₂O₃</strong>: Fe³⁺ – am stärksten oxidiert → sitzt ganz außen ✓</li>
+  <li><strong>FeOOH / Fe(OH)₃</strong>: Hydroxide – entstehen nur in feuchter Umgebung</li>
+</ul>
+
+<div class="result">
+Antwort: <strong>a) Fe₂O₃</strong><br>
+Die äußerste Schicht ist Eisenoxid (Hämatit, Fe₂O₃) – die thermodynamisch stabilste und am stärksten oxidierte Form bei Luftexposition.
+</div>
+</div>
+
+<!-- ===== AUFGABE 8 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 8: Gesamtoberfläche des Nanokatalysators</h2>
+
+<p>Wir berechnen: Wie viele Nanopartikel stecken in 10 g Eisen? Dann: Gesamtoberfläche = N × Oberfläche pro Partikel.</p>
+
+<h3>Schritt 1: Volumina der Schichten pro Partikel</h3>
+<p>Radien: r(Fe) = 50 nm, r(Fe₃O₄-äußerer Rand) = 60 nm, R = 100 nm</p>
+
+<div class="formula-left">
+V(Kugel) = (4/3)·π·r³<br><br>
+V(Fe-Kern)       = (4/3)·π·(50×10⁻⁷ cm)³ = 5,236 × 10⁻¹⁶ cm³<br>
+V(bis r=60nm)    = (4/3)·π·(60×10⁻⁷ cm)³ = 9,048 × 10⁻¹⁶ cm³<br>
+V(Fe₃O₄-Schicht) = 9,048×10⁻¹⁶ − 5,236×10⁻¹⁶ = 3,812 × 10⁻¹⁶ cm³<br><br>
+V(gesamt)        = (4/3)·π·(100×10⁻⁷ cm)³ = 4,189 × 10⁻¹⁵ cm³<br>
+V(Fe₂O₃-Schicht) = 4,189×10⁻¹⁵ − 9,048×10⁻¹⁶ = 3,284 × 10⁻¹⁵ cm³
+</div>
+
+<h3>Schritt 2: Massen der Schichten pro Partikel (ρ aus Tabelle)</h3>
+
+<table>
+  <tr><th>Schicht</th><th>Volumen [cm³]</th><th>ρ [g/cm³]</th><th>Masse [g]</th></tr>
+  <tr><td>Fe-Kern (r=0–50nm)</td><td>5,236 × 10⁻¹⁶</td><td>7,9</td><td>4,136 × 10⁻¹⁵</td></tr>
+  <tr><td>Fe₃O₄ (r=50–60nm)</td><td>3,812 × 10⁻¹⁶</td><td>5,0</td><td>1,906 × 10⁻¹⁵</td></tr>
+  <tr><td>Fe₂O₃ (r=60–100nm)</td><td>3,284 × 10⁻¹⁵</td><td>5,3</td><td>1,741 × 10⁻¹⁴</td></tr>
+</table>
+
+<h3>Schritt 3: Fe-Masse pro Partikel (aus allen Schichten)</h3>
+<p>Das gesamte Eisen in 10 g ist auf die Partikel verteilt. Fe steckt nicht nur im Kern, sondern auch gebunden in Fe₃O₄ und Fe₂O₃:</p>
+
+<div class="formula-left">
+M(Fe₃O₄) = 3·55,85 + 4·16,00 = 231,6 g/mol  →  Fe-Anteil = 3·55,85/231,6 = 72,4%<br>
+M(Fe₂O₃) = 2·55,85 + 3·16,00 = 159,7 g/mol  →  Fe-Anteil = 2·55,85/159,7 = 69,9%<br><br>
+m(Fe) pro Partikel = m(Fe-Kern) + Fe-Anteil·m(Fe₃O₄) + Fe-Anteil·m(Fe₂O₃)<br>
+                   = 4,136×10⁻¹⁵ + 0,724·1,906×10⁻¹⁵ + 0,699·1,741×10⁻¹⁴<br>
+                   = 4,136×10⁻¹⁵ + 1,380×10⁻¹⁵ + 1,217×10⁻¹⁴<br>
+                   = <strong>1,769 × 10⁻¹⁴ g</strong>
+</div>
+
+<h3>Schritt 4: Anzahl der Partikel</h3>
+<div class="formula">N = 10 g / (1,769 × 10⁻¹⁴ g) = <strong>5,653 × 10¹⁴</strong> Partikel</div>
+
+<h3>Schritt 5: Gesamtoberfläche</h3>
+<div class="formula-left">
+A(pro Partikel) = 4·π·R² = 4·π·(100×10⁻⁹ m)² = 1,257 × 10⁻¹³ m²<br><br>
+A(gesamt) = N × A(pro Partikel) = 5,653×10¹⁴ × 1,257×10⁻¹³ m²<br>
+          = <strong>71,0 m²</strong>
+</div>
+
+<div class="result">
+Gesamtoberfläche des Nanokatalysators ≈ <strong>71 m²</strong><br><br>
+Zum Vergleich: Das entspricht etwa der Fläche eines mittelgroßen Zimmers – und das alles aus nur 10 g Material!
+</div>
+</div>
+
+<!-- ===== AUFGABE 9 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 9: Vergleich mit einem 10-g-Eisenwürfel</h2>
+
+<p>Die Reaktionsrate ist proportional zur Oberfläche: Rate ∝ A. Wir berechnen die Oberfläche eines 10-g-Fe-Würfels.</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Volumen des Würfels:</strong>
+<div class="formula">V = m/ρ = 10 g / 7,9 g·cm⁻³ = 1,266 cm³</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Kantenlänge:</strong>
+<div class="formula">a = V^(1/3) = (1,266 cm³)^(1/3) = 1,082 cm</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Würfeloberfläche:</strong>
+<div class="formula">A(Würfel) = 6·a² = 6·(1,082 cm)² = 7,021 cm² = 7,021 × 10⁻⁴ m²</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Verhältnis der Oberflächen:</strong>
+<div class="formula">Faktor = A(Nanopartikel) / A(Würfel) = 71,0 m² / 7,021×10⁻⁴ m² ≈ <strong>101 000</strong></div>
+</div>
+
+<div class="result">
+Der Nanokatalysator reagiert ca. <strong>100 000-mal schneller</strong> als ein 10-g-Eisenwürfel.<br><br>
+Das verdeutlicht eindrücklich, warum Nanopartikel in der Katalyse so revolutionär sind: Die extreme Verkleinerung führt zu einer gigantischen Oberflächenvergrößerung – und damit zu einem enormen Geschwindigkeitsvorteil.
+</div>
+
+<div class="box">
+<strong>Zusammenfassung der Kernerkenntnisse:</strong><br>
+Das Haber-Bosch-Verfahren ist ein Paradebeispiel für das Spannungsfeld zwischen Thermodynamik und Kinetik: Niedrige Temperaturen wären thermodynamisch ideal (höhere Ausbeute), aber kinetisch zu langsam. Hoher Druck erhöht die Ausbeute (Le Chatelier, Δn &lt; 0). Der Nanokatalysator vereint maximale Oberfläche mit dem aktiven Eisenzentrum und bringt so beide Seiten zusammen.
+</div>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #ddd; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 5 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
