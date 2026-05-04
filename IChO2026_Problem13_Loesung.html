@@ -4,7 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IChO 2026 – Problem 13: Mizellen – Vollständige Lösung</title>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+
 <style>
+  /* ZURÜCK-BUTTON STYLE (Passend zum grünen Mizellen-Design) */
+  .back-nav { margin: 0 0 25px 0; font-family: 'Segoe UI', Arial, sans-serif; }
+  .back-button { 
+    text-decoration: none; display: inline-flex; align-items: center; 
+    background: white; border: 1.5px solid #1b5e20; color: #1b5e20; 
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .back-button:hover { 
+    background: #1b5e20; color: white; transform: translateX(-3px); 
+    box-shadow: 0 4px 10px rgba(27,94,32,0.2);
+  }
+  .back-button span { margin-right: 8px; font-size: 1.2em; }
+
+  /* DEINE ORIGINALEN STYLES */
   body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 940px; margin: 0 auto; padding: 20px 30px; background: #f4f6fb; color: #1a1a2e; line-height: 1.8; }
   h1 { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.35em; }
   h2 { color: #1b5e20; border-left: 5px solid #2e7d32; padding-left: 13px; margin-top: 0; }
@@ -34,10 +52,13 @@
 </head>
 <body>
 
+<nav class="back-nav">
+  <a href="index.html" class="back-button"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
 <h1>🧪 IChO 2026 – Problem 13: Sind Sie an Mizellen interessiert?<br>
 <span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – mit allen Rechenwegen</span></h1>
 
-<!-- ========== EINLEITUNG: WAS SIND MIZELLEN ========== -->
 <div class="aufgabe">
 <h2>📚 Grundwissen: Was sind Mizellen und der Packungsparameter?</h2>
 
