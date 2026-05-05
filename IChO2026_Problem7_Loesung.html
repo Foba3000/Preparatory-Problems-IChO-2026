@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 7 – 150 Jahre Urease | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 950px; margin: 0 auto; padding: 20px 30px; background: #fdf6f0; color: #1a1a1a; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #7b3f00; color: #7b3f00;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #7b3f00; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #7b3f00, #a0522d); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.35em; margin-top: 0; }
+  h2 { color: #7b3f00; border-left: 5px solid #cd853f; padding-left: 13px; margin-top: 0; }
+  h3 { color: #5d4037; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #e8d5c0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(123,63,0,0.08); }
+  .box { background: #fff3e0; border-left: 4px solid #cd853f; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #e8f5e9; border-left: 5px solid #388e3c; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .derive { background: #fbe9e7; border-left: 4px solid #bf360c; border-radius: 6px; padding: 13px 18px; margin: 11px 0; }
+
+  .formula { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2; }
+  .reaction { background: #3e2723; color: #fff8e1; border-radius: 8px; padding: 12px 20px; text-align: center; font-size: 1.1em; font-family: 'Courier New', monospace; margin: 12px 0; letter-spacing: 0.4px; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #7b3f00; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #e8d5c0; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #fdf6f0; }
+
+  .step { margin: 11px 0; padding: 11px 16px; background: #fafafa; border-radius: 7px; border: 1px solid #e8d5c0; }
+  .schritt-nr { display: inline-block; background: #7b3f00; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  ul li, ol li { margin: 7px 0; }
+
+  .phase-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .phase-card { background: white; border: 2px solid #cd853f; border-radius: 10px; padding: 14px; text-align: center; }
+  .phase-label { font-size: 1.3em; font-weight: bold; color: #7b3f00; }
+  .phase-desc { font-size: 0.9em; color: #555; margin-top: 6px; }
+  .phase-match { background: #7b3f00; color: white; border-radius: 20px; padding: 3px 12px; display: inline-block; margin-top: 8px; font-weight: bold; }
+
+  .bell-curve { background: #fdf6f0; border: 1px solid #e8d5c0; border-radius: 8px; padding: 16px; text-align: center; font-family: 'Courier New', monospace; font-size: 0.85em; margin: 12px 0; color: #3e2723; }
+
+  .thermo-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .thermo-item { background: #fff3e0; border: 1px solid #cd853f; border-radius: 8px; padding: 12px 16px; text-align: center; }
+  .thermo-value { font-size: 1.2em; font-weight: bold; color: #7b3f00; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🧬 Problem 7 – 150 Jahre Urease<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – Enzymkinetik, Gleichgewichte & Thermodynamik</span></h1>
+
+<!-- ===== EINLEITUNG ===== -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: Was ist Urease?</h2>
+<p>Urease ist ein Enzym, das die Hydrolyse von Harnstoff (Urea) katalysiert:</p>
+<div class="reaction">CO(NH₂)₂ + H₂O → CO₂ + 2 NH₃</div>
+<p>Das aktive Zentrum der Urease ist eine <strong>zweiprotonige Säure</strong> (H₂U) mit zwei pKₐ-Werten. Nur die einfach deprotonierte Form <strong>HU⁻</strong> ist enzymatisch aktiv. Diese pH-Abhängigkeit ist der Schlüssel zu fast allen Berechnungen in dieser Aufgabe.</p>
+<div class="box">
+<strong>pKₐ-Werte des aktiven Zentrums:</strong><br>
+H₂U ⇌ HU⁻ + H⁺ &nbsp;→&nbsp; pKₐ₁ = 5,62 &nbsp;(Ka₁ = 2,40 × 10⁻⁶ M)<br>
+HU⁻ ⇌ U²⁻ + H⁺ &nbsp;→&nbsp; pKₐ₂ = 9,07 &nbsp;(Ka₂ = 8,51 × 10⁻¹⁰ M)
+</div>
+</div>
+
+<!-- ===== AUFGABE 1 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Michaelis-Menten-Herleitung mit pH-Abhängigkeit</h2>
+
+<p>Gesucht: v als Funktion von [U]<sub>total</sub>, [S]<sub>total</sub> und [H⁺].</p>
+
+<h3>Schritt 1: [HU⁻] aus [U]<sub>total</sub> ausdrücken</h3>
+<p>Die drei Urease-Formen stehen im Gleichgewicht:</p>
+<div class="step">
+<div class="formula-left">
+Ka₁ = [HU⁻]·[H⁺]/[H₂U] &nbsp;→&nbsp; [H₂U] = [HU⁻]·[H⁺]/Ka₁<br>
+Ka₂ = [U²⁻]·[H⁺]/[HU⁻] &nbsp;→&nbsp; [U²⁻] = Ka₂·[HU⁻]/[H⁺]<br><br>
+[U]<sub>total</sub> = [H₂U] + [HU⁻] + [U²⁻]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = [HU⁻]·[H⁺]/Ka₁ + [HU⁻] + Ka₂·[HU⁻]/[H⁺]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = [HU⁻] · ( [H⁺]/Ka₁ + 1 + Ka₂/[H⁺] )<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = [HU⁻] · ( [H⁺]² + Ka₁·[H⁺] + Ka₁·Ka₂ ) / (Ka₁·[H⁺])
+</div>
+<div class="formula">
+[HU⁻] = Ka₁·[H⁺]·[U]<sub>total</sub> / ([H⁺]² + Ka₁·[H⁺] + Ka₁·Ka₂)
+</div>
+</div>
+
+<h3>Schritt 2: Steady-State-Näherung für den Enzym-Substrat-Komplex [ES]</h3>
+<div class="step">
+Mechanismus: HU⁻ + S ⇌ [HU⁻·S] → HU⁻ + Produkte<br><br>
+Steady-State für [ES]: d[ES]/dt = 0<br>
+<div class="formula-left">
+k₁·[HU⁻]·[S] − k₋₁·[ES] − k₂·[ES] = 0<br>
+[ES] = k₁·[HU⁻]·[S] / (k₋₁+k₂) = [HU⁻]·[S] / Km<br>
+mit Km = (k₋₁+k₂)/k₁
+</div>
+Da [S]<sub>total</sub> ≫ [U]<sub>total</sub>: [S] ≈ [S]<sub>total</sub>
+</div>
+
+<h3>Schritt 3: Reaktionsrate</h3>
+<div class="step">
+v = k₂·[ES] = k₂·[HU⁻]·[S]<sub>total</sub> / (Km + [S]<sub>total</sub>)
+</div>
+<p>Einsetzen von [HU⁻]:</p>
+
+<div class="result" style="font-weight:normal;">
+<div style="text-align:center; font-size:1.1em; font-weight:bold; margin-bottom:8px;">Endformel (Aufgabe 1):</div>
+<div class="formula" style="background:#e8f5e9; border-color:#388e3c; font-size:1.05em;">
+v = k₂ · Ka₁·[H⁺]·[U]<sub>total</sub>·[S]<sub>total</sub> / { ([H⁺]² + Ka₁·[H⁺] + Ka₁·Ka₂) · (Km + [S]<sub>total</sub>) }
+</div>
+</div>
+</div>
+
+<!-- ===== AUFGABE 2 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Reaktionsordnungen in Pufferlösung</h2>
+<p>In Pufferlösung ist [H⁺] konstant → der pH-abhängige Vorfaktor ist eine Konstante k_eff.</p>
+
+<div class="formula">v = k_eff · [U]<sub>total</sub> · [S]<sub>total</sub> / (Km + [S]<sub>total</sub>)</div>
+
+<p>Die Reaktionsordnung bezüglich Urease ist immer <strong>1. Ordnung</strong> (linearer Faktor [U]<sub>total</sub>).</p>
+
+<h3>a) Wenn Km = (k₋₁+k₂)/k₁ ≫ [S]<sub>total</sub>:</h3>
+<div class="step">
+Km + [S]<sub>total</sub> ≈ Km (konstant)
+<div class="formula">v ≈ (k_eff/Km) · [U]<sub>total</sub> · [S]<sub>total</sub></div>
+</div>
+<div class="result">
+Bezüglich Urease: <strong>1. Ordnung</strong><br>
+Bezüglich CO(NH₂)₂: <strong>1. Ordnung</strong><br>
+→ Gesamtreaktion 2. Ordnung (bimolekular)
+</div>
+
+<h3>b) Wenn Km ≪ [S]<sub>total</sub>:</h3>
+<div class="step">
+Km + [S]<sub>total</sub> ≈ [S]<sub>total</sub>
+<div class="formula">v ≈ k_eff · [U]<sub>total</sub></div>
+</div>
+<div class="result">
+Bezüglich Urease: <strong>1. Ordnung</strong><br>
+Bezüglich CO(NH₂)₂: <strong>0. Ordnung</strong> (Enzym ist gesättigt)<br>
+→ Maximale Reaktionsrate (v<sub>max</sub>-Bereich der Michaelis-Menten-Kurve)
+</div>
+</div>
+
+<!-- ===== AUFGABE 3 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 3: pH bei maximaler Reaktionsrate</h2>
+
+<p>Die Rate ist proportional zu [HU⁻], was wiederum proportional zu:</p>
+<div class="formula">f([H⁺]) = Ka₁·[H⁺] / ([H⁺]² + Ka₁·[H⁺] + Ka₁·Ka₂)</div>
+
+<p>Wir maximieren f durch Differentiation nach [H⁺] und Nullsetzen:</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> Ableitung und Nullsetzen (Quotientenregel):
+<div class="formula-left">
+df/d[H⁺] = Ka₁·([H⁺]² + Ka₁·[H⁺] + Ka₁·Ka₂) − Ka₁·[H⁺]·(2·[H⁺] + Ka₁) = 0<br><br>
+Vereinfachen (Ka₁ kürzen):<br>
+[H⁺]² + Ka₁·[H⁺] + Ka₁·Ka₂ − 2·[H⁺]² − Ka₁·[H⁺] = 0<br>
+−[H⁺]² + Ka₁·Ka₂ = 0<br>
+[H⁺]² = Ka₁·Ka₂
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> Logarithmieren:
+<div class="formula">−2·pH = −pKa₁ − pKa₂ → pH<sub>opt</sub> = (pKa₁ + pKa₂) / 2</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> Einsetzen:
+<div class="formula">pH<sub>opt</sub> = (5,62 + 9,07) / 2 = <strong>7,35</strong></div>
+</div>
+
+<div class="result">
+pH der maximalen Urease-Aktivität: <strong>pH = 7,35</strong><br><br>
+Das ist nahezu neutral – das passt gut zur biologischen Rolle der Urease im Boden und in Organismen (physiologischer pH ~7,4).
+</div>
+
+<div class="bell-curve">
+pH →<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▲ Rate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;╭───╮<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;╭╯&nbsp;&nbsp;&nbsp;╰╮<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;╭╯&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;╰╮<br>
+─────┴──────────────┴─── pH<br>
+&nbsp;&nbsp;&nbsp;5,62 &nbsp;&nbsp;7,35 &nbsp;&nbsp;9,07<br>
+&nbsp;&nbsp;pKa₁ &nbsp;&nbsp;max &nbsp;&nbsp; pKa₂
+</div>
+</div>
+
+<!-- ===== AUFGABE 4a ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 4a: pH nach Zersetzung von 0,005 M Harnstoff</h2>
+
+<p>Reaktion: CO(NH₂)₂ + H₂O → CO₂ + 2 NH₃</p>
+<p>Aus 0,005 M Harnstoff entstehen: <strong>0,010 M NH₃</strong> + <strong>0,005 M CO₂(aq)</strong></p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Welche Form liegt bei welchem pH vor?</strong><br>
+• NH₃/NH₄⁺: pKₐ(NH₄⁺) = 14 − 4,75 = <strong>9,25</strong><br>
+• CO₂/HCO₃⁻: pKₐ₁ = 3,75 → bei pH ≫ 3,75 liegt fast alles als HCO₃⁻ vor<br>
+• HCO₃⁻/CO₃²⁻: pKₐ₂ = 10,33 → bei pH ≪ 10,33 liegt fast alles als HCO₃⁻ vor
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Schätzung des pH:</strong> Wir erwarten pH ≈ 9 (zwischen pKₐ(NH₄⁺)=9,25 und weit über pKₐ₁=3,75). Bei pH ~9 gilt:<br>
+→ CO₂ liegt praktisch vollständig als <strong>HCO₃⁻</strong> vor: [HCO₃⁻] ≈ 0,005 M
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Ladungsbilanz</strong> (vereinfacht, CO₃²⁻ vernachlässigbar bei pH < 10,33):
+<div class="formula">[NH₄⁺] + [H⁺] ≈ [HCO₃⁻] + [OH⁻]</div>
+Bei pH ≈ 9: [H⁺] ≈ [OH⁻] ≈ 10⁻⁵ M (vernachlässigbar gegenüber 0,005 M) → <strong>[NH₄⁺] ≈ [HCO₃⁻] = 0,005 M</strong>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Henderson-Hasselbalch für NH₃/NH₄⁺:</strong><br>
+[NH₃] + [NH₄⁺] = 0,010 M und [NH₄⁺] = 0,005 M → [NH₃] = 0,005 M
+<div class="formula">pH = pKₐ(NH₄⁺) + log([NH₃]/[NH₄⁺]) = 9,25 + log(0,005/0,005) = 9,25 + 0 = <strong>9,25</strong></div>
+</div>
+
+<div class="result">
+pH nach vollständiger Harnstoff-Zersetzung = <strong>9,25</strong><br><br>
+Dies liegt deutlich über dem pH-Optimum der Urease (7,35) – die Reaktion verlangsamt sich also durch ihre eigenen Produkte selbst!
+</div>
+</div>
+
+<!-- ===== AUFGABE 4b ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 4b: Faktor der Aktivitätsabnahme (pH 7 → pH 9,25)</h2>
+
+<p>Die Rate ist proportional zu [HU⁻]/[U]<sub>total</sub> = f([H⁺]). Der Faktor der Abnahme ist das Verhältnis f bei pH=7 zu f bei pH=9,25.</p>
+
+<div class="formula">f([H⁺]) = Ka₁·[H⁺] / ([H⁺]² + Ka₁·[H⁺] + Ka₁·Ka₂)</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Bei pH = 7,00:</strong> [H⁺] = 10⁻⁷ M
+<div class="formula-left">
+Zähler: Ka₁·[H⁺] = 2,40×10⁻⁶ × 10⁻⁷ = 2,40×10⁻¹³<br>
+Nenner: (10⁻⁷)² + 2,40×10⁻⁶·10⁻⁷ + 2,40×10⁻⁶·8,51×10⁻¹⁰<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 10⁻¹⁴ + 2,40×10⁻¹³ + 2,04×10⁻¹⁵ = 2,52×10⁻¹³<br>
+f(pH=7) = 2,40×10⁻¹³ / 2,52×10⁻¹³ = <strong>0,952</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Bei pH = 9,25:</strong> [H⁺] = 5,62×10⁻¹⁰ M
+<div class="formula-left">
+Zähler: Ka₁·[H⁺] = 2,40×10⁻⁶ × 5,62×10⁻¹⁰ = 1,35×10⁻¹⁵<br>
+Nenner: (5,62×10⁻¹⁰)² + 2,40×10⁻⁶·5,62×10⁻¹⁰ + 2,04×10⁻¹⁵<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 3,16×10⁻¹⁹ + 1,35×10⁻¹⁵ + 2,04×10⁻¹⁵ = 3,39×10⁻¹⁵<br>
+f(pH=9,25) = 1,35×10⁻¹⁵ / 3,39×10⁻¹⁵ = <strong>0,398</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Faktor der Abnahme:</strong>
+<div class="formula">v(pH=7) / v(pH=9,25) = f(7) / f(9,25) = 0,952 / 0,398 = <strong>2,39</strong></div>
+</div>
+
+<div class="result">
+Die Reaktionsrate sinkt bei pH = 9,25 um den Faktor <strong>≈ 2,4</strong> gegenüber dem neutralen pH-Wert.<br><br>
+Bei pH 9,25 liegt Urease zu ~60% als U²⁻ (überdeprotoniert, inaktiv) vor – daher die deutliche Aktivitätsabnahme.
+</div>
+</div>
+
+<!-- ===== AUFGABE 5 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Phasenporträts – Zuordnung</h2>
+<p>Phasenporträts zeigen pH als Funktion der Produktkonzentration. Drei Szenarien:</p>
+
+<div class="phase-grid">
+  <div class="phase-card">
+    <div class="phase-label">Diagramm (a)</div>
+    <div class="phase-desc">pH steigt monoton mit den Produkten, flacht dann ab – einfache, geschwungene Kurve</div>
+    <div class="phase-match">→ Szenario (2)</div>
+    <div style="margin-top:8px; font-size:0.85em; color:#666;">Urease ohne Puffer: NH₃ erhöht pH → Urease verlangsamt sich → pH-Anstieg flacht ab bis fast Stillstand</div>
+  </div>
+  <div class="phase-card">
+    <div class="phase-label">Diagramm (b)</div>
+    <div class="phase-desc">Hysterese-Schleife / Zyklisches Verhalten</div>
+    <div class="phase-match">→ Szenario (3)</div>
+    <div style="margin-top:8px; font-size:0.85em; color:#666;">Liposom: pH steigt innen → Urease inaktiviert → Produkte diffundieren raus → pH sinkt → neue Aktivität → Zyklen</div>
+  </div>
+  <div class="phase-card">
+    <div class="phase-label">Diagramm (c)</div>
+    <div class="phase-desc">pH bleibt konstant, Produkte nehmen linear zu – gerade horizontale Linie</div>
+    <div class="phase-match">→ Szenario (1)</div>
+    <div style="margin-top:8px; font-size:0.85em; color:#666;">Pufferlösung: Puffer hält pH konstant → Urease arbeitet mit konstanter Rate → linearer Produktanstieg</div>
+  </div>
+</div>
+
+<div class="result">
+(1) Pufferlösung → <strong>(c)</strong> (gerade Linie: pH = const)<br>
+(2) Neutral ohne Puffer → <strong>(a)</strong> (einfache Kurve: pH steigt, dann Plateau)<br>
+(3) Liposomen → <strong>(b)</strong> (Hysterese/Zyklen durch Membrandiffusion)
+</div>
+</div>
+
+<!-- ===== AUFGABE 6 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Mindestkonzentration Ca²⁺ für CaCO₃-Fällung</h2>
+
+<p>Aus Aufgabe 4a: pH = 9,25, [HCO₃⁻] = 0,005 M. Gesucht: [CO₃²⁻] → daraus [Ca²⁺]<sub>min</sub>.</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>[CO₃²⁻] aus dem Gleichgewicht HCO₃⁻ ⇌ H⁺ + CO₃²⁻:</strong>
+<div class="formula-left">
+Ka₂(HCO₃⁻) = [H⁺]·[CO₃²⁻] / [HCO₃⁻] = 10⁻¹⁰·³³ = 4,68×10⁻¹¹<br><br>
+[CO₃²⁻] = Ka₂·[HCO₃⁻] / [H⁺]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 4,68×10⁻¹¹ × 0,005 / 10⁻⁹·²⁵<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 4,68×10⁻¹¹ × 0,005 / 5,62×10⁻¹⁰<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <strong>4,16×10⁻⁴ M</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Löslichkeitsprodukt:</strong>
+<div class="formula">Ksp(CaCO₃) = [Ca²⁺]·[CO₃²⁻] = 3,36×10⁻⁹</div>
+<div class="formula">[Ca²⁺]<sub>min</sub> = Ksp / [CO₃²⁻] = 3,36×10⁻⁹ / 4,16×10⁻⁴ = <strong>8,08×10⁻⁶ M</strong></div>
+</div>
+
+<div class="result">
+[Ca²⁺]<sub>min</sub> = <strong>8,1×10⁻⁶ M = 8,1 μM</strong><br><br>
+Schon bei sehr kleinen Ca²⁺-Konzentrationen beginnt CaCO₃ auszufallen – das erklärt die Fähigkeit der Urease, Kalk (CaCO₃) in Mauerrissen zu fällen und diese so zu versiegeln!
+</div>
+</div>
+
+<!-- ===== AUFGABE 7 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Michaelis-Menten mit kompetitivem Inhibitor B(OH)₃</h2>
+
+<p>B(OH)₃ ist ein <strong>kompetitiver Inhibitor</strong>: Er bindet reversibel an HU⁻ und blockiert damit die Substratbindung. Der Komplex [Urease·B(OH)₃] hat dieselben pKₐ-Werte wie freie Urease.</p>
+
+<h3>Erweiterter Gleichgewichtsansatz:</h3>
+<div class="step">
+Urease-Spezies (frei): H₂U, HU⁻, U²⁻<br>
+Inhibitor-Komplex-Spezies: H₂(U·I), H(U·I)⁻, (U·I)²⁻<br><br>
+Da der Komplex dieselben pKₐ-Werte hat wie freie Urease, gilt analog:<br>
+<div class="formula-left">
+[H(U·I)⁻] = [HU⁻]·[I]/KI<br>
+[H₂(U·I)] = [H(U·I)⁻]·[H⁺]/Ka₁ = [HU⁻]·[I]·[H⁺]/(KI·Ka₁)<br>
+[(U·I)²⁻] = Ka₂·[H(U·I)⁻]/[H⁺] = Ka₂·[HU⁻]·[I]/(KI·[H⁺])
+</div>
+Der pH-abhängige Block des Inhibitor-Komplexes ist identisch zu dem der freien Urease, multipliziert mit [I]/KI.
+</div>
+
+<div class="step">
+<strong>Gesamtkonzentration:</strong>
+<div class="formula-left">
+[U]<sub>total</sub> = (Freie Urease-Formen) + (Inhibitor-Komplex-Formen)<br>
+= [HU⁻]·D<sub>pH</sub>/(Ka₁·[H⁺]) + [HU⁻]·D<sub>pH</sub>/(Ka₁·[H⁺]) · [I]/KI<br>
+= [HU⁻]·D<sub>pH</sub>/(Ka₁·[H⁺]) · (1 + [I]/KI)
+</div>
+wobei D<sub>pH</sub> = [H⁺]² + Ka₁·[H⁺] + Ka₁·Ka₂
+<div class="formula">[HU⁻] = Ka₁·[H⁺]·[U]<sub>total</sub> / { D<sub>pH</sub> · (1 + [I]/KI) }</div>
+</div>
+
+<div class="step">
+<strong>Kompetitive Hemmung:</strong> Km wird zu Km<sub>eff</sub> = Km·(1 + [I]/KI):
+<div class="formula">v = k₂·[HU⁻]·[S] / (Km·(1+[I]/KI) + [S])</div>
+</div>
+
+<div class="result" style="font-weight:normal;">
+<div style="text-align:center; font-weight:bold; margin-bottom:8px;">Endformel mit Inhibitor (Aufgabe 7):</div>
+<div class="formula" style="background:#e8f5e9; border-color:#388e3c;">
+v = k₂·Ka₁·[H⁺]·[U]<sub>total</sub>·[S]<sub>total</sub> / { D<sub>pH</sub>·(1+[I]/KI)·(Km·(1+[I]/KI)+[S]<sub>total</sub>) }
+</div>
+D<sub>pH</sub> = [H⁺]² + Ka₁·[H⁺] + Ka₁·Ka₂ &nbsp;|&nbsp; [I] = [B(OH)₃]<sub>total</sub>
+</div>
+</div>
+
+<!-- ===== AUFGABE 8 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 8: KI aus dem Steigungsverhältnis des Lineweaver-Burk-Plots</h2>
+
+<p>Der Lineweaver-Burk-Plot (1/v gegen 1/[S]) ist linear. Die <strong>Steigung</strong> ergibt sich durch Umformen:</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Reziproke der Ratengleichung:</strong>
+<div class="formula">1/v = D<sub>pH</sub>·(1+[I]/KI)·Km·(1+[I]/KI) / (k₂·Ka₁·[H⁺]·[U]<sub>total</sub>) · 1/[S]<sub>total</sub> + const</div>
+<div class="formula">Steigung m ∝ (1+[I]/KI)²</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Verhältnis der Steigungen</strong> bei zwei Inhibitorkonzentrationen ([U]<sub>total</sub>, pH, T gleich):
+<div class="formula">m([I]₁) / m([I]₂) = (1+[I]₁/KI)² / (1+[I]₂/KI)² = 2,48</div>
+mit [I]₁ = 0,300 mM, [I]₂ = 0,075 mM
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Quadratwurzel ziehen:</strong>
+<div class="formula">(1+[I]₁/KI) / (1+[I]₂/KI) = √2,48 = 1,5748</div>
+<div class="formula-left">
+1 + 0,300/KI = 1,5748 · (1 + 0,075/KI)<br>
+1 + 0,300/KI = 1,5748 + 1,5748·0,075/KI<br>
+0,300/KI − 0,1181/KI = 1,5748 − 1<br>
+0,1819/KI = 0,5748<br>
+KI = 0,1819 / 0,5748 = <strong>0,3164 mM = 3,16×10⁻⁴ M</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Probe:</strong>
+<div class="formula">((1+0,300/0,316)/(1+0,075/0,316))² = (1,948/1,237)² = (1,575)² = 2,48 ✓</div>
+</div>
+
+<div class="result">
+KI = <strong>0,316 mM = 3,16×10⁻⁴ M</strong> bei 25°C
+</div>
+</div>
+
+<!-- ===== AUFGABE 9 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 9: ΔrH° und ΔrS° der Borsäure-Bindung</h2>
+
+<p>Gegeben: KI(25°C) = 3,16×10⁻⁴ M (aus Aufgabe 8), KI(35°C) = 1,57×10⁻⁴ M.</p>
+<p>Beachte: KI sinkt mit steigender Temperatur → die Bindung wird bei höherer T <em>stärker</em> → endotherme Bindung, aber entropisch begünstigt (hydrophober Effekt).</p>
+
+<div class="box">
+<strong>Konvention:</strong> Wir berechnen ΔrH° und ΔrS° für die <strong>Bindungsreaktion</strong>:<br>
+Urease + B(OH)₃ → [Urease·B(OH)₃] &nbsp;(K<sub>bind</sub> = 1/KI)
+</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>ΔrH° via Van't-Hoff-Gleichung:</strong>
+<div class="formula">ln(KI₂/KI₁) = −ΔrH°<sub>diss</sub>/R · (1/T₂ − 1/T₁)</div>
+<div class="formula-left">
+ln(1,57×10⁻⁴ / 3,16×10⁻⁴) = ln(0,4968) = −0,7009<br>
+1/T₂ − 1/T₁ = 1/308,15 − 1/298,15 = −1,088×10⁻⁴ K⁻¹<br><br>
+ΔrH°<sub>diss</sub> = −R · (−0,7009) / (−1,088×10⁻⁴)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = −8,314 × (−0,7009) / (−1,088×10⁻⁴)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = −53 540 J/mol
+</div>
+<div class="formula">ΔrH°(Bindung) = −ΔrH°(Dissoziation) = <strong>+53,5 kJ/mol</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>ΔrG° der Bindung bei 25°C</strong> (K<sub>bind</sub> = 1/KI = 3162 M⁻¹):
+<div class="formula">ΔrG°(Bindung) = −RT·ln(K<sub>bind</sub>) = −8,314·298,15·ln(3162) = −19 975 J/mol = −20,0 kJ/mol</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>ΔrS° der Bindung:</strong>
+<div class="formula">ΔrS° = (ΔrH° − ΔrG°)/T = (53 540 − (−19 975)) / 298,15 = 73 515 / 298,15 = <strong>+246,6 J·mol⁻¹·K⁻¹</strong></div>
+</div>
+
+<div class="thermo-box">
+  <div class="thermo-item">
+    <div style="color:#666; font-size:0.9em;">ΔrH° (Bindung)</div>
+    <div class="thermo-value">+53,5 kJ/mol</div>
+    <div style="font-size:0.85em; color:#888;">endotherm</div>
+  </div>
+  <div class="thermo-item">
+    <div style="color:#666; font-size:0.9em;">ΔrS° (Bindung)</div>
+    <div class="thermo-value">+246,6 J·mol⁻¹·K⁻¹</div>
+    <div style="font-size:0.85em; color:#888;">entropisch begünstigt</div>
+  </div>
+  <div class="thermo-item">
+    <div style="color:#666; font-size:0.9em;">ΔrG° bei 25°C</div>
+    <div class="thermo-value">−20,0 kJ/mol</div>
+    <div style="font-size:0.85em; color:#888;">spontan ✓</div>
+  </div>
+  <div class="thermo-item">
+    <div style="color:#666; font-size:0.9em;">KI bei 25°C</div>
+    <div class="thermo-value">0,316 mM</div>
+    <div style="font-size:0.85em; color:#888;">K<sub>bind</sub> = 3160 M⁻¹</div>
+  </div>
+</div>
+
+<div class="box">
+<strong>Physikalische Interpretation:</strong><br>
+ΔrH° &gt; 0 (endotherm): Die direkte Bindungsenthalpie ist ungünstig – das Aufbrechen von Hydrathüllen und die Konformationsänderung kosten Energie.<br>
+ΔrS° ≫ 0 (stark positiv): Der hydrophobe Effekt freigesetzter Wassermoleküle treibt die Bindung entropisch an.<br>
+→ ΔrG° = ΔrH° − T·ΔrS° = 53 500 − 298×246,6 = −20 000 J/mol: <strong>spontan</strong>, weil T·ΔrS° >> ΔrH°.
+</div>
+</div>
+
+<!-- ===== ZUSAMMENFASSUNG ===== -->
+<div class="aufgabe" style="background: #fff8f0;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+  <tr><td><strong>1</strong></td><td>v = k₂·Ka₁·[H⁺]·[U]<sub>tot</sub>·[S]<sub>tot</sub> / { ([H⁺]²+Ka₁[H⁺]+Ka₁Ka₂)·(Km+[S]<sub>tot</sub>) }</td></tr>
+  <tr><td><strong>2a</strong></td><td>Km ≫ [S]: 1. Ordnung in Urease AND 1. Ordnung in CO(NH₂)₂</td></tr>
+  <tr><td><strong>2b</strong></td><td>Km ≪ [S]: 1. Ordnung in Urease, 0. Ordnung in CO(NH₂)₂ (Sättigung)</td></tr>
+  <tr><td><strong>3</strong></td><td>pH<sub>opt</sub> = (pKa₁+pKa₂)/2 = <strong>7,35</strong></td></tr>
+  <tr><td><strong>4a</strong></td><td>pH = <strong>9,25</strong> (NH₄⁺/NH₃ Puffersystem mit HCO₃⁻)</td></tr>
+  <tr><td><strong>4b</strong></td><td>Rate sinkt um Faktor <strong>2,39</strong> (von pH 7 auf pH 9,25)</td></tr>
+  <tr><td><strong>5</strong></td><td>(1)→(c), (2)→(a), (3)→(b)</td></tr>
+  <tr><td><strong>6</strong></td><td>[Ca²⁺]<sub>min</sub> = <strong>8,1×10⁻⁶ M</strong> = 8,1 μM</td></tr>
+  <tr><td><strong>7</strong></td><td>v mit Inhibitor: zusätzliche Faktoren (1+[I]/KI)² im Nenner</td></tr>
+  <tr><td><strong>8</strong></td><td>KI = <strong>0,316 mM = 3,16×10⁻⁴ M</strong> bei 25°C</td></tr>
+  <tr><td><strong>9</strong></td><td>ΔrH°(Bindung) = <strong>+53,5 kJ/mol</strong>; ΔrS°(Bindung) = <strong>+246,6 J·mol⁻¹·K⁻¹</strong></td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #e8d5c0; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 7 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>

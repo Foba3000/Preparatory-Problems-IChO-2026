@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 8 – Schritt für Schritt | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 950px; margin: 0 auto; padding: 20px 30px; background: #f0f7ff; color: #1a1a2e; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1a3a5c; color: #1a3a5c;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1a3a5c; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1a3a5c, #2e6da4); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.35em; margin-top: 0; }
+  h2 { color: #1a3a5c; border-left: 5px solid #2e6da4; padding-left: 13px; margin-top: 0; }
+  h3 { color: #2c4a6e; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #c8ddf0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(26,58,92,0.08); }
+  .box { background: #e8f4fd; border-left: 4px solid #2e6da4; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #e8f8e8; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .derive { background: #fce4ec; border-left: 4px solid #c62828; border-radius: 6px; padding: 13px 18px; margin: 11px 0; }
+
+  .formula { background: #ede7f6; border: 1px solid #7e57c2; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #7e57c2; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.0; }
+  .reaction { background: #1a3a5c; color: #e8f4fd; border-radius: 8px; padding: 12px 20px; text-align: center; font-size: 1.1em; font-family: 'Courier New', monospace; margin: 12px 0; letter-spacing: 0.3px; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #1a3a5c; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c8ddf0; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f0f7ff; }
+
+  .step { margin: 11px 0; padding: 11px 16px; background: #fafcff; border-radius: 7px; border: 1px solid #c8ddf0; }
+  .schritt-nr { display: inline-block; background: #1a3a5c; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  code { background: #f0f7ff; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #c8ddf0; }
+  ul li, ol li { margin: 7px 0; }
+
+  .mech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .mech-card { border: 2px solid #2e6da4; border-radius: 10px; padding: 16px; background: #f8fcff; }
+  .mech-title { font-weight: bold; color: #1a3a5c; font-size: 1.05em; border-bottom: 1px solid #c8ddf0; padding-bottom: 8px; margin-bottom: 10px; }
+
+  .graph-container { background: #1a3a5c; border-radius: 10px; padding: 20px; margin: 14px 0; }
+  .graph-inner { background: white; border-radius: 6px; padding: 16px; }
+  .graph-svg { width: 100%; max-width: 500px; display: block; margin: 0 auto; }
+
+  .highlight-box { background: linear-gradient(135deg, #e8f4fd, #f0f7ff); border: 2px solid #2e6da4; border-radius: 10px; padding: 16px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.25em; font-weight: bold; color: #1a3a5c; font-family: 'Courier New', monospace; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🔗 Problem 8 – Schritt für Schritt: Polykondensation<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – Kinetik, Carothers-Gleichung & Mechanismen</span></h1>
+
+<!-- EINLEITUNG -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: Was ist Polykondensation?</h2>
+<p>Polykondensation ist ein Polymerisationsverfahren, bei dem Monomere schrittweise unter Abspaltung kleiner Moleküle (meist H₂O) miteinander reagieren. Im Gegensatz zur Kettenpolymerisation wächst jede Kette nur langsam und alle Kettenlängen koexistieren zu jedem Zeitpunkt.</p>
+<div class="reaction">n HO–A–OH + n HOOC–B–COOH → H[–O–A–O–CO–B–CO–]ₙOH + (2n−1) H₂O</div>
+<div class="box">
+<strong>Schlüsselkonzepte:</strong><br>
+• <strong>DP</strong> (Degree of Polymerisation): mittlere Anzahl der Monomereinheiten pro Kette<br>
+• <strong>p</strong> (Umrechnungsgrad): Anteil der bereits reagierten funktionellen Gruppen<br>
+• <strong>C</strong>: aktuelle Konzentration freier funktioneller Gruppen &nbsp;|&nbsp; <strong>C₀</strong>: Anfangskonzentration<br>
+• Annahme: Reaktivität unabhängig von der Kettenlänge
+</div>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Bestimmung von k, x und y (Anfangsratenmethode)</h2>
+
+<p>Die Reaktionsrate folgt: <code>r = k · [OH]ˣ · [COOH]ʸ</code></p>
+
+<table>
+  <tr><th>Exp.</th><th>r₀ [M·s⁻¹]</th><th>[OH]₀ [M]</th><th>[COOH]₀ [M]</th></tr>
+  <tr><td>1</td><td>2,70 × 10⁻⁴</td><td>0,100</td><td>0,100</td></tr>
+  <tr><td>2</td><td>1,08 × 10⁻³</td><td>0,200</td><td>0,200</td></tr>
+  <tr><td>3</td><td>1,62 × 10⁻³</td><td>0,300</td><td>0,200</td></tr>
+</table>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>x+y aus Exp. 2 / Exp. 1</strong> (beide Konzentrationen verdoppelt):
+<div class="formula">r₂/r₁ = (0,200/0,100)ˣ · (0,200/0,100)ʸ = 2ˣ⁺ʸ</div>
+<div class="formula">1,08×10⁻³ / 2,70×10⁻⁴ = 4,00 = 2² → x + y = 2</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>x aus Exp. 3 / Exp. 2</strong> ([OH] von 0,2→0,3; [COOH] gleich):
+<div class="formula">r₃/r₂ = (0,300/0,200)ˣ = 1,5ˣ</div>
+<div class="formula">1,62×10⁻³ / 1,08×10⁻³ = 1,500 = 1,5¹ → x = 1</div>
+<div class="formula">y = 2 − x = 2 − 1 = 1</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>k aus Experiment 1:</strong>
+<div class="formula">k = r₁ / ([OH]₀ · [COOH]₀) = 2,70×10⁻⁴ / (0,100 · 0,100) = <strong>2,70×10⁻² M⁻¹·s⁻¹</strong></div>
+</div>
+
+<div class="result">
+x = <strong>1</strong> (1. Ordnung in [OH]) &nbsp;|&nbsp; y = <strong>1</strong> (1. Ordnung in [COOH]) &nbsp;|&nbsp; k = <strong>0,0270 M⁻¹·s⁻¹</strong><br>
+Ratengesetz: r = 0,0270 · [OH] · [COOH] (Reaktion 2. Ordnung insgesamt)
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Vereinfachte Kinetik mit [OH] = [COOH] = C</h2>
+
+<p>Mit der Annahme gleicher Konzentrationen: r = k · C · C = k · C²</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Wert von z:</strong>
+<div class="formula">−dC/dt = k · C^z &nbsp;mit&nbsp; z = x + y = 1 + 1 = <strong>2</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Integration der Differentialgleichung</strong> (Trennung der Variablen):
+<div class="formula-left">
+−dC/dt = k·C² &nbsp;→&nbsp; −dC/C² = k·dt<br>
+∫[C₀→C] −C⁻² dC = ∫[0→t] k dt<br>
+[1/C]<sub>C₀</sub><sup>C</sup> = k·t<br>
+1/C − 1/C₀ = k·t
+</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">z = 2 &nbsp;&nbsp;&nbsp;&nbsp; und &nbsp;&nbsp;&nbsp;&nbsp; 1/C − 1/C₀ = k·t</div>
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Herleitung der Carothers-Gleichung DP = f(p)</h2>
+
+<p>Definitionen: <code>DP = C₀/C</code> und <code>p = (C₀ − C)/C₀</code></p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>p umformen:</strong>
+<div class="formula">p = (C₀ − C)/C₀ = 1 − C/C₀ → C/C₀ = 1 − p → C₀/C = 1/(1−p)</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Einsetzen in DP = C₀/C:</strong>
+<div class="formula">DP = C₀/C = 1/(1−p)</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">DP = 1/(1−p) &nbsp;&nbsp; (Carothers-Gleichung)</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">Bei p=0: DP=1 (nur Monomere) &nbsp;|&nbsp; Bei p=0,5: DP=2 &nbsp;|&nbsp; Bei p=0,99: DP=100 &nbsp;|&nbsp; Bei p→1: DP→∞</div>
+</div>
+
+<div class="box">
+<strong>Wichtige Erkenntnis:</strong> Um hohe Polymerisationsgrade zu erreichen, muss der Umsatz <em>extrem</em> hoch sein! Bei p=0,99 (99% Umsatz) erhält man erst DP=100. Das ist der Grund, warum Polykondensationsreaktionen besonders reine Monomere und vollständige Reaktion erfordern.
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: DP als Funktion der Zeit: DP = f(t)</h2>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Aus der integrierten Kinetikgleichung:</strong>
+<div class="formula">1/C − 1/C₀ = k·t &nbsp;→&nbsp; 1/C = 1/C₀ + k·t</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Umformen mit DP = C₀/C → 1/C = DP/C₀:</strong>
+<div class="formula">DP/C₀ = 1/C₀ + k·t &nbsp;→&nbsp; DP = 1 + k·C₀·t</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">DP = 1 + k·C₀·t</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">DP wächst <strong>linear</strong> mit der Zeit! Die Steigung ist k·C₀.</div>
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Lineare Beziehung zwischen p und t</h2>
+
+<p>Wir kombinieren DP = f(p) und DP = f(t):</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> Aus Carothers: <code>DP = 1/(1−p)</code><br>
+Aus Kinetik: <code>DP = 1 + k·C₀·t</code>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> Gleichsetzen:
+<div class="formula">1/(1−p) = 1 + k·C₀·t</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> Umformen (Linearform):
+<div class="formula-left">
+1/(1−p) − 1 = k·C₀·t<br>
+[1 − (1−p)] / (1−p) = k·C₀·t<br>
+p/(1−p) = k·C₀·t
+</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">p/(1−p) = k·C₀·t &nbsp;&nbsp;&nbsp;&nbsp; bzw. &nbsp;&nbsp;&nbsp;&nbsp; 1/(1−p) = 1 + k·C₀·t</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">Trägt man 1/(1−p) gegen t auf, erhält man eine Gerade mit Steigung k·C₀ und Achsenabschnitt 1.</div>
+</div>
+</div>
+
+<!-- AUFGABE 6 -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Gleichgewichtskonstanten K<sub>F</sub> und K<sub>Cl</sub></h2>
+
+<div class="mech-grid">
+  <div class="mech-card">
+    <div class="mech-title">🔵 DFDPS (ArF) – 3-Körper-Mechanismus</div>
+    <p>Erster Schritt: ArF + 2B ⇌ [ArF···2B]</p>
+    <p>Das Intermediat enthält <strong>ein ArF und zwei B-Einheiten</strong>.</p>
+    <div class="formula" style="font-size:0.95em;">K<sub>F</sub> = [ArF···2B] / ([ArF]·[B]²)</div>
+    <p style="font-size:0.9em; color:#555;">Einheit: M⁻² (da 3 Körper → 1 Körper)</p>
+  </div>
+  <div class="mech-card">
+    <div class="mech-title">🔴 DCDPS (ArCl) – 2-Körper-Mechanismus</div>
+    <p>Erster Schritt: ArCl + B ⇌ [ArCl···B]</p>
+    <p>Das Intermediat enthält <strong>ein ArCl und eine B-Einheit</strong>.</p>
+    <div class="formula" style="font-size:0.95em;">K<sub>Cl</sub> = [ArCl···B] / ([ArCl]·[B])</div>
+    <p style="font-size:0.9em; color:#555;">Einheit: M⁻¹ (da 2 Körper → 1 Körper)</p>
+  </div>
+</div>
+
+<div class="result">
+K<sub>F</sub> = [ArF···2B] / ([ArF]·[B]²) &nbsp;&nbsp;&nbsp; K<sub>Cl</sub> = [ArCl···B] / ([ArCl]·[B])
+</div>
+</div>
+
+<!-- AUFGABE 7 -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Gesamtratengesetze für ArF und ArCl</h2>
+
+<p>Annahme: Das Vor-Gleichgewicht stellt sich sehr schnell ein, der zweite Schritt (Produktbildung) ist geschwindigkeitsbestimmend.</p>
+
+<div class="mech-grid">
+  <div class="mech-card">
+    <div class="mech-title">🔵 DFDPS (ArF) – 3. Ordnung</div>
+    <div class="step">
+    r = k<sub>F</sub>·[ArF···2B]<br>
+    Mit K<sub>F</sub>·[ArF]·[B]² = [ArF···2B]:
+    </div>
+    <div class="formula" style="font-size:0.95em;">r = k<sub>F</sub>·K<sub>F</sub>·[ArF]·[B]²</div>
+    <div class="formula" style="font-size:1.0em; background:#e8f4fd; border-color:#2e6da4;">r = k<sub>obs,F</sub>·[ArF]¹·[B]²</div>
+    <p>mit k<sub>obs,F</sub> = k<sub>F</sub>·K<sub>F</sub></p>
+    <p><strong>Gesamtordnung: 3</strong> (m=1, n=2)</p>
+  </div>
+  <div class="mech-card">
+    <div class="mech-title">🔴 DCDPS (ArCl) – 2. Ordnung</div>
+    <div class="step">
+    r = k<sub>Cl</sub>·[ArCl···B]<br>
+    Mit K<sub>Cl</sub>·[ArCl]·[B] = [ArCl···B]:
+    </div>
+    <div class="formula" style="font-size:0.95em;">r = k<sub>Cl</sub>·K<sub>Cl</sub>·[ArCl]·[B]</div>
+    <div class="formula" style="font-size:1.0em; background:#fce4ec; border-color:#c62828;">r = k<sub>obs,Cl</sub>·[ArCl]¹·[B]¹</div>
+    <p>mit k<sub>obs,Cl</sub> = k<sub>Cl</sub>·K<sub>Cl</sub></p>
+    <p><strong>Gesamtordnung: 2</strong> (m=1, n=1)</p>
+  </div>
+</div>
+
+<div class="box">
+<strong>Warum der Unterschied?</strong> F⁻ ist eine schlechtere Abgangsgruppe als Cl⁻ (F ist stärker gebunden), daher braucht ArF zwei Nukleophile (B) gleichzeitig im Übergangszustand, um die Reaktion zu ermöglichen. ArCl hingegen reagiert direkt mit einem B.
+</div>
+</div>
+
+<!-- AUFGABE 8 -->
+<div class="aufgabe">
+<h2>Aufgabe 8: DP = f(t) für DFDPS und Berechnung nach 1 Stunde</h2>
+
+<p>Für DFDPS gilt mit [ArF] = [B] = C: <code>r = k<sub>obs</sub>·[ArF]·[B]² = k<sub>obs</sub>·C³</code></p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Differentialgleichung und Integration:</strong>
+<div class="formula-left">
+−dC/dt = k<sub>obs</sub>·C³<br>
+−C⁻³ dC = k<sub>obs</sub>·dt<br>
+∫[C₀→C] −C⁻³ dC = ∫[0→t] k<sub>obs</sub> dt<br>
+[1/(2C²)]<sub>C₀</sub><sup>C</sup> = k<sub>obs</sub>·t<br>
+1/(2C²) − 1/(2C₀²) = k<sub>obs</sub>·t<br>
+1/C² − 1/C₀² = 2·k<sub>obs</sub>·t
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Umschreiben mit DP = C₀/C → 1/C = DP/C₀:</strong>
+<div class="formula-left">
+DP²/C₀² − 1/C₀² = 2·k<sub>obs</sub>·t<br>
+(DP² − 1)/C₀² = 2·k<sub>obs</sub>·t<br>
+DP² = 1 + 2·k<sub>obs</sub>·C₀²·t
+</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">DP = √(1 + 2·k<sub>obs</sub>·C₀²·t)</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">DP wächst mit √t (langsamer als linear!) – im Gegensatz zu DP ~ t bei 2. Ordnung</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Berechnung nach t = 1 h:</strong><br>
+k<sub>obs</sub> = 7023 L²·mol⁻²·h⁻¹, C₀ = 0,1633 M
+<div class="formula-left">
+DP² = 1 + 2 × 7023 × (0,1633)² × 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp; = 1 + 2 × 7023 × 0,026667<br>
+&nbsp;&nbsp;&nbsp;&nbsp; = 1 + 374,56<br>
+&nbsp;&nbsp;&nbsp;&nbsp; = 375,56<br>
+DP = √375,56 = <strong>19,4</strong>
+</div>
+</div>
+
+<div class="result">
+DP nach 1 Stunde: <strong>DP ≈ 19</strong><br><br>
+Das entspricht einem mittleren Polymerisationsgrad von 19 Monomereinheiten pro Kette nach nur 1 Stunde Reaktion.
+</div>
+</div>
+
+<!-- AUFGABE 9 -->
+<div class="aufgabe">
+<h2>Aufgabe 9: Qualitativer Graph DP = f(t) für ξ = 1 und ξ &gt; 1</h2>
+
+<p>Wenn jeder Propagationsschritt um den Faktor ξ beschleunigt wird:</p>
+<ul>
+  <li><strong>ξ = 1:</strong> Klassischer Fall – DP wächst <em>linear</em> mit t (DP = 1 + k·C₀·t)</li>
+  <li><strong>ξ &gt; 1:</strong> Jede neue Einheit macht die Kette reaktiver → DP wächst <em>superlinear</em>, divergiert bei einer kritischen Zeit t<sub>krit</sub></li>
+</ul>
+
+<div class="graph-container">
+  <div class="graph-inner">
+    <svg class="graph-svg" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
+      <!-- Achsen -->
+      <line x1="50" y1="260" x2="440" y2="260" stroke="#333" stroke-width="2"/>
+      <line x1="50" y1="260" x2="50" y2="20" stroke="#333" stroke-width="2"/>
+      <!-- Pfeile -->
+      <polygon points="440,256 448,260 440,264" fill="#333"/>
+      <polygon points="46,20 50,12 54,20" fill="#333"/>
+      <!-- Achsenbeschriftung -->
+      <text x="445" y="264" font-size="14" fill="#333">t</text>
+      <text x="30" y="16" font-size="14" fill="#333">DP</text>
+      <text x="240" y="285" font-size="13" fill="#333" text-anchor="middle">Zeit t →</text>
+      <!-- Linie ξ=1: linear -->
+      <line x1="50" y1="250" x2="380" y2="50" stroke="#2e6da4" stroke-width="2.5"/>
+      <text x="390" y="50" font-size="13" fill="#2e6da4" font-weight="bold">ξ = 1 (linear)</text>
+      <!-- Kurve ξ>1: superlinear, divergiert -->
+      <path d="M 50 250 Q 200 200 280 120 Q 330 70 350 20" stroke="#c0392b" stroke-width="2.5" fill="none"/>
+      <!-- Vertikale gestrichelte Linie bei t_krit -->
+      <line x1="350" y1="20" x2="350" y2="260" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <text x="345" y="275" font-size="11" fill="#c0392b" text-anchor="middle">t_krit</text>
+      <text x="390" y="90" font-size="13" fill="#c0392b" font-weight="bold">ξ &gt; 1</text>
+      <text x="390" y="106" font-size="11" fill="#c0392b">(superlinear,</text>
+      <text x="390" y="120" font-size="11" fill="#c0392b">divergiert)</text>
+      <!-- DP=1 Markierung -->
+      <circle cx="50" cy="250" r="4" fill="#333"/>
+      <text x="14" y="254" font-size="11" fill="#333">DP=1</text>
+      <!-- Legende -->
+      <rect x="55" y="25" width="170" height="50" rx="6" fill="white" stroke="#ddd"/>
+      <line x1="65" y1="45" x2="95" y2="45" stroke="#2e6da4" stroke-width="2.5"/>
+      <text x="100" y="49" font-size="12" fill="#2e6da4">ξ = 1: DP = 1 + k·C₀·t</text>
+      <line x1="65" y1="65" x2="95" y2="65" stroke="#c0392b" stroke-width="2.5"/>
+      <text x="100" y="69" font-size="12" fill="#c0392b">ξ &gt; 1: schneller, DP → ∞</text>
+    </svg>
+  </div>
+</div>
+
+<div class="result">
+<strong>Qualitatives Verhalten:</strong><br>
+• ξ = 1: Gerade (lineare Zunahme von DP mit t)<br>
+• ξ &gt; 1: Konvexe Kurve (Krümmung nach oben), die bei t = t<sub>krit</sub> gegen unendlich divergiert<br>
+• Bei t &gt; t<sub>krit</sub>: physikalisch: Gelatinierung / Phasenübergang (unlösliches Gel)
+</div>
+</div>
+
+<!-- AUFGABE 10 -->
+<div class="aufgabe">
+<h2>Aufgabe 10: Herleitung DP = f(t) für ξ &gt; 1</h2>
+
+<p>Im beschleunigenden Modell gilt: Die Ratenkonstante für eine Kette der Länge n ist <code>k_n = k·ξ^(n−1)</code>. Da DP der mittlere Polymerisationsgrad ist, gilt effektiv:</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Modifizierte DGL:</strong>
+<div class="formula">−dC/dt = k·ξ^(DP−1)·C²</div>
+Mit DP = C₀/C einsetzen: DP−1 = C₀/C − 1
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Substitution u = DP = C₀/C</strong> (C = C₀/u, dC = −C₀/u² du):
+<div class="formula-left">
+dC/dt = −C₀/u² · du/dt<br>
+Einsetzen in DGL:<br>
+C₀/u² · du/dt = k·ξ^(u−1) · C₀²/u²<br>
+du/dt = k·C₀·ξ^(u−1)
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Trennung der Variablen:</strong>
+<div class="formula-left">
+du / ξ^(u−1) = k·C₀·dt<br>
+ξ^(1−u) du = k·C₀·dt
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Integration</strong> (Anfangsbedingung: u=1 bei t=0):
+<div class="formula-left">
+∫[1→DP] ξ^(1−u) du = k·C₀·t<br><br>
+[−ξ^(1−u)/ln(ξ)]<sub>1</sub><sup>DP</sup> = k·C₀·t<br><br>
+−ξ^(1−DP)/ln(ξ) + ξ^0/ln(ξ) = k·C₀·t<br><br>
+[1 − ξ^(1−DP)] / ln(ξ) = k·C₀·t
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">5</span> <strong>Auflösen nach DP:</strong>
+<div class="formula-left">
+1 − ξ^(1−DP) = k·C₀·t·ln(ξ)<br>
+ξ^(1−DP) = 1 − k·C₀·t·ln(ξ)<br>
+(1−DP)·ln(ξ) = ln(1 − k·C₀·t·ln(ξ))<br>
+1−DP = ln(1 − k·C₀·t·ln(ξ)) / ln(ξ)
+</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">DP = 1 − ln(1 − k·C₀·t·ln ξ) / ln ξ</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">6</span> <strong>Grenzfall ξ→1 (Überprüfung):</strong><br>
+Für kleine ln(ξ) ≈ ξ−1 → 0: Taylor-Entwicklung ln(1−x) ≈ −x für kleines x:
+<div class="formula">DP ≈ 1 − (−k·C₀·t·ln(ξ))/ln(ξ) = 1 + k·C₀·t ✓</div>
+Das ergibt exakt den linearen Fall aus Aufgabe 4!
+</div>
+
+<div class="step">
+<span class="schritt-nr">7</span> <strong>Kritische Zeit t<sub>krit</sub></strong> (DP → ∞):
+<div class="formula">1 − k·C₀·t<sub>krit</sub>·ln(ξ) = 0 → t<sub>krit</sub> = 1/(k·C₀·ln(ξ))</div>
+Bei t = t<sub>krit</sub> divergiert DP → ∞: physikalisch bedeutet das <strong>Gelatinierung</strong> des Polymersystems.
+</div>
+
+<div class="warning">
+<strong>Physikalische Bedeutung:</strong> Für ξ &gt; 1 gibt es eine endliche kritische Zeit, nach der das mathematische Modell einen unendlich langen Polymerisationsgrad vorhersagt. In der Praxis bildet sich ein dreidimensionales vernetztes Netzwerk (Gel), das keine definierte Löslichkeit mehr besitzt. Dieser Gel-Punkt ist ein wichtiges Konzept in der Polymertechnologie.
+</div>
+
+<div class="result">
+<div style="font-family:'Courier New',monospace; font-size:1.05em;">DP(t, ξ&gt;1) = 1 − ln(1 − k·C₀·t·ln ξ) / ln ξ</div><br>
+Grenzfall: ξ=1 → DP = 1 + k·C₀·t ✓<br>
+Kritische Zeit: t<sub>krit</sub> = 1/(k·C₀·ln ξ) → DP → ∞ (Gelierung)
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background: #e8f4fd;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+  <tr><td><strong>1</strong></td><td>x=1, y=1, k=0,0270 M⁻¹·s⁻¹ &nbsp;→&nbsp; r = 0,027·[OH]·[COOH]</td></tr>
+  <tr><td><strong>2</strong></td><td>z = 2; integriert: 1/C − 1/C₀ = k·t</td></tr>
+  <tr><td><strong>3</strong></td><td>Carothers: <strong>DP = 1/(1−p)</strong></td></tr>
+  <tr><td><strong>4</strong></td><td><strong>DP = 1 + k·C₀·t</strong> (linear in t)</td></tr>
+  <tr><td><strong>5</strong></td><td>Linearform: <strong>1/(1−p) = 1 + k·C₀·t</strong> bzw. p/(1−p) = k·C₀·t</td></tr>
+  <tr><td><strong>6</strong></td><td>K<sub>F</sub> = [ArF···2B]/([ArF]·[B]²); K<sub>Cl</sub> = [ArCl···B]/([ArCl]·[B])</td></tr>
+  <tr><td><strong>7</strong></td><td>ArF: r = k<sub>obs,F</sub>·[ArF]·[B]² (3. Ordnung); ArCl: r = k<sub>obs,Cl</sub>·[ArCl]·[B] (2. Ordnung)</td></tr>
+  <tr><td><strong>8</strong></td><td>DFDPS: <strong>DP = √(1+2·k<sub>obs</sub>·C₀²·t)</strong>; nach 1h: DP ≈ <strong>19,4</strong></td></tr>
+  <tr><td><strong>9</strong></td><td>ξ=1: linear; ξ&gt;1: konvexe Kurve → divergiert bei t<sub>krit</sub></td></tr>
+  <tr><td><strong>10</strong></td><td><strong>DP = 1 − ln(1−k·C₀·t·ln ξ)/ln ξ</strong>; t<sub>krit</sub> = 1/(k·C₀·ln ξ)</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #c8ddf0; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 8 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
