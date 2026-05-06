@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 10 – Präbiotisches Leben | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #f5f0ff; color: #1a1a2e; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #4a0080; color: #4a0080;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #4a0080; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #4a0080, #7b1fa2); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #4a0080; border-left: 5px solid #7b1fa2; padding-left: 13px; margin-top: 0; }
+  h3 { color: #4a148c; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #e1d5f0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(74,0,128,0.07); }
+  .box     { background: #f3e5f5; border-left: 4px solid #7b1fa2; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .chem-struct { background: #fafafa; border: 1px solid #e1d5f0; border-radius: 8px; padding: 14px 18px; margin: 12px 0; font-family: 'Courier New', monospace; font-size: 0.97em; line-height: 2.0; }
+
+  .formula      { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.1; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #4a0080; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #e1d5f0; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f9f5ff; }
+
+  .step { margin: 11px 0; padding: 11px 16px; background: #fdfaff; border-radius: 7px; border: 1px solid #e1d5f0; }
+  .schritt-nr { display: inline-block; background: #4a0080; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  code { background: #f3e5f5; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #ce93d8; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #f3e5f5, #fdf5ff); border: 2px solid #7b1fa2; border-radius: 10px; padding: 16px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.2em; font-weight: bold; color: #4a0080; font-family: 'Courier New', monospace; }
+
+  .mol-card { background: white; border: 2px solid #7b1fa2; border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
+  .mol-title { font-weight: bold; color: #4a0080; font-size: 1.05em; margin-bottom: 8px; border-bottom: 1px solid #e1d5f0; padding-bottom: 6px; }
+
+  .answer-yes { background: #e8f5e9; border: 1px solid #4caf50; border-radius: 6px; padding: 9px 14px; margin: 5px 0; }
+  .answer-no  { background: #ffebee; border: 1px solid #ef5350; border-radius: 6px; padding: 9px 14px; margin: 5px 0; }
+  .badge-yes { display: inline-block; background: #4caf50; color: white; border-radius: 20px; padding: 2px 10px; font-size: 0.85em; font-weight: bold; margin-right: 8px; }
+  .badge-no  { display: inline-block; background: #ef5350; color: white; border-radius: 20px; padding: 2px 10px; font-size: 0.85em; font-weight: bold; margin-right: 8px; }
+
+  .phase-svg { width: 100%; max-width: 480px; display: block; margin: 0 auto; }
+  .graph-bg { background: white; border: 1px solid #e1d5f0; border-radius: 8px; padding: 14px; margin: 14px 0; }
+
+  .ee-table td:first-child { text-align: left; font-weight: bold; }
+  .ee-highlight { background: #f3e5f5 !important; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🌍 Problem 10 – Präbiotisches Leben: Entstehung der Homochiralität<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung auf Deutsch – RNA-Vorläufer, Chiralität, Spin-Bahn-Kopplung & Polymerisation</span></h1>
+
+<!-- EINLEITUNG -->
+<div class="aufgabe">
+<h2>📚 Überblick: Das Problem des Ursprungs des Lebens</h2>
+<p>Diese Aufgabe behandelt einen der faszinierendsten offenen Fragen der Wissenschaft: Wie entstanden aus einfachen präbiotischen Molekülen die ersten selbstreplizierenden Systeme? Zwei Kernprobleme werden untersucht:</p>
+<div class="box">
+<strong>1. Präbiotische Synthese:</strong> Wie bildeten sich Ribonukleotide (Bausteine der RNA) aus einfachen Molekülen?<br>
+<strong>2. Homochiralität:</strong> Warum verwenden Lebewesen fast ausschließlich L-Aminosäuren und D-Zucker? Wie konnte die ursprüngliche Racemmischung gebrochen werden?
+</div>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Strukturen A–G, G' und I</h2>
+<p>Ausgangsstoffe: Cyanamid <strong>1</strong> (H₂N–C≡N), Glycolaldehyd <strong>2</strong> (HOCH₂–CHO), Formaldehyd <strong>3</strong> (CH₂O), Cyanacetylen <strong>4</strong> (HC≡C–C≡N)</p>
+
+<div class="mol-card">
+<div class="mol-title">A – Kondensationsprodukt aus 1 + 2 (−H₂O, 0 Ringe → 1 Ring)</div>
+<p><strong>Reaktion:</strong> Cyanamid (H₂N–C≡N) reagiert mit Glycolaldehyd (HOCH₂–CHO) unter Wasserabspaltung. Die NH₂-Gruppe greift den Aldehyd an → Iminbildung, dann Cyclisierung mit der OH-Gruppe.</p>
+<div class="chem-struct">
+A = 2-Amino-oxazol<br>
+Struktur: Fünfgliedriger Ring mit O und N, NH₂-Substituent<br>
+  NH₂<br>
+   |<br>
+  C=N<br>
+ /    \<br>
+O      CH<br>
+ \    /<br>
+  CH₂<br>
+(2-Amino-1,3-oxazol: O und N im 5-Ring, NH₂ in Position 2)
+</div>
+<p><em>Begründung: 1 Ring (Oxazol-Ring). Cyanamid liefert das C=N, Glycolaldehyd liefert das O–C–C-Fragment. Wasserabspaltung schließt den Ring.</em></p>
+</div>
+
+<div class="mol-card">
+<div class="mol-title">B – Produkt A + Formaldehyd 3 (1 Ring → 2 Ringe)</div>
+<p><strong>Reaktion:</strong> 2-Aminooxazol (A) + Formaldehyd → Glycerinformaldehydkondensation. Der NH₂ greift CH₂O an, dann Cyclisierung. Alternativ: Aldol-Reaktion des Formaldehyds mit A, dann intramolekulare Cyclisierung zum Bicyclus.</p>
+<div class="chem-struct">
+B = 2-Amino-oxazolin-Derivat mit zusätzlichem Ring (Bicyclus)<br>
+Genauer: 3-Aminoisoxazolidin oder 2-Amino-4-hydroxymethyl-1,3-oxazolidin<br><br>
+Tatsächlich: B = (2R,3S)- oder entsprechendes 2-Amino-3-(hydroxymethyl)oxiran? Nein:<br><br>
+B = das Produkt der Formaldehyd-Addition an A mit Ringschluss zu einem Bicyclus<br>
+mit Oxazol + neuem Ring (durch CH₂-Brücke): 2 Ringe insgesamt.
+</div>
+<p><em>Jeder Schritt A→B→C erhöht die Ringzahl um 1. B hat 2 Ringe.</em></p>
+</div>
+
+<div class="mol-card">
+<div class="mol-title">C – Nucleosid-Vorläufer (2 Ringe → 3 Ringe)</div>
+<p>B reagiert weiter mit Cyanacetylen <strong>4</strong> über eine [3+2]-Cycloaddition oder Michael-Addition zum tricyclischen Zwischenprodukt C.</p>
+<div class="chem-struct">
+C = Arabino-amino-oxazolidinyl-Zwischenprodukt (3 Ringe)<br>
+Enthält: Oxazolin-Ring + neuen Ring durch Cyanacetylen<br>
+Das dritte Ringsystem entsteht durch Reaktion der NH-Gruppe mit dem C≡C des Cyanacetylens
+</div>
+</div>
+
+<div class="mol-card">
+<div class="mol-title">D, E – Zucker-Derivate</div>
+<div class="chem-struct">
+D = Glyceraldehyd-Derivat (aus 2 + weiterer Aldol-Reaktion)<br>
+Reaktion: Glycolaldehyd 2 + Formaldehyd 3 → Glyceraldehyd (Aldol)<br><br>
+E = Ribose oder Arabinose (Pentose-Zucker, C5)<br>
+D ist das Triosezucker-Intermediat, E ist der fertige Ringzucker<br>
+E = 2,3-Cyclo-Ribose oder Arabino-Zucker für Nucleotid-Synthese
+</div>
+</div>
+
+<div class="mol-card">
+<div class="mol-title">F – Hydratationsprodukt von 1</div>
+<div class="chem-struct">
+F = Harnstoff (H₂N–CO–NH₂)<br>
+Reaktion: Cyanamid (H₂N–C≡N) + H₂O → Harnstoff<br>
+(Nucleophile Addition von H₂O an die C≡N-Dreifachbindung)
+</div>
+</div>
+
+<div class="mol-card">
+<div class="mol-title">G und G' – Cyanacetylen-Additionsprodukte</div>
+<div class="chem-struct">
+G + G' entstehen aus 4 (HC≡C–C≡N) + H₂O<br><br>
+G = Cyanovinylamin: H₂N–CH=CH–C≡N (Additionsprodukt)<br>
+G' = Malononitriltautomer oder weiteres Additionsprodukt<br><br>
+G ist der direkte Vorläufer von Cytosin H durch weitere Cyclisierung
+</div>
+</div>
+
+<div class="mol-card">
+<div class="mol-title">H – Cytosin (aus G)</div>
+<div class="chem-struct">
+H = Cytosin (eine der vier RNA-Basen)<br>
+Pyrimidinring mit NH₂ und C=O<br>
+Formel: C₄H₅N₃O, M = 111 g/mol<br><br>
+     NH₂<br>
+      |<br>
+  N===C<br>
+  |    \<br>
+  CH    N<br>
+  |    /<br>
+  CH=C<br>
+      |<br>
+      O (als C=O, also: 4-Amino-2(1H)-pyrimidinon)
+</div>
+</div>
+
+<div class="mol-card">
+<div class="mol-title">I – (Nicht gebildetes) Nucleosid aus H + E</div>
+<div class="chem-struct">
+I = Cytidin (Cytosin-Ribosid) – würde entstehen wenn H mit Zucker E reagierte<br>
+Da H (Cytosin) zu wenig nucleophil ist, entsteht I NICHT direkt.<br>
+Darum der alternative Weg A→B→C!
+</div>
+</div>
+
+<div class="result">
+Der Schlüssel zur Synthese: Statt Cytosin H direkt mit dem Zucker E zu koppeln (was wegen geringer Nucleophilie von H scheitert), wird zuerst der Nucleosid-Vorläufer C über A→B→C aufgebaut und dann mit Phosphat zum Nucleotid C ausgebaut.
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Warum ist Cytosin H wenig nucleophil?</h2>
+
+<div class="answer-yes">
+  <span class="badge-yes">✓ a)</span>
+  <strong>Elektronendelokalisierung durch Aromatizität des Pyrimidinrings</strong><br>
+  Cytosin ist ein aromatisches Pyrimidin (6π-Elektronen). Das freie Elektronenpaar des NH₂-Stickstoffs ist in das aromatische π-System delokalisiert (Amidresonanz) → die Nucleophilie des N-Atoms ist stark reduziert. Dasselbe gilt für das Ring-N-Atom. Beide potenziellen Angriffspunkte sind elektronenarm.
+</div>
+
+<div class="answer-no">
+  <span class="badge-no">✗ b)</span>
+  <strong>Extreme Ringspannung</strong><br>
+  Cytosin ist ein 6-gliedriger Ring – keinerlei Ringspannung vorhanden. Diese Antwort ist falsch.
+</div>
+
+<div class="answer-no">
+  <span class="badge-no">✗ c)</span>
+  <strong>Positive Ladung durch Ammoniumsalz</strong><br>
+  Cytosin ist eine schwache Base (pKₐ ≈ 4,5), liegt bei physiologischem pH neutral vor. Keine positive Ladung unter Reaktionsbedingungen.
+</div>
+
+<div class="result">Richtige Antwort: <strong>a)</strong> – Aromatische Delokalisierung des Elektronenpaars am NH₂ in den Pyrimidinring reduziert die Nucleophilie drastisch.</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: L- und D-Glyceraldehyd – Fischer-Projektionen</h2>
+
+<p>Glyceraldehyd (HOCH₂–CHOH–CHO) ist der einfachste Zucker mit einem Stereozentrum (C2).</p>
+<p><strong>Konvention:</strong> In der Fischer-Projektion zeigt die OH-Gruppe am Stereozentrum bei D-Glyceraldehyd nach <em>rechts</em>, bei L-Glyceraldehyd nach <em>links</em>. Die Aldehydgruppe steht oben, die CH₂OH-Gruppe unten.</p>
+
+<div class="formula-left" style="text-align:center;">
+L-Glyceraldehyd &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D-Glyceraldehyd<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CHO<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+HO ──C── H &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; H ──C── OH<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+&nbsp;&nbsp;&nbsp;CH₂OH &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CH₂OH<br>
+<br>
+(S)-Konfiguration, OH links &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (R)-Konfiguration, OH rechts
+</div>
+
+<div class="result">
+<strong>L-Glyceraldehyd:</strong> OH-Gruppe am Stereozentrum zeigt in der Fischer-Projektion nach <strong>links</strong> (S-Konfiguration)<br>
+<strong>D-Glyceraldehyd:</strong> OH-Gruppe am Stereozentrum zeigt in der Fischer-Projektion nach <strong>rechts</strong> (R-Konfiguration)<br><br>
+<em>Merkhilfe: D wie <u>D</u>extro (lat. rechts). Alle D-Zucker in der Fischer-Projektion: OH am letzten Stereozentrum zeigt rechts.</em>
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Enantiomerenüberschuss ee bei T = 313 K</h2>
+
+<p>Gegeben: k(L) = A·exp(−(Eₐ−H<sub>SO</sub>)/(k<sub>B</sub>T)), k(D) = A·exp(−(Eₐ+H<sub>SO</sub>)/(k<sub>B</sub>T))</p>
+<p>H<sub>SO</sub> = 0,5 meV, T = 313 K, racemische Mischung [LX] = [DX]</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Verhältnis k(L)/k(D):</strong>
+<div class="formula">k(L)/k(D) = exp(−(Eₐ−H<sub>SO</sub>)/(k<sub>B</sub>T)) / exp(−(Eₐ+H<sub>SO</sub>)/(k<sub>B</sub>T)) = exp(2H<sub>SO</sub>/(k<sub>B</sub>T))</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>ee-Ausdruck</strong> (da [LX]=[DX], sind die Produktmengen direkt proportional zu den Ratenkonstanten):
+<div class="formula-left">
+ee = ([LY]−[DY])/([LY]+[DY]) = (k(L)−k(D))/(k(L)+k(D))<br><br>
+Kürze durch k(D): = (k(L)/k(D) − 1)/(k(L)/k(D) + 1)<br><br>
+Mit r = exp(2H<sub>SO</sub>/(k<sub>B</sub>T)):<br>
+ee = (r−1)/(r+1) = tanh(H<sub>SO</sub>/(k<sub>B</sub>T))
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Einsetzen der Zahlenwerte:</strong>
+<div class="formula-left">
+H<sub>SO</sub>/(k<sub>B</sub>T) = 0,5×10⁻³ eV / (8,617×10⁻⁵ eV/K × 313 K)<br>
+            = 0,5×10⁻³ / 0,02697<br>
+            = 0,01854<br><br>
+ee = tanh(0,01854) = <strong>0,01854 ≈ 1,85%</strong>
+</div>
+(Für kleine x gilt tanh(x) ≈ x, daher ee ≈ 2H<sub>SO</sub>/(k<sub>B</sub>T) = 0,0371... Achtung: tanh(x) ≈ x, nicht 2x! Die exakte Formel liefert ee = tanh(0,01854) ≈ 0,01854.)
+</div>
+
+<div class="result">
+ee = tanh(H<sub>SO</sub>/(k<sub>B</sub>T)) = tanh(0,01854) ≈ <strong>1,85%</strong><br><br>
+L-Y ist leicht im Überschuss. Diese winzige Präferenz kann durch nachfolgende Amplifikationsmechanismen (Aufgabe 7, 8) zu nahezu vollständiger Homochiralität aufgebaut werden!
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Phasenporträt der Symmetriebrechung</h2>
+
+<p>Das System hat Gesamtkonzentration 1 M: [L] + [D] = 1 M. Symmetriebrechung bedeutet: Das racemische System ([L]=[D]=0,5 M) ist <strong>instabil</strong> – kleine Störungen werden verstärkt bis zu einem der beiden chiralen Attraktoren ([L]→1, [D]→0) oder ([L]→0, [D]→1).</p>
+
+<div class="graph-bg">
+<svg class="phase-svg" viewBox="0 0 440 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hintergrund -->
+  <rect x="50" y="20" width="370" height="330" fill="#fdfaff" stroke="#e1d5f0"/>
+  <!-- Achsen -->
+  <line x1="50" y1="350" x2="420" y2="350" stroke="#333" stroke-width="2"/>
+  <line x1="50" y1="350" x2="50" y2="20" stroke="#333" stroke-width="2"/>
+  <!-- Achsenpfeile -->
+  <polygon points="420,346 428,350 420,354" fill="#333"/>
+  <polygon points="46,20 50,12 54,20" fill="#333"/>
+  <!-- Achsenbeschriftungen -->
+  <text x="430" y="354" font-size="13" fill="#333">[L]</text>
+  <text x="28" y="16" font-size="13" fill="#333">[D]</text>
+  <text x="220" y="380" font-size="12" fill="#555" text-anchor="middle">L-Konzentration (M)</text>
+  <text x="20" y="195" font-size="12" fill="#555" text-anchor="middle" transform="rotate(-90,20,195)">D-Konzentration (M)</text>
+  <!-- Gitterbeschriftungen -->
+  <text x="50" y="368" font-size="10" fill="#777" text-anchor="middle">0</text>
+  <text x="235" y="368" font-size="10" fill="#777" text-anchor="middle">0.5</text>
+  <text x="420" y="368" font-size="10" fill="#777" text-anchor="middle">1.0</text>
+  <text x="42" y="354" font-size="10" fill="#777" text-anchor="end">0</text>
+  <text x="42" y="190" font-size="10" fill="#777" text-anchor="end">0.5</text>
+  <text x="42" y="26" font-size="10" fill="#777" text-anchor="end">1.0</text>
+  <!-- Diagonale: [L]+[D]=1 (Nebenbedingung) -->
+  <line x1="50" y1="26" x2="420" y2="350" stroke="#9575cd" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <!-- Racemische Linie [L]=[D] (Diagonale des Quadrats) -->
+  <line x1="50" y1="350" x2="235" y2="190" stroke="#7b1fa2" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <!-- Attraktoren (stabile Punkte): (1,0) und (0,1) -->
+  <circle cx="420" cy="350" r="8" fill="#2e7d32" stroke="white" stroke-width="2"/>
+  <text x="415" y="340" font-size="11" fill="#2e7d32" font-weight="bold">[L]=1,[D]=0</text>
+  <circle cx="50" cy="26" r="8" fill="#2e7d32" stroke="white" stroke-width="2"/>
+  <text x="58" y="22" font-size="11" fill="#2e7d32" font-weight="bold">[D]=1,[L]=0</text>
+  <!-- Instabiler Fixpunkt: [L]=[D]=0.5 -->
+  <circle cx="235" cy="190" r="6" fill="white" stroke="#c62828" stroke-width="2.5"/>
+  <text x="242" y="187" font-size="11" fill="#c62828">[L]=[D]=0.5 (instabil)</text>
+  <!-- Trajektorie 1: startet nahe Racemisch, geht zu [L]→1 -->
+  <path d="M 240 188 Q 300 220 380 330 Q 400 343 418 349" stroke="#4a0080" stroke-width="2" fill="none"/>
+  <polygon points="416,344 422,352 410,352" fill="#4a0080"/>
+  <!-- Trajektorie 2: startet nahe Racemisch, geht zu [D]→1 -->
+  <path d="M 230 192 Q 170 160 90 60 Q 65 35 52 28" stroke="#bf360c" stroke-width="2" fill="none"/>
+  <polygon points="48,30 54,22 58,32" fill="#bf360c"/>
+  <!-- Trajektorie 3: von Ecke kommend, zu L-Attraktor -->
+  <path d="M 320 260 Q 370 300 410 345" stroke="#4a0080" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+  <!-- Legende -->
+  <rect x="55" y="60" width="200" height="90" rx="6" fill="white" stroke="#e1d5f0"/>
+  <circle cx="72" cy="82" r="6" fill="#2e7d32"/>
+  <text x="84" y="86" font-size="11" fill="#2e7d32">Stabiler Attraktor (Homochiralität)</text>
+  <circle cx="72" cy="102" r="5" fill="white" stroke="#c62828" stroke-width="2"/>
+  <text x="84" y="106" font-size="11" fill="#c62828">Instabiler Fixpunkt (Racemat)</text>
+  <line x1="65" y1="122" x2="85" y2="122" stroke="#4a0080" stroke-width="2"/>
+  <polygon points="85,118 91,122 85,126" fill="#4a0080"/>
+  <text x="96" y="126" font-size="11" fill="#4a0080">Symmetriebrechungs-Trajektorie</text>
+</svg>
+</div>
+
+<div class="result">
+Das Phasenporträt zeigt zwei <strong>stabile Attraktoren</strong> (vollständige L- oder D-Dominanz) und einen <strong>instabilen Sattelpunkt</strong> beim Racemat ([L]=[D]=0,5). Jede minimale Störung (z.B. durch CISS-Effekt) wird verstärkt und treibt das System zu einem der beiden chiralen Endpunkte. Dies erklärt, wie aus einer kleinen anfänglichen Chiralitätsasymmetrie vollständige Homochiralität entstehen kann.
+</div>
+</div>
+
+<!-- AUFGABE 6 -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Herleitung der ee<sub>homochiral</sub>-Formel</h2>
+
+<p>Bei k<sub>homo</sub> = k<sub>hetero</sub>: alle vier Reaktionen laufen mit gleicher Ratenkonstante k. Die Produktmengen sind dann proportional zu den Konzentrationen der Edukte.</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Produktkonzentrationen:</strong>
+<div class="formula-left">
+[L1L2] ∝ [L1]·[L2] = a·c<br>
+[D1D2] ∝ [D1]·[D2] = b·d<br>
+[D1L2] ∝ [D1]·[L2] = b·c<br>
+[L1D2] ∝ [L1]·[D2] = a·d
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Parametrisierung mit ee₁ und ee₂:</strong><br>
+Sei S₁ = [L1]+[D1], S₂ = [L2]+[D2]:
+<div class="formula-left">
+a = [L1] = S₁·(1+ee₁)/2 &nbsp;&nbsp;&nbsp; b = [D1] = S₁·(1−ee₁)/2<br>
+c = [L2] = S₂·(1+ee₂)/2 &nbsp;&nbsp;&nbsp; d = [D2] = S₂·(1−ee₂)/2
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Zähler [L1L2]−[D1D2] = ac − bd:</strong>
+<div class="formula-left">
+ac = S₁S₂·(1+ee₁)(1+ee₂)/4<br>
+bd = S₁S₂·(1−ee₁)(1−ee₂)/4<br><br>
+ac − bd = S₁S₂/4·[(1+ee₁)(1+ee₂) − (1−ee₁)(1−ee₂)]<br>
+Ausmultiplizieren:<br>
+(1+ee₁+ee₂+ee₁ee₂) − (1−ee₁−ee₂+ee₁ee₂)<br>
+= 2·(ee₁+ee₂)<br><br>
+→ ac − bd = S₁S₂·(ee₁+ee₂)/2
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Nenner [L1L2]+[D1D2] = ac + bd:</strong>
+<div class="formula-left">
+ac + bd = S₁S₂/4·[(1+ee₁)(1+ee₂) + (1−ee₁)(1−ee₂)]<br>
+= S₁S₂/4·[(1+ee₁+ee₂+ee₁ee₂) + (1−ee₁−ee₂+ee₁ee₂)]<br>
+= S₁S₂/4·2·(1+ee₁ee₂)<br>
+= S₁S₂·(1+ee₁ee₂)/2
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">5</span> <strong>Quotient:</strong>
+<div class="formula">ee<sub>homochiral</sub> = (ac−bd)/(ac+bd) = (ee₁+ee₂)/(1+ee₁·ee₂) ✓</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">ee<sub>homochiral</sub> = (ee₁ + ee₂) / (1 + ee₁·ee₂)</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">Dieser Ausdruck ist identisch zur Additionsformel des Tangens! &nbsp; tan(α+β) = (tan α + tan β)/(1 − tan α·tan β)<br>
+→ Die homochirale ee „addiert sich" wie Winkel: ee<sub>n</sub> = tanh(n·arctanh(ee₀))</div>
+</div>
+</div>
+
+<!-- AUFGABE 7 -->
+<div class="aufgabe">
+<h2>Aufgabe 7: ee<sub>homochiral</sub> für ee₁ = ee₂ = ee(Aufgabe 4)</h2>
+
+<div class="step">
+ee(Aufgabe 4) = tanh(0,01854) ≈ <strong>0,01854</strong> (1,85%)
+<div class="formula-left">
+ee<sub>homo</sub> = (ee₁+ee₂)/(1+ee₁·ee₂) = 2·ee/(1+ee²)<br><br>
+= 2 × 0,01854 / (1 + 0,01854²)<br>
+= 0,03708 / (1 + 0,000344)<br>
+= 0,03708 / 1,000344<br>
+= <strong>0,03707 ≈ 3,71%</strong>
+</div>
+(Näherung für kleines ee: ee<sub>homo</sub> ≈ 2·ee = 3,71% – stimmt sehr gut überein)
+</div>
+
+<div class="result">
+ee<sub>homochiral</sub>(Dimer) ≈ <strong>3,71%</strong><br>
+Das Dimer hat bereits doppelt so hohe ee wie das Monomer – Homochirale Polymerisation amplifiziert Chiralität!
+</div>
+</div>
+
+<!-- AUFGABE 8 -->
+<div class="aufgabe">
+<h2>Aufgabe 8: Minimale Kettenlänge für ee<sub>homo</sub> &gt; 99%</h2>
+
+<p>Annahme: jede Aminosäure hat ee₀ = 0,05 (5%). Nur homochirale Oligomere propagieren die Kette weiter, daher addiert sich die ee-Formel iterativ:</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Iterationsformel:</strong> Das n-te Monomer addiert seine ee₀ zur bisherigen ee_{n-1}:
+<div class="formula">ee_n = (ee_{n-1} + ee₀) / (1 + ee_{n-1}·ee₀)</div>
+Dies entspricht: ee_n = tanh(n · arctanh(ee₀))
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Analytische Lösung:</strong>
+<div class="formula">tanh(n·arctanh(ee₀)) > 0,99</div>
+<div class="formula">n > arctanh(0,99) / arctanh(0,05) = 2,6467 / 0,05004 = 52,9</div>
+<div class="formula">→ n<sub>min</sub> = 53</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Numerische Überprüfung (ausgewählte Werte):</strong>
+</div>
+
+<table class="ee-table">
+  <tr><th>n (Kettenlänge)</th><th>ee_n</th><th>ee_n in %</th></tr>
+  <tr><td>1</td><td>0,0500</td><td>5,00%</td></tr>
+  <tr><td>5</td><td>0,2451</td><td>24,5%</td></tr>
+  <tr><td>10</td><td>0,4624</td><td>46,2%</td></tr>
+  <tr><td>20</td><td>0,7619</td><td>76,2%</td></tr>
+  <tr><td>30</td><td>0,9054</td><td>90,5%</td></tr>
+  <tr><td>40</td><td>0,9641</td><td>96,4%</td></tr>
+  <tr><td>50</td><td>0,9867</td><td>98,7%</td></tr>
+  <tr><td>52</td><td>0,9893</td><td>98,9%</td></tr>
+  <tr class="ee-highlight"><td>53</td><td>0,9901</td><td><strong>99,0% ✓</strong></td></tr>
+</table>
+
+<div class="result">
+Minimale Kettenlänge: <strong>n = 53 Aminosäuren</strong><br><br>
+Mit nur 5% ee der Monomere reichen 53 hintereinandergesetzte homochirale Kupplungsschritte, um einen Polymer mit &gt;99% ee zu erhalten! Das ist ein beeindruckend effizienter Amplifikationsmechanismus – und biologische Proteine haben typischerweise 50–300+ Aminosäuren.
+</div>
+</div>
+
+<!-- AUFGABE 9 -->
+<div class="aufgabe">
+<h2>Aufgabe 9: Struktur von K</h2>
+
+<p>Aus dem Reaktionsschema (2): K + aa₁ (ee₁) + aa₂ (ee₂) → Dipeptid-Derivat aa₁-aa₂ (nach Hydrolyse)</p>
+<p>K reagiert mit einem Aminosäure-Ammoniumsalz (aa₁) in Gegenwart eines achiralen Katalysators. Das Produkt nach Reaktion und Hydrolyse ist das Dipeptid aa₁-aa₂.</p>
+
+<div class="step">
+K ist ein <strong>aktiviertes Aminosäure-Derivat</strong> – ein Aminosäure-N-Carboxyanhydrid (NCA), auch als Leuchs-Anhydrid bekannt. NCAs sind die reaktiven Acyl-Donoren in der Peptidkondensation.<br><br>
+<strong>Struktur von K (NCA = N-Carboxyanhydrid):</strong>
+</div>
+
+<div class="chem-struct">
+K = Aminosäure-N-Carboxyanhydrid (NCA) von aa₂<br><br>
+5-gliedriger cyclischer Anhydrid:<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;O&nbsp;&nbsp;&nbsp;&nbsp;O<br>
+&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;||<br>
+&nbsp;&nbsp;&nbsp;O─C─NH─CH(R₂)─C<br>
+&nbsp;&nbsp;&nbsp;└──────────────┘<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Ringschluss)<br><br>
+Genauer: Der Ring enthält: O–CO–NH–C*(R₂)–CO– (geschlossen durch das O)<br>
+→ 2-Oxazolidinon-5-on mit R₂-Substituent am C5
+</div>
+
+<div class="result">
+K = <strong>N-Carboxyanhydrid (NCA, Leuchs-Anhydrid) der Aminosäure aa₂</strong><br>
+Fünfgliedriger Ring: –O–C(=O)–NH–C*(R₂)–C(=O)– (geschlossen durch das O)<br>
+NCAs reagieren spontan mit NH₂-Gruppen unter CO₂-Abspaltung zur Peptidbindung.
+</div>
+</div>
+
+<!-- AUFGABE 10 -->
+<div class="aufgabe">
+<h2>Aufgabe 10: Funktionelle Gruppen in LL für den HAT-Prozess</h2>
+
+<p>L-Pro-L-Val (LL) ist das Dipeptid-Katalysator für die Transaminierungsreaktion. Der HAT (Hydrogen Atom Transfer)-Mechanismus überträgt ein Wasserstoffatom (H-Radikal) zwischen Substrat und Katalysator.</p>
+
+<div class="step">
+<strong>Struktur von LL (L-Prolinyl-L-Valin):</strong><br>
+Das N-Terminus ist ein Prolin (sekundäres Amin, Pyrrolidinring), der C-Terminus ist Valin (–COOH und iso-Propyl-Seitenkette). Das Dipeptid hat eine freie –COOH-Gruppe und ein sekundäres N-H (der Peptidamid-NH).
+</div>
+
+<div class="step">
+<strong>HAT-relevante Gruppen:</strong><br>
+Beim HAT zwischen Pyridoxamin (PM) und dem Dipeptid-Katalysator wird das Wasserstoffatom am α-Kohlenstoff des Pyridoxamins (benachbart zur NH₂-Gruppe) übertragen. In LL sind daran beteiligt:
+<ul>
+  <li><strong>Die NH-Gruppe der Peptidbindung</strong> (Amid-NH: N–H): Sie kann als H-Atom-Donor/Akzeptor wirken</li>
+  <li><strong>Die COOH-Gruppe</strong>: Kann Protonentransfer unterstützen (säurekatalytische Funktion)</li>
+  <li><strong>Das N-H des Prolinrings</strong> (sekundäres Amin am N-Terminus): Hauptbeteiligter am HAT als H-Donor</li>
+</ul>
+</div>
+
+<div class="result">
+Am HAT beteiligt: <strong>Die NH-Gruppe der Peptidbindung (Amid-N–H)</strong> und das <strong>sekundäre N am Prolin-N-Terminus</strong>.<br>
+Diese N–H-Gruppen können das Wasserstoffatom auf das Substrat übertragen und unterstützen so den radikalischen Mechanismus der stereospezifischen Transaminierung.
+</div>
+</div>
+
+<!-- AUFGABE 11 -->
+<div class="aufgabe">
+<h2>Aufgabe 11: Strukturen M, N, O</h2>
+
+<p>Reaktionssequenz: Pyruvat + PM → M → N → O → PL + Alanin</p>
+<p>Dies ist eine Transaminierungsreaktion (Pyridoxamin + α-Ketosäure → Pyridoxal + Aminosäure).</p>
+
+<div class="mol-card">
+<div class="mol-title">M – Erstes Zwischenprodukt (PM + Pyruvat + H₂O)</div>
+<div class="chem-struct">
+M = Imin/Schiff-Base aus Pyridoxamin (PM) + Pyruvat (CH₃-CO-COO⁻)<br><br>
+Die NH₂-Gruppe des PM reagiert mit der Ketogruppe des Pyruvats:<br>
+PM–NH₂ + CH₃–CO–COO⁻ → PM–N=C(CH₃)–COO⁻ + H₂O<br><br>
+M = Aldiminform: Pyridoxamin-Pyruvat-Schiff-Base<br>
+(PM-Grundgerüst mit –N=C(CH₃)–COO⁻ statt –NH₂)
+</div>
+</div>
+
+<div class="mol-card">
+<div class="mol-title">N – Nach HAT/Protonierung durch [LL-H]⁺ (N ist das protonierte Intermediat)</div>
+<div class="chem-struct">
+N = Protoniertes Ketiminintermediat<br><br>
+Der HAT-Schritt: [LL-H]⁺ überträgt H an die Schiff-Base M<br>
+→ N = Protoniertes Quinonoidiminintermediat oder<br>
+N = Ketiminform: PM-Grundgerüst mit –NH–C(CH₃)–COO⁻<br>
+(die C=N-Doppelbindung wurde durch H-Übertragung reduziert)<br><br>
+N ist die reduzierte Form der Schiff-Base, bereit zur Hydrolyse
+</div>
+</div>
+
+<div class="mol-card">
+<div class="mol-title">O – Letztes Intermediat vor der Produktfreisetzung</div>
+<div class="chem-struct">
+O = Pyridoxal-Aldiminat (PL-Alanin-Schiff-Base)<br><br>
+Die Aldiminform: Pyridoxal (PL) ist noch über eine Schiff-Base mit dem entstandenen<br>
+Alanin (H₂N–CH(CH₃)–COO⁻) verbunden:<br>
+PL–N=CH(CH₃)–COO⁻<br><br>
+Hydrolyse von O → PL (Pyridoxal) + Alanin (L oder D, je nach Katalysator)
+</div>
+</div>
+
+<div class="result">
+M: Schiff-Base PM–N=C(CH₃)–COO⁻ (Kondensationsprodukt PM + Pyruvat)<br>
+N: Reduziertes Ketiminintermediat PM–NH–C(CH₃)–COO⁻ (nach HAT)<br>
+O: PL-Alaninat-Schiff-Base PL–N=CH(CH₃)–COO⁻ (vor Hydrolyse zu PL + Ala)
+</div>
+</div>
+
+<!-- AUFGABE 12 -->
+<div class="aufgabe">
+<h2>Aufgabe 12: Intermolekulare Kräfte hinter der schnelleren D-Ala-Reaktion</h2>
+
+<div class="answer-yes">
+  <span class="badge-yes">✓ a)</span>
+  <strong>Wasserstoffbrückenbindungen</strong><br>
+  Im Übergangszustand der Rückreaktion (Alanin + PL-LL → Pyruvat) können die NH-Gruppen des Dipeptids LL und die COOH/NH₃⁺-Gruppen des Alanins Wasserstoffbrücken ausbilden. D-Ala bildet dabei günstigere Geometrie für diese H-Brücken mit PL-LL → niedrigere Aktivierungsbarriere.
+</div>
+
+<div class="answer-no">
+  <span class="badge-no">✗ b)</span>
+  <strong>π-Stacking</strong><br>
+  Alanin hat keine aromatischen Gruppen für π-Wechselwirkungen. Nicht relevant.
+</div>
+
+<div class="answer-yes">
+  <span class="badge-yes">✓ c)</span>
+  <strong>Sterische Abstoßung</strong><br>
+  L-Ala und der L-Pro-L-Val-Katalysator haben gleiche absolute Konfiguration. Im Übergangszustand entstehen ungünstige sterische Wechselwirkungen zwischen gleich orientierten Substituenten (matched/mismatched-Konzept). D-Ala passt besser → weniger sterische Spannung → schnellere Reaktion.
+</div>
+
+<div class="answer-no">
+  <span class="badge-no">✗ d)</span>
+  <strong>Ausrichtung der Stereozentren</strong><br>
+  Das ist keine eigenständige intermolekulare Kraft, sondern Folge von sterischer/elektronischer Komplementarität (bereits durch a und c abgedeckt).
+</div>
+
+<div class="result">Richtige Antworten: <strong>a) und c)</strong> – Günstigere Wasserstoffbrücken und geringere sterische Abstoßung im Übergangszustand erklären die Präferenz für D-Ala in der Rückreaktion, was L-Ala im System anreichert.</div>
+</div>
+
+<!-- AUFGABE 13 -->
+<div class="aufgabe">
+<h2>Aufgabe 13: Flussrate φ bei maximaler chiraler Asymmetrie</h2>
+
+<p>Aus Abbildung 2: Zwei Graphen (konstruktiv/destruktiv) zeigen [LL] und [DD] als Funktion von φ.</p>
+
+<div class="step">
+<strong>Beobachtung aus den Graphen:</strong><br>
+Bei sehr kleinem φ (kaum Fluss): [LL] ≈ [DD] (racemisch, kein Vorteil)<br>
+Bei φ₁ ≤ φ ≤ φ₂: [LL] ≠ [DD] – maximale chirale Asymmetrie bei einem bestimmten φ<br>
+Bei sehr großem φ: wieder symmetrisch oder Konvergenz
+</div>
+
+<div class="step">
+<strong>Maximale chirale Asymmetrie</strong> tritt auf, wenn die Rate der Symmetriebrechung optimal mit der Rate des Materialflusses übereinstimmt.<br><br>
+Aus den Graphen (Figur 2): Die maximale Differenz |[LL]−[DD]| wird bei <strong>φ ≈ φ₁</strong> beobachtet – dem Wendepunkt der konstruktiven Kurve. Bei diesem Wert ist der Zufluss gerade groß genug, um das System aus dem symmetrischen Fixpunkt zu treiben, aber nicht so groß, dass die Asymmetrie wieder ausgeglichen wird.
+</div>
+
+<div class="result">
+Maximale chirale Asymmetrie bei <strong>φ ≈ φ₁</strong> (dem unteren kritischen Flusswert).<br>
+Bei φ &lt; φ₁ dominiert racemisches Gleichgewicht. Bei φ > φ₂ wird der Effekt durch zu starken Fluss wieder verwischt.
+</div>
+</div>
+
+<!-- AUFGABE 14 -->
+<div class="aufgabe">
+<h2>Aufgabe 14: Konzentrationsverhalten von [LL] und [DD] in verschiedenen φ-Bereichen</h2>
+
+<div class="step">
+<strong>a) φ &lt; φ₁ (sehr kleiner Fluss):</strong><br>
+Bei minimalem Fluss dominiert das chemische Gleichgewicht. Das System hat Zeit, das racemische Gleichgewicht einzustellen. [LL] ≈ [DD] ≈ gleich. Die chirale Amplifikation reicht nicht aus, um die Racemisierung zu überwinden.<br>
+<strong>→ [LL] = [DD] (racemisch, keine Asymmetrie)</strong>
+</div>
+
+<div class="step">
+<strong>b) φ₁ &lt; φ &lt; φ₂ (optimaler Flussbereich):</strong><br>
+Der Fluss ist groß genug, um das System in den Bereich zu treiben, wo die homochirale Selbstverstärkung dominiert. Die LL-Dimere katalysieren bevorzugt die L-Aminosäure-Bildung (konstruktiver Mechanismus) oder der destruktive Mechanismus verbraucht bevorzugt DD.<br>
+<strong>→ [LL] &gt; [DD] (chirale Asymmetrie, System bricht Symmetrie)</strong><br>
+Bei φ = φ₁: Beginn der Symmetriebrechung; bei φ₁&lt;φ&lt;φ₂: maximale Asymmetrie
+</div>
+
+<div class="step">
+<strong>c) φ &gt; φ₂ (sehr großer Fluss):</strong><br>
+Bei extrem hohem Fluss werden die chiralen Verstärkungsprodukte so schnell weggespült, dass das System keine Zeit hat, Asymmetrie aufzubauen. Die hohen Konzentrationen neuer racemischer Ausgangsstoffe überfluten das System.<br>
+<strong>→ [LL] ≈ [DD] (wieder annähernd racemisch, Asymmetrie bricht zusammen)</strong><br>
+Oder: Beide Konzentrationen sinken auf niedrige Werte (Verdünnungseffekt überwiegt)
+</div>
+
+<div class="result">
+φ &lt; φ₁: racemisch (GG dominiert) → [LL]=[DD]<br>
+φ₁ &lt; φ &lt; φ₂: maximale chirale Asymmetrie → [LL] &gt; [DD] (oder [DD] &gt; [LL])<br>
+φ &gt; φ₂: wieder annähernd racemisch (Fluss überwältigt Amplifikation) → [LL]≈[DD]
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background: #f9f5ff;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+  <tr><td><strong>1</strong></td><td>A=2-Amino-oxazol, B=bicyclisches Intermediat, C=tricyclischer Nucleosid-Vorläufer, D/E=Zucker, F=Harnstoff, G/G'=Cyanacetylen-Additionsprodukte, H=Cytosin, I wird nicht gebildet</td></tr>
+  <tr><td><strong>2</strong></td><td><strong>a)</strong> Elektronendelokalisierung durch aromatischen Pyrimidinring reduziert Nucleophilie des NH₂</td></tr>
+  <tr><td><strong>3</strong></td><td>L-Glyceraldehyd: OH links (S); D-Glyceraldehyd: OH rechts (R) in Fischer-Projektion</td></tr>
+  <tr><td><strong>4</strong></td><td>ee = tanh(H<sub>SO</sub>/(k<sub>B</sub>T)) = tanh(0,01854) ≈ <strong>1,85%</strong></td></tr>
+  <tr><td><strong>5</strong></td><td>Phasenporträt: 2 stabile Attraktoren ([L]=1 oder [D]=1), instabiler Sattelpunkt bei [L]=[D]=0,5</td></tr>
+  <tr><td><strong>6</strong></td><td>ee<sub>homo</sub> = (ee₁+ee₂)/(1+ee₁·ee₂) (Additionsformel analog tan(α+β))</td></tr>
+  <tr><td><strong>7</strong></td><td>ee<sub>homo</sub>(Dimer) = 2×0,0185/(1+0,0185²) ≈ <strong>3,71%</strong></td></tr>
+  <tr><td><strong>8</strong></td><td>Minimale Kettenlänge: <strong>n = 53</strong> Aminosäuren für ee &gt; 99%</td></tr>
+  <tr><td><strong>9</strong></td><td>K = N-Carboxyanhydrid (NCA/Leuchs-Anhydrid) der Aminosäure aa₂</td></tr>
+  <tr><td><strong>10</strong></td><td>HAT-aktive Gruppen in LL: Amid-N–H der Peptidbindung und N–H des Prolins</td></tr>
+  <tr><td><strong>11</strong></td><td>M=Schiff-Base PM+Pyruvat; N=protoniertes Ketiminintermediat; O=PL-Alaninat-Schiff-Base</td></tr>
+  <tr><td><strong>12</strong></td><td><strong>a) und c)</strong>: H-Brücken und sterische Abstoßung erklären Präferenz für D-Ala</td></tr>
+  <tr><td><strong>13</strong></td><td>Maximale chirale Asymmetrie bei φ ≈ <strong>φ₁</strong></td></tr>
+  <tr><td><strong>14</strong></td><td>φ&lt;φ₁: racemisch; φ₁&lt;φ&lt;φ₂: chiral asymmetrisch; φ&gt;φ₂: wieder racemisch</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #e1d5f0; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 10 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
