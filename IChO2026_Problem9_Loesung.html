@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 9 – Wirt-Gast-Chemie der Cucurbiturile | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 950px; margin: 0 auto; padding: 20px 30px; background: #fff8f5; color: #1a1a1a; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #6d2400; color: #6d2400;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #6d2400; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #6d2400, #bf5e00); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #6d2400; border-left: 5px solid #bf5e00; padding-left: 13px; margin-top: 0; }
+  h3 { color: #4a3000; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #f0d9c8; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(109,36,0,0.07); }
+  .box     { background: #fff3ec; border-left: 4px solid #bf5e00; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .derive  { background: #fce4ec; border-left: 4px solid #c62828; border-radius: 6px; padding: 13px 18px; margin: 11px 0; }
+
+  .formula      { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.1; }
+  .reaction { background: #3e1f00; color: #fff8f5; border-radius: 8px; padding: 12px 20px; text-align: center; font-size: 1.08em; font-family: 'Courier New', monospace; margin: 12px 0; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #6d2400; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #f0d9c8; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #fff8f5; }
+
+  .step { margin: 11px 0; padding: 11px 16px; background: #fffaf8; border-radius: 7px; border: 1px solid #f0d9c8; }
+  .schritt-nr { display: inline-block; background: #6d2400; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  code { background: #f5f0ee; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #e0cfc8; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #fff3ec, #fff8f5); border: 2px solid #bf5e00; border-radius: 10px; padding: 16px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.2em; font-weight: bold; color: #6d2400; font-family: 'Courier New', monospace; }
+
+  .struct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .struct-card { background: white; border: 2px solid #bf5e00; border-radius: 10px; padding: 14px 18px; }
+  .struct-title { font-weight: bold; color: #6d2400; border-bottom: 1px solid #f0d9c8; padding-bottom: 6px; margin-bottom: 10px; font-size: 1.05em; }
+
+  .cycle-box { background: #1a0a00; color: #fff3ec; border-radius: 10px; padding: 18px 22px; margin: 14px 0; font-family: 'Courier New', monospace; font-size: 0.97em; line-height: 2.2; }
+  .cycle-arrow { color: #ffcc99; }
+
+  .ms-table td { text-align: left; }
+
+  .answer-yes { background: #e8f5e9; border: 1px solid #4caf50; border-radius: 6px; padding: 10px 14px; margin: 6px 0; }
+  .badge-yes { display: inline-block; background: #4caf50; color: white; border-radius: 20px; padding: 2px 10px; font-size: 0.85em; font-weight: bold; margin-right: 8px; }
+
+  .graph-svg-container { background: white; border: 1px solid #f0d9c8; border-radius: 8px; padding: 14px; margin: 14px 0; text-align: center; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🎃 Problem 9 – Wirt-Gast-Chemie der Cucurbiturile<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung auf Deutsch – Synthese, Host-Guest, Kinetik & Thermodynamik</span></h1>
+
+<!-- EINLEITUNG -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: Was sind Cucurbiturile?</h2>
+<p>Cucurbiturile (CB[n]) sind makrocyclische Verbindungen, die aus <strong>Glycoluril-Einheiten</strong> (dem Monomer C) und <strong>Methylenbrücken</strong> (–CH₂–) aufgebaut sind. Ihr Name leitet sich von <em>Cucurbita</em> (lat. Kürbis) ab – sie sehen aus wie kleine Kürbisse. Die donutförmige Kavität kann kleine Gastmoleküle einschließen (<em>Wirt-Gast-Chemie</em>). Die Zahl [n] gibt die Anzahl der Glycoluril-Einheiten an.</p>
+<div class="box">
+<strong>Schlüsselmerkmale:</strong> hydrophobe Kavität (bindet organische Gäste) · Carbonyl-reiche Portale (binden kationische Gäste) · pH-abhängige Bindung bei protionierbaren Gästen · katalytische Wirkung durch räumliche Annäherung von Reaktanden
+</div>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Strukturen A–C, Wiederholungseinheit von X, Verbindung Y</h2>
+
+<h3>Schritt 1: Verbindung B identifizieren</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Massenspektrum:</strong> m/z = 58 (Molekülion) und m/z = 29 (Basispeak = M/2)<br>
+→ Symmetrisches Molekül: beim Zerfall in zwei gleiche Hälften je M/2 = 29 g/mol
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Tollens-Test positiv</strong> → Aldehyd (–CHO) vorhanden
+</div>
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Nur ein Typ H-Atome, nur ein Typ C-Atome</strong> → alle Kohlenstoffe und alle Wasserstoffe sind chemisch äquivalent
+</div>
+<div class="step">
+<span class="schritt-nr">4</span> <strong>M = 58 mit Aldehyd-Funktion, symmetrisch:</strong><br>
+Glyoxal (Ethandial): OHC–CHO, M = 2×12 + 2×1 + 2×16 = 58 g/mol ✓<br>
+Beide C: Aldehydkohlenstoffe (äquivalent) ✓ · Beide H: Aldehyd-H (äquivalent) ✓<br>
+m/z 29 = CHO⁺-Fragment (Formyl-Kation) ✓
+</div>
+<div class="result">B = <strong>Glyoxal (Ethandial, OHC–CHO)</strong></div>
+
+<h3>Schritt 2: Verbindung A identifizieren</h3>
+<div class="step">
+Reaktion: 2A + B → C (C ist der Baustein der Cucurbiturile)<br>
+Die bekannte Bausteinreaktion zur Herstellung von Cucurbiturilen:<br>
+<strong>2 Harnstoff + Glyoxal → Glycoluril + 2 H₂O</strong><br>
+→ A = Harnstoff (H₂N–CO–NH₂)
+</div>
+<div class="result">A = <strong>Harnstoff (Urea, H₂N–CO–NH₂)</strong></div>
+
+<h3>Schritt 3: Y bestimmen (Ausgangsstoff für A)</h3>
+<div class="step">
+A (Harnstoff) entsteht durch Erhitzen eines anorganischen Salzes Y – <em>ohne Massenverlust</em> (reine Umlagerung/Isomerisierung).<br><br>
+Das ist die berühmte <strong>Wöhler-Synthese (1828)</strong>: Die erste Synthese einer organischen Verbindung aus einem anorganischen Stoff:<br>
+NH₄OCN (Ammoniumcyanat) → H₂N–CO–NH₂ (Harnstoff)<br>
+M(NH₄OCN) = 14+1+4+14+12+16+14 = 60 g/mol<br>
+M(Harnstoff)  = 14+2+1+12+16+14+2 = 60 g/mol ✓ (kein Massenverlust!)
+</div>
+<div class="result">Y = <strong>Ammoniumcyanat (NH₄OCN)</strong> · Reaktion: NH₄OCN →(Δ) H₂N–CO–NH₂ (Wöhler, 1828)</div>
+
+<h3>Schritt 4: Verbindung C und Wiederholungseinheit von X</h3>
+<div class="step">
+C = Kondensationsprodukt von 2 Harnstoff + Glyoxal = <strong>Glycoluril</strong><br>
+Formel: C₄H₆N₄O₂ (M = 142 g/mol)<br>
+Struktur: Bicyclisches Molekül – zwei fusionierte Imidazolinon-Ringe mit einer zentralen C–C-Bindung aus dem Glyoxal.<br>
+C hat 4 NH-Gruppen → reagiert mit Formaldehyd (CH₂O) zu Methylenbrücken → Makrozyklus X.
+</div>
+<div class="step">
+<strong>Wiederholungseinheit von X (CB[6]):</strong><br>
+Jede Einheit = 1 Glycoluril + 2 CH₂-Brücken (je zur Hälfte mit dem Nachbarn geteilt)<br>
+Formel pro Einheit: C₄H₄N₄O₂ + 2·CH₂ = C₆H₆N₄O₂<br>
+CB[6] gesamt: (C₆H₆N₄O₂)₆ = C₃₆H₃₆N₂₄O₁₂
+</div>
+<div class="result">
+C = <strong>Glycoluril (C₄H₆N₄O₂)</strong><br>
+Wiederholungseinheit von CB[6]: <strong>–[Glycoluril–(CH₂)₂]–</strong>, Formel C₆H₆N₄O₂ pro Einheit<br>
+<em>Schematisch: zwei Harnstoff-Einheiten durch die C–C-Bindung aus Glyoxal verknüpft, flankiert von je einer Methylenbrücke (–N–CH₂–N–) an beiden Seiten.</em>
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Massenspektrum des [TR·CB8]-Komplexes</h2>
+
+<p>Benötigte Molmassen:</p>
+<table>
+  <tr><th>Verbindung</th><th>Formel</th><th>M [g/mol]</th></tr>
+  <tr><td>Tropicamid (TR)</td><td>C₁₇H₂₀N₂O₂</td><td>284</td></tr>
+  <tr><td>TRH⁺ (protoniert)</td><td>C₁₇H₂₁N₂O₂⁺</td><td>285</td></tr>
+  <tr><td>CB8</td><td>C₄₈H₄₈N₃₂O₁₆</td><td>1329</td></tr>
+</table>
+
+<div class="step">
+<strong>m/z = 285:</strong><br>
+285 = M(TR) + 1 = 284 + 1 ✓
+<div class="formula">m/z 285 = [TRH⁺] = [TR + H]⁺ (protoniertes freies Tropicamid)</div>
+</div>
+
+<div class="step">
+<strong>m/z = 665:</strong><br>
+Teste [CB8 + 2H]²⁺: (1329 + 2)/2 = 665,5 ≈ 665 ✓
+<div class="formula">m/z 665 = [CB8 + 2H]²⁺ (zweifach protoniertes CB8 ohne Gast)</div>
+</div>
+
+<div class="step">
+<strong>m/z = 807:</strong><br>
+Teste [TRH⁺·CB8 + H]²⁺ = [TR + CB8 + 2H]²⁺: (284 + 1329 + 2)/2 = 1615/2 = 807,5 ≈ 807 ✓
+<div class="formula">m/z 807 = [TR·CB8 + 2H]²⁺ (zweifach protonierter Wirt-Gast-Komplex)</div>
+</div>
+
+<div class="result">
+m/z 285 → <strong>[TRH]⁺</strong> (freies protoniertes Tropicamid)<br>
+m/z 665 → <strong>[CB8 + 2H]²⁺</strong> (zweifach protoniertes leeres CB8)<br>
+m/z 807 → <strong>[TR·CB8 + 2H]²⁺</strong> (zweifach protonierter Wirt-Gast-Komplex)
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: pKₐ, pKₐ' und K<sub>TRH⁺</sub></h2>
+
+<h3>Ablesen aus dem pH-Titrationsgraphen:</h3>
+<div class="step">
+Der <strong>Wendepunkt einer Säure-Base-Titrationskurve</strong> liegt genau beim pKₐ-Wert (Henderson-Hasselbalch: pH = pKₐ wenn [A⁻]=[HA]).<br><br>
+• <strong>Offene Kreise (reines TR):</strong> Wendepunkt bei pH ≈ <strong>5,0</strong> → pKₐ ≈ 5,0<br>
+• <strong>Gefüllte Dreiecke (TR + CB8):</strong> Wendepunkt bei pH ≈ <strong>8,0</strong> → pKₐ' ≈ 8,0
+</div>
+
+<h3>K<sub>TRH⁺</sub> aus dem thermodynamischen Zyklus:</h3>
+<div class="cycle-box">
+TRH⁺ + CB₈ <span class="cycle-arrow">⇌</span> TRH⁺·CB₈ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; K<sub>TRH⁺</sub><br>
+TRH⁺·CB₈ <span class="cycle-arrow">⇌</span> TR·CB₈ + H⁺ &nbsp;&nbsp;&nbsp;&nbsp; Kₐ' = 10⁻⁸<br>
+TR·CB₈ <span class="cycle-arrow">⇌</span> TR + CB₈ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1/K<sub>TR</sub><br>
+TR + H⁺ <span class="cycle-arrow">⇌</span> TRH⁺ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1/Kₐ = 10⁺⁵
+</div>
+
+<div class="step">
+Zyklus: Das Produkt aller vier Gleichgewichtskonstanten muss 1 ergeben (Hess'scher Kreislauf):<br>
+<div class="formula-left">
+K<sub>TRH⁺</sub> · Kₐ' · (1/K<sub>TR</sub>) · (1/Kₐ) = 1<br>
+K<sub>TRH⁺</sub> = Kₐ/Kₐ' · K<sub>TR</sub> = 10^(pKₐ'−pKₐ)⁻¹ · K<sub>TR</sub><br>
+K<sub>TRH⁺</sub> = 10^(pKₐ − pKₐ') · K<sub>TR</sub><br>
+K<sub>TRH⁺</sub> = 10^(5,0 − 8,0) · 1,4×10⁴<br>
+K<sub>TRH⁺</sub> = 10⁻³ · 1,4×10⁴ = <strong>14</strong>
+</div>
+</div>
+
+<div class="result">
+pKₐ ≈ <strong>5,0</strong> (freies TR/TRH⁺) &nbsp;|&nbsp; pKₐ' ≈ <strong>8,0</strong> (komplexiertes TR·CB8/TRH⁺·CB8)<br>
+K<sub>TRH⁺</sub> = <strong>14</strong><br><br>
+<em>Bedeutung: CB8 bindet TRH⁺ viel schwächer (K=14) als TR (K=14 000), weil die positiv geladene Form TRH⁺ schlechter in die hydrophobe Kavität passt.</em>
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Biologisch aktive Form – TR oder TRH⁺?</h2>
+
+<p>Tropicamid ist ein <strong>Anticholinergikum</strong>: Es blockiert muskarinische Acetylcholinrezeptoren und bewirkt so Pupillenerweiterung (Mydriasis).</p>
+
+<div class="step">
+<strong>Pharmakodynamische Überlegung:</strong><br>
+Muskarinische Rezeptoren haben eine positiv geladene Bindungsregion für das quartäre N-Atom des Acetylcholins. Tropicamid muss als protonierte (kationische) Form <strong>TRH⁺</strong> an den Rezeptor binden – das Stickstoffatom ist dann positiv geladen und interagiert mit dem Rezeptor.
+</div>
+<div class="step">
+<strong>Praktische Überlegung:</strong><br>
+Das Medikament wird als pH=4-Lösung eingesetzt (bei pH=4 ist fast alles TRH⁺, da pKₐ=5). Wenn TR die aktive Form wäre, würde man eher bei höherem pH arbeiten. Der niedrige pH sichert die aktive Form → <strong>TRH⁺ ist aktiv</strong>.
+</div>
+
+<div class="result">
+Die biologisch aktive Form ist <strong>TRH⁺</strong> (protoniertes Tropicamid).<br>
+TRH⁺ bindet mit seiner positiven Ladung am N-Atom an den anionischen Teil des muskarinischen Rezeptors und hemmt die Acetylcholin-Bindung.
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Erhöhung des Molenbruchs von TRH⁺ bei pH = 7,0 mit CB8</h2>
+
+<p>Verglichen werden die Anteile der aktiven Form TRH⁺ bei pH = 7,0 – einmal frei, einmal im CB8-Komplex (quantitative Komplexierung durch CB8-Überschuss).</p>
+
+<h3>Szenario A: Freies TR bei pH = 7,0</h3>
+<div class="step">
+pH = 7,0 liegt <strong>2 Einheiten über pKₐ = 5,0</strong> → Gleichgewicht liegt stark auf der deprotonierten (neutralen) Seite:
+<div class="formula">f(TRH⁺)_frei = [H⁺]/Kₐ / (1 + [H⁺]/Kₐ) = 10^(pKₐ−pH) / (1 + 10^(pKₐ−pH))</div>
+<div class="formula">f(TRH⁺)_frei = 10^(5−7) / (1 + 10^(5−7)) = 0,01/1,01 = <strong>0,0099 = 0,99%</strong></div>
+</div>
+
+<h3>Szenario B: TR mit CB8-Überschuss bei pH = 7,0</h3>
+<div class="step">
+Jetzt gilt pKₐ' = 8,0 für das komplexierte System. pH = 7,0 liegt <strong>1 Einheit unter pKₐ' = 8,0</strong> → Gleichgewicht liegt auf der <em>protonierten</em> Seite:
+<div class="formula">f(TRH⁺·CB8) = 10^(pKₐ'−pH) / (1 + 10^(pKₐ'−pH)) = 10^(8−7) / (1 + 10^(8−7))</div>
+<div class="formula">f(TRH⁺·CB8) = 10/11 = <strong>0,909 = 90,9%</strong></div>
+</div>
+
+<h3>Faktor der Erhöhung:</h3>
+<div class="step">
+<div class="formula">Faktor = f(TRH⁺·CB8) / f(TRH⁺)_frei = 0,909 / 0,0099 ≈ <strong>91,8 ≈ 92</strong></div>
+</div>
+
+<div class="result">
+Der Molenbruch der aktiven Form TRH⁺ steigt bei pH = 7,0 durch CB8 um den Faktor <strong>≈ 92</strong>.<br><br>
+<strong>Warum?</strong> CB8 stabilisiert bevorzugt TRH⁺ in seiner Kavität (durch Ion-Dipol-Wechselwirkungen mit den Carbonyl-Portalen). Dadurch verschiebt sich das Gleichgewicht TRH⁺ ⇌ TR + H⁺ im Komplex um 3 pKₐ-Einheiten nach oben (pKₐ' = 8 statt 5). Das ermöglicht erstmals die Verwendung bei physiologischem pH = 7 ohne Wirkungsverlust!
+</div>
+</div>
+
+<!-- AUFGABE 6 -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Reaktionsordnung und k<sub>obs</sub> für die CPD-Dimerisierung</h2>
+
+<p>Der Graph zeigt <strong>1/[CPD] (M⁻¹) gegen t (s)</strong> – eine gerade Linie.</p>
+
+<div class="step">
+<strong>Bedeutung eines linearen 1/[CPD]-vs-t-Graphen:</strong><br>
+Die integrierte Ratengleichung 2. Ordnung lautet: 1/[CPD] − 1/[CPD]₀ = k<sub>obs</sub>·t<br>
+→ 1/[CPD] = k<sub>obs</sub>·t + 1/[CPD]₀ = Gerade mit Steigung k<sub>obs</sub> ✓
+</div>
+
+<div class="step">
+<strong>Steigung aus dem Graphen ablesen:</strong><br>
+Bei t = 0: 1/[CPD] ≈ 350 M⁻¹ &nbsp;|&nbsp; Bei t = 4000 s: 1/[CPD] ≈ 820 M⁻¹
+<div class="formula">k<sub>obs</sub> = Δ(1/[CPD]) / Δt = (820 − 350) M⁻¹ / 4000 s = 470/4000 ≈ <strong>0,118 M⁻¹·s⁻¹</strong></div>
+</div>
+
+<div class="result">
+Reaktionsordnung bezüglich CPD: <strong>2. Ordnung</strong><br>
+Beobachtete Ratenkonstante: k<sub>obs</sub> ≈ <strong>0,12 M⁻¹·s⁻¹</strong>
+</div>
+</div>
+
+<!-- AUFGABE 7 -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Herleitung des Ratengesetzes aus dem Mechanismus</h2>
+
+<p>Drei Schritte:</p>
+<div class="reaction">CPD + CB7 ⇌ CPD·CB7 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; K₁</div>
+<div class="reaction">CPD + CPD·CB7 ⇌ (CPD)₂·CB7 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; K₂</div>
+<div class="reaction">(CPD)₂·CB7 → DCPD·CB7 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; k (geschwindigkeitsbestimmend)</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Gleichgewichtsausdrücke:</strong>
+<div class="formula-left">
+K₁ = [CPD·CB7] / ([CPD]·[CB7]) &nbsp;→&nbsp; [CPD·CB7] = K₁·[CPD]·[CB7]<br>
+K₂ = [(CPD)₂·CB7] / ([CPD]·[CPD·CB7]) &nbsp;→&nbsp; [(CPD)₂·CB7] = K₂·[CPD]·[CPD·CB7]
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Einsetzen:</strong>
+<div class="formula">[(CPD)₂·CB7] = K₁·K₂·[CPD]²·[CB7]</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Geschwindigkeitsgesetz</strong> (geschwindigkeitsbestimmender Schritt: Zerfall des Ternärkomplexes):
+<div class="formula">r = k·[(CPD)₂·CB7] = k·K₁·K₂·[CB7]·[CPD]²</div>
+Da [CB7] konstant (Katalysator nicht verbraucht):
+<div class="formula">r = k<sub>obs</sub>·[CPD]² &nbsp; mit &nbsp; k<sub>obs</sub> = k·K₁·K₂·[CB7]</div>
+</div>
+
+<div class="result">
+<strong>r = k·K₁·K₂·[CB7]·[CPD]²</strong><br><br>
+→ 2. Ordnung in [CPD] ✓ (stimmt mit dem linearen 1/[CPD]-Graphen überein)<br>
+→ 1. Ordnung in [CB7] (CB7 ist echter Katalysator: erscheint im Ratengesetz, wird aber regeneriert)<br>
+→ k<sub>obs</sub> = k·K₁·K₂·[CB7]
+</div>
+
+<div class="box">
+<strong>Supramolekulare Katalyse – warum funktioniert das?</strong><br>
+CB7 bindet zwei CPD-Moleküle gleichzeitig in seiner Kavität und bringt sie in <em>erzwungene Nähe und optimale Orientierung</em> für die [4+2]-Diels-Alder-Reaktion. Der <em>effektive Konzentrations-Effekt</em> und die geometrische Vororganisation erhöhen die Reaktionsrate enorm.
+</div>
+</div>
+
+<!-- AUFGABE 8 -->
+<div class="aufgabe">
+<h2>Aufgabe 8: Warum hat CB6 die niedrigste Ratenkonstante?</h2>
+
+<table>
+  <tr><th>CB[n]</th><th>Kavitätsvolumen</th><th>k<sub>obs</sub> [M⁻¹·s⁻¹]</th><th>Erklärung</th></tr>
+  <tr><td>CB5</td><td>sehr klein (~68 Å³)</td><td>9,4 × 10⁻⁶</td><td>Kaum Platz, aber noch etwas Bindung</td></tr>
+  <tr style="background:#fff3ec; font-weight:bold;"><td>CB6</td><td>klein (~164 Å³)</td><td>5,0 × 10⁻⁶ (MIN!)</td><td>Passt für 1 CPD, zu eng für 2 CPD</td></tr>
+  <tr><td>CB7</td><td>mittel (~279 Å³)</td><td>≈ 0,12 (aus Graph)</td><td>Ideal für 2 CPD: optimale Katalyse</td></tr>
+  <tr><td>CB8</td><td>groß (~479 Å³)</td><td>9,0 × 10⁻⁶</td><td>Etwas zu groß, weniger Fixierung</td></tr>
+</table>
+
+<div class="step">
+<strong>Warum CB6 die niedrigste Rate zeigt:</strong><br>
+Die Kavität von CB6 ist zwar groß genug, um <em>ein</em> CPD-Molekül aufzunehmen (K₁ groß), aber sie ist <strong>zu klein, um zwei CPD-Moleküle gleichzeitig</strong> im für die Reaktion notwendigen geometrischen Arrangement zu beherbergen. Daher ist K₂ (Bindung des zweiten CPD) für CB6 extrem klein.<br><br>
+Da k<sub>obs</sub> = k·K₁·K₂·[CB7] und K₂(CB6) ≈ 0, ergibt sich die niedrigste Rate.
+</div>
+
+<div class="warning">
+<strong>Schlüsselprinzip der supramolekularen Katalyse:</strong> Es reicht nicht, einen Reaktanden zu binden – der Hohlraum muss <em>beide</em> Reaktanden gleichzeitig in der richtigen Geometrie fixieren können. Ein zu kleiner Hohlraum hemmt die Katalyse sogar: CB6 bindet das erste CPD gut (verbraucht K₁), hat aber keinen Platz für das zweite (K₂ minimal).
+</div>
+
+<div class="result">
+CB6 hat die niedrigste Ratenkonstante, weil seine Kavität zwar für <em>ein</em> CPD-Molekül geeignet ist, aber zu eng für zwei gleichzeitige CPD-Gäste. Die Bindung des zweiten Substrats (K₂) ist stark gehemmt → [(CPD)₂·CB6] kaum gebildet → sehr geringe Katalyserate.
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background: #fff8f2;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+  <tr><td><strong>1</strong></td><td>Y = NH₄OCN (Wöhler) → A = Harnstoff → B = Glyoxal → C = Glycoluril; Wiederholungseinheit: C₆H₆N₄O₂</td></tr>
+  <tr><td><strong>2</strong></td><td>m/z 285 = [TRH]⁺; m/z 665 = [CB8+2H]²⁺; m/z 807 = [TR·CB8+2H]²⁺</td></tr>
+  <tr><td><strong>3</strong></td><td>pKₐ ≈ <strong>5,0</strong>; pKₐ' ≈ <strong>8,0</strong>; K<sub>TRH⁺</sub> = <strong>14</strong></td></tr>
+  <tr><td><strong>4</strong></td><td>Biologisch aktive Form: <strong>TRH⁺</strong> (protoniertes Tropicamid bindet an muskarinischen Rezeptor)</td></tr>
+  <tr><td><strong>5</strong></td><td>Molenbruch von TRH⁺ steigt um Faktor <strong>≈ 92</strong> bei pH=7 durch CB8</td></tr>
+  <tr><td><strong>6</strong></td><td><strong>2. Ordnung</strong> in CPD; k<sub>obs</sub> ≈ <strong>0,12 M⁻¹·s⁻¹</strong></td></tr>
+  <tr><td><strong>7</strong></td><td>r = k·K₁·K₂·[CB7]·[CPD]² (2. Ordnung in CPD ✓)</td></tr>
+  <tr><td><strong>8</strong></td><td>CB6: Kavität zu eng für 2 CPD gleichzeitig → K₂ minimal → niedrigste Rate</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #f0d9c8; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 9 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
