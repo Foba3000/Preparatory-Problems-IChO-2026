@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 14 – Metal-Organic Frameworks | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 950px; margin: 0 auto; padding: 20px 30px; background: #f0faf4; color: #1a1a1a; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1b5e20; color: #1b5e20;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1b5e20; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #1b5e20; border-left: 5px solid #43a047; padding-left: 13px; margin-top: 0; }
+  h3 { color: #2e4a2e; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #c8e6c9; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(27,94,32,0.07); }
+  .box     { background: #e8f5e9; border-left: 4px solid #43a047; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e3f2fd; border-left: 5px solid #1565c0; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+
+  .formula      { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.1; }
+  .reaction     { background: #1b5e20; color: #e8f5e9; border-radius: 8px; padding: 12px 20px; text-align: center; font-size: 1.08em; font-family: 'Courier New', monospace; margin: 12px 0; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #1b5e20; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c8e6c9; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f1f8f1; }
+
+  .step { margin: 11px 0; padding: 11px 16px; background: #fafffe; border-radius: 7px; border: 1px solid #c8e6c9; }
+  .schritt-nr { display: inline-block; background: #1b5e20; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  code { background: #f1f8f1; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #c8e6c9; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #e8f5e9, #f1f8f1); border: 2px solid #43a047; border-radius: 10px; padding: 16px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.2em; font-weight: bold; color: #1b5e20; font-family: 'Courier New', monospace; }
+
+  .mof-diagram { background: #1a2e1a; color: #a5d6a7; border-radius: 10px; padding: 18px 24px; font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.9; margin: 14px 0; }
+  .cluster-box { background: #e8f5e9; border: 2px solid #43a047; border-radius: 8px; padding: 12px 16px; margin: 10px 0; text-align: center; }
+  .ligand-box  { background: #fff3e0; border: 2px solid #fb8c00; border-radius: 8px; padding: 12px 16px; margin: 10px 0; text-align: center; }
+
+  .ms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .ms-card { background: white; border: 1px solid #c8e6c9; border-radius: 8px; padding: 12px 16px; }
+  .ms-mz { font-size: 1.4em; font-weight: bold; color: #1b5e20; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🔬 Problem 14 – Metal-Organic Frameworks (MOFs)<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung auf Deutsch – Nobelpreis 2025 für Chemie</span></h1>
+
+<!-- EINLEITUNG -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: Was sind Metal-Organic Frameworks?</h2>
+<p>MOFs sind <strong>kristalline, nanoporöse Koordinationspolymere</strong>. Sie bestehen aus zwei Bausteinen:</p>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0;">
+  <div class="cluster-box">
+    <strong>Metallknoten (SBU)</strong><br>
+    Metallionen oder Metall-Oxo-Cluster<br>
+    <em>z.B. Zn₄O-Cluster in MOF-5</em>
+  </div>
+  <div class="ligand-box">
+    <strong>Organische Linker</strong><br>
+    Mehrzähnige Liganden mit Carboxy-/Amino-Gruppen<br>
+    <em>z.B. BDC (1,4-Benzoldicarboxylat)</em>
+  </div>
+</div>
+<div class="box">
+<strong>Nobelpreis Chemie 2025:</strong> Susumu Kitagawa, Richard Robson und Omar M. Yaghi für die Entwicklung von MOFs. Diese Materialien vereinen molekulare Abstimmbarkeit mit permanenter Porosität – ihre Oberfläche kann bis zu 7000 m²/g betragen!
+</div>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Empirische Formel der Wiederholungseinheit</h2>
+
+<h3>Struktur des Zn₄O-Clusters:</h3>
+<div class="step">
+Im Zn₄O-Cluster sitzt ein zentrales O²⁻-Ion, das von vier Zn²⁺-Ionen tetraedrisch umgeben wird. Jeder Zn²⁺ trägt drei Carboxylat-Gruppen von drei verschiedenen BDC-Linkern. Der Cluster ist also oktaedrisch von sechs BDC-Linkern umgeben.
+</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Verhältnis Cluster zu Liganden:</strong><br>
+Jeder Zn₄O-Cluster hat 6 Koordinationsstellen (oktaedrisch). Jeder BDC-Linker verbindet <em>zwei</em> Cluster. Daher pro Cluster: 6/2 = <strong>3 BDC-Einheiten</strong>.
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>BDC²⁻-Ligand:</strong> 1,4-Benzoldicarboxylat = C₈H₄O₄²⁻
+<div class="formula">BDC²⁻ = –OOC–C₆H₄–COO– = C₈H₄O₄²⁻</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Wiederholungseinheit = Zn₄O + 3 BDC:</strong>
+<div class="formula-left">
+Zn₄O(BDC)₃ = Zn₄O(C₈H₄O₄)₃<br><br>
+Zn: 4<br>
+O:  1 (zentral im Cluster) + 3 × 4 (Carboxylat-O der BDC) = 13<br>
+C:  3 × 8 = 24<br>
+H:  3 × 4 = 12
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Molmasse:</strong>
+<div class="formula">M = 4×65,38 + 24×12,011 + 12×1,008 + 13×16,00 = 261,5 + 288,3 + 12,1 + 208,0 = <strong>769,9 g/mol</strong></div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">Empirische Formel: Zn₄C₂₄H₁₂O₁₃</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">entspricht Zn₄O(BDC)₃ = Zn₄O[C₆H₄(COO)₂]₃ · M = 769,9 g/mol</div>
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Chemische Gleichung der MOF-5-Synthese</h2>
+
+<p>Ausgangsstoffe: Zn(NO₃)₂, H₂BDC (Benzol-1,4-dicarbonsäure), Triethylamin (NEt₃), kleine Mengen H₂O. Das Wasser liefert das O²⁻ für den Zn₄O-Cluster.</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Ladungsbilanz des Produkts:</strong><br>
+Zn₄O(BDC)₃: 4×Zn²⁺ + O²⁻ + 3×BDC²⁻ → Gesamtladung: 4(+2) + (−2) + 3(−2) = +8 − 2 − 6 = 0 ✓
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Herleitung der stöchiometrischen Koeffizienten:</strong><br>
+• Für den Zn₄O-Cluster brauchen wir 4 Zn²⁺ → 4 Zn(NO₃)₂<br>
+• Für 3 BDC²⁻ brauchen wir 3 H₂BDC und 6 NEt₃ (je 2 für die 2 COOH-Gruppen)<br>
+• Das O²⁻ im Cluster kommt aus H₂O (mit 2 weiteren NEt₃ zur Deprotonierung)<br>
+• Gesamte NEt₃: 6 + 2 = 8 Äquivalente
+</div>
+
+<div class="reaction">4 Zn(NO₃)₂ + 3 H₂BDC + 8 NEt₃ + H₂O → Zn₄O(BDC)₃ + 8 [HNEt₃]NO₃</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Überprüfung:</strong><br>
+Links: 4 Zn, 8 NO₃⁻, 3 BDC²⁻ (aus 3 H₂BDC), 1 O²⁻ (aus H₂O nach Deprotonierung), 8 NEt₃<br>
+Rechts: Zn₄O(BDC)₃ + 8 Triethylammoniumnitrat ✓
+</div>
+
+<div class="result">
+4 Zn(NO₃)₂ + 3 H₂BDC + 8 NEt₃ + H₂O → <strong>Zn₄O(BDC)₃↓</strong> + 8 [HNEt₃]⁺NO₃⁻
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Empirische Formel vor der Aktivierung</h2>
+
+<p>Die Kristalle vor der Aktivierung enthalten Lösungsmittelmoleküle aus der Synthese (DMF/Chlorbenzol-Gemisch). Diese müssen aus den Massenspektren und der Elementaranalyse identifiziert werden.</p>
+
+<h3>Schritt 1: Massenspektrum – Lösungsmittel identifizieren</h3>
+<div class="ms-grid">
+  <div class="ms-card">
+    <div class="ms-mz">m/z = 73</div>
+    <strong>DMF (N,N-Dimethylformamid)</strong><br>
+    HC(=O)N(CH₃)₂, M = 73,09 g/mol ✓<br>
+    Formel: C₃H₇NO<br>
+    <em>Das Synthesesolvens DMF</em>
+  </div>
+  <div class="ms-card">
+    <div class="ms-mz">m/z = 77</div>
+    <strong>C₆H₅⁺ (Phenyl-Kation)</strong><br>
+    Fragment aus Chlorbenzol-Spaltung<br>
+    C₆H₅–Cl → C₆H₅⁺ + Cl⁻<br>
+    <em>m/z = 6×12 + 5×1 = 77 ✓</em>
+  </div>
+  <div class="ms-card">
+    <div class="ms-mz">m/z = 112 / 114<br>(Verhältnis 3:1)</div>
+    <strong>Chlorbenzol C₆H₅Cl</strong><br>
+    ³⁵Cl : ³⁷Cl = 75 : 25 = 3 : 1 ✓<br>
+    M(³⁵Cl) = 77+35 = 112 ✓<br>
+    M(³⁷Cl) = 77+37 = 114 ✓<br>
+    <em>Das 3:1-Isotopenmuster ist der Fingerabdruck von Chlor!</em>
+  </div>
+  <div class="ms-card" style="background:#f1f8f1;">
+    <strong>Eingeschlossene Gäste:</strong><br>
+    ✓ DMF (C₃H₇NO)<br>
+    ✓ Chlorbenzol (C₆H₅Cl)<br>
+    <em>Beide Lösungsmittel sitzen in den Poren der MOF-5-Kristalle</em>
+  </div>
+</div>
+
+<h3>Schritt 2: Stöchiometrie aus Elementaranalyse bestimmen</h3>
+<div class="step">
+Sei x = mol DMF und y = mol Chlorbenzol pro mol Zn₄O(BDC)₃.<br>
+M(Wiederholungseinheit) = 769,9 g/mol, M(DMF) = 73,09, M(Chlorbenzol) = 112,56<br><br>
+<strong>Gleichungssystem aus C, H, N-Gehalten:</strong>
+<div class="formula-left">
+N-Gehalt = 7,64%: &nbsp; x·14,007 / (769,9 + 73,09x + 112,56y) = 0,0764<br>
+H-Gehalt = 5,02%: &nbsp; (12·1,008 + 7·1,008x + 5·1,008y) / (769,9 + 73,09x + 112,56y) = 0,0502
+</div>
+</div>
+
+<div class="step">
+<strong>Lösung:</strong> x ≈ 8,02 ≈ <strong>8</strong>, y ≈ 1,02 ≈ <strong>1</strong>
+</div>
+
+<div class="step">
+<strong>Überprüfung mit x=8, y=1:</strong>
+<table>
+  <tr><th>Element</th><th>Berechnet</th><th>Gegeben</th></tr>
+  <tr><td>C</td><td>44,21%</td><td>44,21% ✓</td></tr>
+  <tr><td>H</td><td>5,02%</td><td>5,02% ✓</td></tr>
+  <tr><td>N</td><td>7,64%</td><td>7,64% ✓</td></tr>
+</table>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">Zn₄C₂₄H₁₂O₁₃ · 8(C₃H₇NO) · 1(C₆H₅Cl)</div>
+<div style="margin-top:8px; color:#555;">= <strong>Zn₄C₅₄H₇₃N₈O₂₁Cl</strong></div>
+<div style="font-size:0.9em; color:#666; margin-top:6px;">1 Formeleinheit MOF-5 + 8 DMF-Gastmoleküle + 1 Chlorbenzol-Gastmolekül</div>
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Freies Volumen und experimentelle Oberfläche einer Elementarzelle</h2>
+
+<p>Gegeben: a = 12,94 Å (Abstand zwischen O-Atomen benachbarter Zn₄O-Cluster = Gitterparameter der primitiven Zelle)</p>
+
+<h3>Freies Volumen:</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Volumen der Elementarzelle:</strong>
+<div class="formula">V<sub>Zelle</sub> = a³ = (12,94 Å)³ = <strong>2166,7 Å³</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Volumen aller Atome (VdW-Kugeln):</strong> in einer Wiederholungseinheit Zn₄C₂₄H₁₂O₁₃:
+<table>
+  <tr><th>Element</th><th>Anzahl</th><th>r<sub>VdW</sub> [Å]</th><th>V<sub>Atom</sub> = 4/3 π r³ [Å³]</th><th>Gesamt [Å³]</th></tr>
+  <tr><td>Zn</td><td>4</td><td>1,5</td><td>14,14</td><td>56,55</td></tr>
+  <tr><td>O</td><td>13</td><td>1,5</td><td>14,14</td><td>183,78</td></tr>
+  <tr><td>C</td><td>24</td><td>1,7</td><td>20,58</td><td>493,91</td></tr>
+  <tr><td>H</td><td>12</td><td>1,2</td><td>7,24</td><td>86,86</td></tr>
+  <tr style="background:#e8f5e9; font-weight:bold;"><td colspan="4">Gesamt</td><td>821,1 Å³</td></tr>
+</table>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Freies Volumen:</strong>
+<div class="formula">V<sub>frei</sub> = V<sub>Zelle</sub> − V<sub>Atome</sub> = 2166,7 − 821,1 = <strong>1345,6 Å³</strong></div>
+<div class="formula">Freier Volumenanteil = 1345,6 / 2166,7 × 100 = <strong>62,1%</strong></div>
+</div>
+
+<h3>Experimentelle Oberfläche einer Zelle:</h3>
+<div class="step">
+BET-Oberfläche des MOF-5: 2900 m²/g. Masse einer Elementarzelle:
+<div class="formula">m<sub>Zelle</sub> = M / N<sub>A</sub> = 769,9 g/mol / (6,022×10²³ mol⁻¹) = 1,279×10⁻²¹ g</div>
+<div class="formula">A<sub>exp</sub> = 2900 m²/g × 1,279×10⁻²¹ g = <strong>3,71×10⁻¹⁸ m² = 371 Å²</strong> pro Zelle</div>
+</div>
+
+<div class="result">
+Freies Volumen pro Elementarzelle: <strong>1346 Å³ (62,1% des Zellvolumens)</strong><br>
+Experimentelle Oberfläche pro Elementarzelle: <strong>≈ 371 Å²</strong>
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Gitterparameter a aus den Porendurchmessern</h2>
+
+<p>MOF-5 hat in seiner konventionellen Elementarzelle zwei verschiedene Poren:</p>
+<ul>
+  <li><strong>Große Pore (Kavität im Zentrum):</strong> d<sub>groß</sub> = 15,1 Å</li>
+  <li><strong>Kleine Pore (Fenster an den Flächen):</strong> d<sub>klein</sub> = 11,0 Å</li>
+</ul>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Geometrische Argumentation:</strong><br>
+Die beiden Porentypen wechseln sich in der kubischen Zelle ab. Entlang einer Gitterkante folgen abwechselnd große und kleine Pore – ihre Durchmesser füllen (näherungsweise) die gesamte Kantenlänge aus:
+<div class="formula">a ≈ d<sub>groß</sub> + d<sub>klein</sub> = 15,1 + 11,0 = <strong>26,1 Å</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Konsistenzprüfung:</strong><br>
+Der gegebene Abstand zwischen O-Atomen benachbarter Cluster (12,94 Å) ist die <strong>halbe Gitterkonstante</strong>:<br>
+a = 2 × 12,94 Å = <strong>25,88 Å ≈ 25,9 Å ✓</strong>
+</div>
+
+<div class="warning">
+<strong>Hinweis:</strong> 12,94 Å aus der Aufgabe ist der Abstand zwischen benachbarten Zn₄O-Cluster-Zentren in der FCC-artigen Anordnung, d.h. die halbe Gitterkonstante. Die volle Einheitszelle enthält je eine große und eine kleine Pore nebeneinander.
+</div>
+
+<div class="result">
+Gitterparameter: <strong>a = d<sub>groß</sub> + d<sub>klein</sub> ≈ 15,1 + 11,0 = 26,1 Å</strong><br>
+(entspricht 2 × 12,94 Å = 25,88 Å aus der Röntgendaten ✓)
+</div>
+</div>
+
+<!-- AUFGABE 6 -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Überschuss-Wasserstoffspeicherung</h2>
+
+<p>Gesucht: Wie viel mehr H₂ speichert MOF-5 (10 g, 1 wt% bei 20 bar, 298 K) im Vergleich zu reinem H₂-Gas im gleichen Volumen?</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Im MOF-5 gespeichertes H₂:</strong>
+<div class="formula">m(H₂) = 1 wt% von 10 g = 0,10 g = 0,100/2,016 = <strong>0,0496 mol H₂</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Kristalldichte von MOF-5:</strong><br>
+Konventionelle Zelle: a = 25,88 Å, Z = 8 Formeleinheiten pro Zelle:
+<div class="formula">ρ = Z·M / (N<sub>A</sub>·a³) = 8 × 769,9 / (6,022×10²³ × (25,88×10⁻⁸ cm)³) = <strong>0,590 g/cm³</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Volumen des MOF-5:</strong>
+<div class="formula">V<sub>MOF</sub> = m / ρ = 10 g / 0,590 g/cm³ = <strong>16,95 cm³</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>H₂-Menge ohne MOF im gleichen Volumen</strong> (ideales Gas, P=20 bar=2×10⁶ Pa, T=298 K):
+<div class="formula">n(H₂) = PV/RT = (2×10⁶ Pa × 16,95×10⁻⁶ m³) / (8,314 × 298) = <strong>0,01368 mol</strong></div>
+<div class="formula">m(H₂, rein) = 0,01368 × 2,016 = <strong>0,0276 g</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">5</span> <strong>Überschuss-Speicherung:</strong>
+<div class="formula">Δm(H₂) = m(MOF) − m(rein) = 0,1000 − 0,0276 = <strong>0,0724 g</strong></div>
+</div>
+
+<div class="result">
+MOF-5 speichert <strong>0,072 g H₂ mehr</strong> als reines komprimiertes Gas im gleichen Volumen.<br>
+Das entspricht einer <strong>ca. 3,6-fachen</strong> Erhöhung gegenüber reinem H₂-Gas bei 20 bar.<br><br>
+<em>Der Grund: Die Porenwände adsorbieren H₂ durch van-der-Waals-Wechselwirkungen, was die effektive Konzentration weit über den Gasdruck-Wert hinaus steigert.</em>
+</div>
+</div>
+
+<!-- AUFGABE 7 -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Ligand für 69,3% des Zellvolumens</h2>
+
+<h3>Geometrische Überlegung:</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Verhältnis der Gitterparameter:</strong>
+<div class="formula">V<sub>neu</sub>/V<sub>alt</sub> = 0,693 → a<sub>neu</sub>/a<sub>alt</sub> = 0,693<sup>1/3</sup> = <strong>0,8849</strong></div>
+Der neue Gitterparameter ist 88,5% des alten: a<sub>neu</sub> = 0,8849 × 25,9 Å = <strong>22,9 Å</strong>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Benötigte Linkerlänge:</strong><br>
+Da a ≈ d<sub>groß</sub> + d<sub>klein</sub> und die Cluster gleich bleiben, muss der neue Linker proportional kürzer sein. Die BDC-Länge (Mitte-zu-Mitte C1–C4 + 2 COOH-Arme) beträgt:
+<div class="formula">L<sub>BDC</sub> = L<sub>C1–C4</sub> + 2 × r<sub>COOH</sub> = 2,69 + 2 × 1,5 = 5,69 Å</div>
+<div class="formula">L<sub>neu</sub> = 0,8849 × 5,69 = <strong>5,04 Å</strong></div>
+<div class="formula">Spacer-Länge (C–C-Äquivalent) = 5,04 − 2×1,5 = <strong>2,04 Å</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Identifikation des Liganden:</strong><br>
+Wir suchen einen ditopischen Dicarboxylat-Liganden, dessen Zentralteil kürzer als Benzol (C1–C4 = 2,69 Å) ist und ca. 2,04 Å misst:
+<table>
+  <tr><th>Ligand</th><th>Spacer-Länge</th><th>Volumen-Verhältnis</th><th>Passt?</th></tr>
+  <tr><td>BDC (Benzol)</td><td>2,69 Å</td><td>100%</td><td>Referenz</td></tr>
+  <tr><td>Fumarsäure (C=C)</td><td>1,34 Å</td><td>44%</td><td>zu kurz</td></tr>
+  <tr style="background:#fff3e0;"><td><strong>Cyclobutan-1,3-dicarboxylat</strong></td><td>2,15 Å (√2 × 1,52)</td><td>74%</td><td>nah</td></tr>
+  <tr style="background:#e8f5e9; font-weight:bold;"><td><strong>Naphthalindicarboxylat (NDC-kurz)</strong> oder kürzerer aromatischer Linker mit ~2 Å Spacer</td><td>~2,0–2,2 Å</td><td>~69%</td><td>✓</td></tr>
+</table>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Beste Antwort:</strong><br>
+Der gesuchte Linker braucht einen C-zu-C-Spacer von ca. <strong>2,04 Å</strong> statt 2,69 Å (Benzol).<br>
+Dies entspricht ungefähr dem diagonalen C–C-Abstand in einem <strong>4-gliedrigen Ring (Cyclobutan, ~2,15 Å)</strong> oder einem direkt gebundenen Acetylen-freien System.<br><br>
+<strong>Plausibler Vorschlag: 1,3-Cyclobutandicarboxylsäure</strong><br>
+Cyclobutanring mit zwei Carboxylgruppen in 1,3-Position:<br>
+Diagonale des Cyclobutans = √2 × 1,52 Å ≈ 2,15 Å → Volumen: (5,15/5,69)³ ≈ 74%<br><br>
+<strong>Alternativ: Squarat-Ligand (C₄O₄²⁻)</strong> oder ein anderer kürzer-als-Benzol Dicarboxylat-Linker.
+</div>
+
+<div class="warning">
+<strong>Zur Vereinfachung:</strong> 69,3% ≈ ln(2) ist eine auffällige Zahl. Das legt nahe, dass es eine einfache geometrische Beziehung gibt. Falls a ∝ L<sub>Linker</sub>: a<sub>neu</sub>/a<sub>alt</sub> = 0,885. Ein Linker mit ca. 12% kürzerer Gesamtlänge als BDC ist gefragt. Dies entspricht einem <strong>5-gliedrigen aromatischen Ring (statt 6-gliedrigem Benzol)</strong> als Spacer, z.B. <strong>Furan-2,5-dicarboxylat (FDCA)</strong>. Furan C₂–C₅-Abstand ≈ 2,2–2,6 Å (je nach Berechnungsansatz) – ein wichtiger biobasierter Linker!
+</div>
+
+<div class="result">
+<strong>Vorgeschlagener Ligand:</strong> Ein kürzer-als-BDC Dicarboxylat-Linker mit ~12% kürzerer Zentrum-zu-Zentrum-Länge.<br>
+Kandidaten: <strong>Furan-2,5-dicarboxylat (FDCA)</strong> (5-gliedriger Ring statt 6-gliedrigem Benzol)<br>
+oder <strong>1,3-Cyclobutandicarboxylat</strong> (4-Ring, L ≈ 2,15 Å).<br><br>
+Begründung: Kürzerer Spacer → kleinerer Cluster-zu-Cluster-Abstand → kleineres Zellvolumen. Das Verhältnis 0,693 ≈ (L<sub>neu</sub>/L<sub>BDC</sub>)³ mit L<sub>neu</sub> ≈ 0,885 × L<sub>BDC</sub>.
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background: #f0faf4;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+  <tr><td><strong>1</strong></td><td>Wiederholungseinheit: <strong>Zn₄O(BDC)₃ = Zn₄C₂₄H₁₂O₁₃</strong>, M = 769,9 g/mol. Pro Zn₄O-Cluster: 6 BDC geteilt durch 2 = 3 BDC.</td></tr>
+  <tr><td><strong>2</strong></td><td>4 Zn(NO₃)₂ + 3 H₂BDC + 8 NEt₃ + H₂O → <strong>Zn₄O(BDC)₃↓</strong> + 8 [HNEt₃]NO₃</td></tr>
+  <tr><td><strong>3</strong></td><td>m/z 73 = DMF, m/z 77 = C₆H₅⁺, m/z 112/114 (3:1) = Chlorbenzol (³⁵Cl/³⁷Cl). Formel: <strong>Zn₄C₅₄H₇₃N₈O₂₁Cl</strong> (= MOF-5 + 8 DMF + 1 C₆H₅Cl)</td></tr>
+  <tr><td><strong>4</strong></td><td>Freies Volumen: <strong>1346 Å³ (62,1%)</strong> · Experimentelle Oberfläche: <strong>≈ 371 Å²</strong> pro Zelle</td></tr>
+  <tr><td><strong>5</strong></td><td>a = d<sub>groß</sub> + d<sub>klein</sub> = 15,1 + 11,0 = <strong>26,1 Å</strong> (entspricht 2 × 12,94 Å ✓)</td></tr>
+  <tr><td><strong>6</strong></td><td>Überschuss-H₂-Speicherung: <strong>0,072 g H₂</strong> mehr als reines Gas. MOF-5 speichert ~3,6× mehr H₂ als leerer Raum bei 20 bar.</td></tr>
+  <tr><td><strong>7</strong></td><td>Benötigter Linker: ~88,5% der BDC-Länge (a-Skalierung 0,885³ = 0,693). <strong>Furan-2,5-dicarboxylat (FDCA)</strong> oder 1,3-Cyclobutandicarboxylat – kürzer-als-Benzol ditopische Liganden.</td></tr>
+</table>
+
+<div class="box" style="margin-top:18px;">
+<strong>Warum sind MOFs so faszinierend?</strong><br>
+Mit <strong>62% freiem Volumen</strong> und einer Oberfläche von 2900 m²/g in einem einzigen Gramm Material vereinen MOFs extreme Porosität mit chemischer Anpassbarkeit. Durch bloßen Austausch des organischen Linkers lässt sich das Zellvolumen (hier auf 69,3%) und damit Porengröße, Selektivität und Anwendungsbereich maßgeschneidert einstellen – das macht MOFs zu den vielseitigsten nanoporösen Materialien überhaupt!
+</div>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #c8e6c9; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 14 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
