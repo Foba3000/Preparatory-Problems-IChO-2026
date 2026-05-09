@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 17 – Kohlenhydratchemie | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #fdf8ff; color: #1a1a2e; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #4a0072; color: #4a0072;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #4a0072; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #4a0072, #7b1fa2); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #4a0072; border-left: 5px solid #7b1fa2; padding-left: 13px; margin-top: 0; }
+  h3 { color: #4a148c; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #e1d5f0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(74,0,114,0.07); }
+  .box     { background: #f3e5f5; border-left: 4px solid #7b1fa2; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .mech    { background: #fff3e0; border-left: 4px solid #e65100; border-radius: 6px; padding: 13px 18px; margin: 11px 0; }
+
+  .formula      { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.0em; line-height: 2.0; }
+  .reaction     { background: #4a0072; color: #f3e5f5; border-radius: 8px; padding: 10px 18px; text-align: center; font-family: 'Courier New', monospace; margin: 10px 0; font-size: 1.0em; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #4a0072; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #e1d5f0; padding: 9px 13px; }
+  tr:nth-child(even) { background: #fdf8ff; }
+
+  .step { margin: 10px 0; padding: 11px 16px; background: #fdfaff; border-radius: 7px; border: 1px solid #e1d5f0; }
+  .schritt-nr { display: inline-block; background: #4a0072; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #f3e5f5; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #ce93d8; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #f3e5f5, #fdf8ff); border: 2px solid #7b1fa2; border-radius: 10px; padding: 14px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.15em; font-weight: bold; color: #4a0072; font-family: 'Courier New', monospace; }
+
+  .struct-card { background: white; border: 2px solid #7b1fa2; border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
+  .struct-title { font-weight: bold; color: #4a0072; font-size: 1.05em; border-bottom: 1px solid #e1d5f0; padding-bottom: 6px; margin-bottom: 10px; }
+  .struct-body { font-family: 'Courier New', monospace; background: #fafafa; border-radius: 6px; padding: 10px 14px; font-size: 0.95em; line-height: 1.9; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .badge-reagent { display: inline-block; background: #7b1fa2; color: white; border-radius: 6px; padding: 2px 10px; font-size: 0.85em; font-family: 'Courier New', monospace; margin: 2px; }
+  .badge-product { display: inline-block; background: #1565c0; color: white; border-radius: 6px; padding: 2px 10px; font-size: 0.85em; margin: 2px; }
+
+  .fischer { font-family: 'Courier New', monospace; text-align: center; line-height: 1.7; background: #fafafa; border: 1px solid #e1d5f0; border-radius: 8px; padding: 14px; margin: 10px 0; font-size: 0.95em; }
+
+  .arrow-box { text-align: center; padding: 6px; color: #7b1fa2; font-size: 1.4em; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🍬 Problem 17 – Kohlenhydratchemie<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung auf Deutsch – Glucose-Chemie, Schutzgruppen & Trisaccharid-Synthese</span></h1>
+
+<!-- EINLEITUNG -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: Glucose und Kohlenhydratreaktionen</h2>
+<p>D-Glucose existiert in zwei Hauptformen: der <strong>linearen Fischer-Form</strong> (Aldehyd an C1) und der <strong>cyclischen Pyranoseform</strong> (6-gliedriger Ring durch Halbacetal-Bildung zwischen C1 und C5-OH). In der cyclischen α-Form steht die OH-Gruppe an C1 axial.</p>
+<div class="box">
+<strong>Wichtige Reaktivitäten:</strong><br>
+• C1 (Aldehyd/Halbacetal): Reduktion, Oxidation, Glycosidbildung, Acetal-Bildung<br>
+• C6 (CH₂OH): Oxidation unter starken Bedingungen; primäre OH = reaktivster Alkohol<br>
+• C2–C5 (CHOH): vicinale Diole → Periodat-Spaltung; trans-Diole → selektive Acetal-Bildung<br>
+• 4,6-diol: bevorzugte Acetal-Bildung (6-gliedriger Ring)
+</div>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Produkte I–V aus linearer D-Glucose</h2>
+
+<p>Ausgangsstoff: D-Glucose in linearer Fischer-Form</p>
+<div class="fischer">
+&nbsp;&nbsp;&nbsp;CHO<br>
+H ──┤── OH &nbsp;&nbsp;&nbsp;(C2, R)<br>
+HO──┤── H &nbsp;&nbsp;&nbsp;(C3, S)<br>
+H ──┤── OH &nbsp;&nbsp;&nbsp;(C4, R)<br>
+H ──┤── OH &nbsp;&nbsp;&nbsp;(C5, R)<br>
+&nbsp;&nbsp;&nbsp;CH₂OH
+</div>
+
+<div class="struct-card">
+<div class="struct-title">Produkt I – NaBH₄-Reduktion</div>
+<p><strong>Reagenz:</strong> NaBH₄ (Natriumborhydrid) – mildes Reduktionsmittel, reduziert nur Carbonylgruppen</p>
+<p><strong>Reaktion:</strong> Der Aldehyd an C1 (CHO) wird zur primären Alkoholgruppe (CH₂OH) reduziert. Die OH-Gruppen an C2–C5 bleiben unverändert.</p>
+<div class="struct-body">
+I = D-Glucitol (D-Sorbitol)<br>
+CH₂OH–CHOH–CHOH–CHOH–CHOH–CH₂OH<br>
+(6-wertiger Alkohol = Hexaol; beide Enden sind jetzt CH₂OH)
+</div>
+<div class="result">I = D-Sorbitol (D-Glucitol): CH₂OH–(CHOH)₄–CH₂OH</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">Produkt IV – Br₂/H₂O-Oxidation</div>
+<p><strong>Reagenz:</strong> Br₂/H₂O – milde Oxidation, <em>selektiv nur</em> für Aldehyde (nicht für Alkohole)</p>
+<p><strong>Reaktion:</strong> Nur der Aldehyd an C1 wird zur Carboxylgruppe (COOH) oxidiert. Die CH₂OH-Gruppe an C6 und alle OH-Gruppen bleiben intakt.</p>
+<div class="struct-body">
+IV = D-Gluconsäure (Gluconic acid)<br>
+COOH–CHOH–CHOH–CHOH–CHOH–CH₂OH<br>
+(Aldonsäure: nur C1 oxidiert → COOH, C6 bleibt CH₂OH)
+</div>
+<div class="result">IV = D-Gluconsäure: COOH–(CHOH)₄–CH₂OH</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">Produkt V – Konz. HNO₃-Oxidation</div>
+<p><strong>Reagenz:</strong> Konz. HNO₃ – starkes Oxidationsmittel, oxidiert <em>beide</em> Enden des Zuckers</p>
+<p><strong>Reaktion:</strong> Sowohl der Aldehyd (C1: CHO → COOH) als auch die primäre Alkoholgruppe (C6: CH₂OH → COOH) werden oxidiert.</p>
+<div class="struct-body">
+V = D-Glucarsäure (Zuckersäure, Saccharinsäure)<br>
+COOH–CHOH–CHOH–CHOH–CHOH–COOH<br>
+(Aldarinsäure: beide Enden C1 und C6 sind COOH)
+</div>
+<div class="result">V = D-Glucarsäure (Zuckersäure): HOOC–(CHOH)₄–COOH</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">Produkte II + III – NaIO₄ (Überschuss) – Periodat-Spaltung</div>
+<p><strong>Reagenz:</strong> NaIO₄ im Überschuss – spaltet alle C–C-Bindungen zwischen je zwei benachbarten OH-Gruppen (vicinale Diole). Pro gespaltenem C–C werden zwei Aldehyde (oder Carbonsäuren) gebildet.</p>
+
+<div class="step">
+<strong>Spaltungsregeln:</strong>
+<ul>
+  <li>Inneres CHOH: → HCOOH (Ameisensäure)</li>
+  <li>Terminales CH₂OH: → HCHO (Formaldehyd)</li>
+  <li>Terminales CHO (Aldehyd) + angrenzendes CHOH: → HCOOH</li>
+</ul>
+</div>
+
+<div class="step">
+<strong>Anwendung auf D-Glucose:</strong> C1(CHO)–C2(OH)–C3(OH)–C4(OH)–C5(OH)–C6(CH₂OH)<br>
+Alle 5 C–C-Bindungen werden gespalten:
+<div class="formula-left">
+C1 (CHO + OH an C2) → HCOOH<br>
+C2 (CHOH, innen) → HCOOH<br>
+C3 (CHOH, innen) → HCOOH<br>
+C4 (CHOH, innen) → HCOOH<br>
+C5 (CHOH, innen) → HCOOH<br>
+C6 (CH₂OH, terminal) → HCHO
+</div>
+</div>
+
+<div class="result">
+II = Ameisensäure HCOOH (5 Äquivalente pro Mol Glucose)<br>
+III = Formaldehyd HCHO (1 Äquivalent pro Mol Glucose)
+</div>
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Strukturen A–G – Transformationen der α-D-Glucopyranose</h2>
+
+<div class="box">
+<strong>Hinweise aus der Aufgabe:</strong><br>
+• A, G, D: enthalten <em>dieselben</em> funktionellen Gruppen (Ether –OMe + Alkohole –OH)<br>
+• G und D: unterscheiden sich in der Formel um CH₂ (genau eine Methylengruppe)<br>
+• B und C: enthalten drei 6-gliedrige Ringe in ihren Strukturen<br>
+• E: enthält zwei verschiedene CH₃-Gruppen (z.B. OAc-CH₃ und OMe-CH₃)
+</div>
+
+<div class="struct-card">
+<div class="struct-title">A – Methyl-α-D-glucopyranosid (Fischer-Glycosidierung)</div>
+<p><span class="badge-reagent">CH₃OH, HCl</span> → Fischer-Glycosidierung: Saurer Katalysator (HCl) öffnet das Halbacetal an C1 und lässt Methanol als Nukleophil angreifen → Vollacetal (Glycosid).</p>
+<div class="struct-body">
+A = Methyl-α-D-glucopyranosid<br>
+Pyranose-Ring (6-gliedrig): C1–O–C5<br>
+C1: OCH₃ (Methoxy, axial bei α-Anomer → Vollacetal, nicht mehr Aldehyd!)<br>
+C2: OH (frei, äquatorial)<br>
+C3: OH (frei, äquatorial)<br>
+C4: OH (frei, äquatorial)<br>
+C5: im Ring (kein OH)<br>
+C6: CH₂OH (primäre OH, frei)<br>
+→ Funktionelle Gruppen: 1× OMe + 4× OH ✓ (gleich wie D und G)
+</div>
+<div class="warning">Wichtig: Die HCl/MeOH-Bedingungen bilden das thermodynamisch stabile Methyl-glucosid. Der C1-OH des Halbacetals wird zum stabilen Vollacetal (Glycosid) – dieser ist nicht mehr durch NaBH₄ reduzierbar!</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">B – Methyl-4,6-O-benzyliden-α-D-glucopyranosid</div>
+<p><span class="badge-reagent">PhCH(OMe)₂, p-TsOH</span> → Acetalbildung: Benzaldehyddimethylacetal reagiert mit dem 4,6-Diol (primäre OH an C6 + OH an C4) → 6-gliedriges 1,3-Dioxan-Acetal.</p>
+<div class="struct-body">
+B = Methyl-4,6-O-benzyliden-α-D-glucopyranosid<br><br>
+DREI 6-GLIEDRIGE RINGE ✓:<br>
+Ring 1: Glucopyranose-Ring (C1–O–C5)<br>
+Ring 2: 1,3-Dioxan-Ring (Benzyliden-Acetal über C4–O–CH(Ph)–O–C6)<br>
+Ring 3: Phenyl-Ring (Benzolring des PhCH-Restes)<br><br>
+C1: OMe, C2: OH (frei!), C3: OH (frei!), C4 und C6: im Acetal eingeschlossen
+</div>
+<div class="box">
+<strong>Warum 4,6 und nicht 2,3?</strong> Das 4,6-Diol bildet einen bevorzugten 6-gliedrigen Dioxan-Ring. Das 2,3-Diol würde nur einen 5-gliedrigen Ring bilden, der weniger stabil wäre. Außerdem ist das 4,6-Diol geometrisch günstiger für die Acetal-Bildung.
+</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">C – Methyl-2,3-di-O-methyl-4,6-O-benzyliden-α-D-glucopyranosid</div>
+<p><span class="badge-reagent">NaH (excess), MeI (excess)</span> → Williamson-Ethersynthese: NaH deprotoniert alle freien OH → Alkoxid-Anionen → MeI alkyliert diese zu OMe-Gruppen. Das Benzyliden-Acetal ist gegenüber NaH/MeI stabil!</p>
+<div class="struct-body">
+C = Methyl-2,3-di-O-methyl-4,6-O-benzyliden-α-D-glucopyranosid<br><br>
+DREI 6-GLIEDRIGE RINGE ✓ (wie B):<br>
+Ring 1: Glucopyranose, Ring 2: 1,3-Dioxan, Ring 3: Phenyl<br><br>
+C1: OMe (Glycosid), C2: OMe (neu methyliert!), C3: OMe (neu methyliert!),<br>
+C4 und C6: im Benzyliden-Acetal, C5 im Ring
+</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">D – Methyl-2,3-di-O-methyl-α-D-glucopyranosid</div>
+<p><span class="badge-reagent">p-TsOH, H₂O</span> → Selektive saure Hydrolyse des Benzyliden-Acetals. Acetale sind unter sauren Bedingungen labil; die stabilen Methylether (OMe) bleiben intakt.</p>
+<div class="struct-body">
+D = Methyl-2,3-di-O-methyl-α-D-glucopyranosid<br><br>
+C1: OMe (Glycosid), C2: OMe, C3: OMe<br>
+C4: OH (frei, nach Acetalspaltung), C6: CH₂OH (frei, nach Acetalspaltung)<br><br>
+Funktionelle Gruppen: OMe (×3) + OH (×2) ← gleiche Typen wie A und G ✓<br>
+Formel: C₉H₁₈O₆ (= C₆-Glucose + 3×CH₂ für OMe)
+</div>
+<p><em>Vergleich mit G: Formel G = C₁₀H₂₀O₆ → Differenz = CH₂ ✓</em></p>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">E – Produkt der OBn-geschützten Verbindung nach Ac₂O/Py + DIBAL-H</div>
+<p>Ausgehend vom Zwischenprodukt mit OBn-Gruppen (C3,C4,C6-OBn, freiem C2-OH, C1-OMe):</p>
+<p><span class="badge-reagent">1) Ac₂O, Py</span> → Acetylierung des freien C2-OH → C2-OAc</p>
+<p><span class="badge-reagent">2) DIBAL-H (Überschuss)</span> → DIBAL-H (Diisobutylaluminiumhydrid) reduziert Ester selektiv zu Alkoholen. Die OAc-Gruppe (Ester!) an C2 wird zum Alkohol C2-OH zurückgeführt. Das OMe an C1 (Vollacetal = Ketal) wird unter DIBAL-H bei tiefer Temperatur zum Lactol (Hemiacetal) reduziert.</p>
+<div class="struct-body">
+E enthält ZWEI verschiedene CH₃-Gruppen ✓:<br>
+• CH₃ aus dem verbliebenen OAc-Rest (Acetat: –O–C(=O)–CH₃)<br>
+• CH₃ aus einem OMe-Rest (Methylether: –OCH₃)<br><br>
+E ist ein partiell entschütztes Glucosid-Derivat mit gemischten Schutzgruppen<br>
+(OBn an C3,C4,C6; eine OAc oder OMe Gruppe; Lactol an C1)
+</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">F – 2,3,4,6-Tetra-O-methyl-α-D-glucopyranose (Permethylierung)</div>
+<p>Ausgangsstoff hier: α-D-Glucopyranose DIREKT (nicht über A!).</p>
+<p><span class="badge-reagent">NaH (excess), MeI (excess)</span> → Alle vier freien OH-Gruppen (C2, C3, C4, C6) werden methyliert. Das anomere C1-OH (Halbacetal) wird ebenfalls zu OMe.</p>
+<div class="struct-body">
+F = 1,2,3,4,6-Penta-O-methyl-α-D-glucopyranose? NEIN –<br>
+In der Pyranoseform ist C1 schon als Halbacetal im Ring. Die 4 freien OH:<br>
+C2-OH, C3-OH, C4-OH, C6-OH → alle zu OMe<br><br>
+F = 2,3,4,6-Tetra-O-methyl-α-D-glucopyranose<br>
+(Das anomere C1-OH des Halbacetals reagiert auch: → C1-OMe)<br>
+Alle 5 Positionen tragen OMe; kein freies OH mehr
+</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">G – 2,3,4,6-Tetra-O-methyl-D-glucose (saure Hydrolyse des Glycosids)</div>
+<p><span class="badge-reagent">H₂O, HCl</span> → Saure Hydrolyse: Das Methyl-glycosid (Vollacetal an C1) wird hydrolysiert → C1-OH wird wieder frei (Halbacetal). Die stabilen OMe-Ether an C2, C3, C4, C6 bleiben intakt.</p>
+<div class="struct-body">
+G = 2,3,4,6-Tetra-O-methyl-D-glucose (Halbacetal/offenkettig möglich)<br><br>
+C1: OH (frei, anomeres Halbacetal – liegt im GGW als Ring vor)<br>
+C2: OMe, C3: OMe, C4: OMe, C6: CH₂OMe (OMe!)<br><br>
+Funktionelle Gruppen: OMe (×4) + OH (×1 anomere OH) → gleich wie A und D ✓<br>
+Formel: C₁₀H₂₀O₆ → Differenz zu D (C₉H₁₈O₆) = CH₂ ✓
+</div>
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: H1 und H2 – chirale THP-Schutzgruppe</h2>
+
+<p>Konventionelle Schutzgruppen (z.B. Benzyliden-Acetal) können zwischen 2,3- und 3,4-Diolen <em>nicht</em> unterscheiden, da beide trans-konfiguriert und equatorial sind. Die Lösung: ein chirales 2,2-Diphenyl-Tetrahydropyranol als Schutzgruppe.</p>
+
+<div class="box">
+<strong>Das chirale Reagenz:</strong> Ein racemisches Diol mit Phenyl-Gruppen ((S)- und (R)-Form) reagiert mit CSA (Camphersulfonsäure) als saurem Katalysator mit der trans-Diol-Einheit des Glucosids. Dabei entsteht ein cyclisches Acetal. Da das Reagenz chiral ist und das Substrat chiral ist, entstehen <strong>Diastereomere</strong> – die sich trennen lassen!
+</div>
+
+<div class="step">
+<strong>Konformationsanalyse:</strong> Die sperrigen Phenyl-Gruppen der Schutzgruppe bevorzugen <em>equatoriale</em> Positionen im Sessel-Konformer. Deshalb legen sich beim Einbau der (S)- oder (R)-Schutzgruppe die Ph-Gruppen äquatorial → die resultierende Ringfusion ist verschieden für die beiden Enantiomere des Reagenzes.
+</div>
+
+<div class="grid2">
+  <div class="struct-card">
+    <div class="struct-title">H1 – mit (S)-chiraler Schutzgruppe</div>
+    <div class="struct-body">
+H1 entsteht aus der Reaktion des Glucosid-Substrats (2,3-OH trans) mit dem (S)-Enantiomer des Diol-Reagenzes.<br><br>
+Struktur: Glucopyranose-Ring mit cyclischem 1,3-Dioxan-Acetal über C2 und C3. Die zwei Ph-Gruppen der Schutzgruppe befinden sich äquatorial im Sesselkonformer der Dioxan-Einheit.<br><br>
+Konfiguration an den Acetalkohlenstoffen: entspricht der (S)-Form des Diol-Reagenzes.
+    </div>
+  </div>
+  <div class="struct-card">
+    <div class="struct-title">H2 – mit (R)-chiraler Schutzgruppe</div>
+    <div class="struct-body">
+H2 entsteht analog aus dem (R)-Enantiomer.<br><br>
+Struktur: Identisch zum Glucosid-Kern, aber das cyclische Acetal hat die entgegengesetzte Konfiguration der Dioxan-Einheit.<br><br>
+Da Glucosid und Schutzgruppe beide chiral sind, sind H1 und H2 echte Diastereomere – trennbar durch Chromatographie!
+    </div>
+  </div>
+</div>
+
+<div class="result">
+H1 = Glucosid-2,3-O-[(S)-2,3-diphenyl-1,3-dioxolan] – cyclisches Acetal über C2,C3 mit (S)-Konfiguration der Schutzgruppe<br>
+H2 = Glucosid-2,3-O-[(R)-2,3-diphenyl-1,3-dioxolan] – identische Grundstruktur, aber (R)-Konfiguration<br>
+Beide Ph-Gruppen equatorial im Sessel ✓ (sterisch bevorzugt laut Aufgabenhinweis)
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Strukturen I und J – Weg zum Adamantan-artigen Produkt K</h2>
+
+<h3>Schritt 1: α-D-Glucopyranose → I</h3>
+<div class="struct-card">
+<div class="struct-title">I – 2,3,4,6-Tetra-O-acetyl-α-D-glucopyranosylbromid (Acetobromoglucose)</div>
+<p><span class="badge-reagent">1) Ac₂O, Py</span> → Vollständige Acetylierung aller 5 OH-Gruppen (inkl. anomeres C1-OH): Penta-O-acetyl-D-glucopyranose</p>
+<p><span class="badge-reagent">2) HBr, AcOH</span> → Selektive Substitution des anomeren Acetats durch Br⁻: Das C1-OAc wird durch Br ersetzt (anomeres Carbokation wird durch Br⁻ abgefangen, vorwiegend α-Produkt durch anomeren Effekt)</p>
+<div class="struct-body">
+I = 2,3,4,6-Tetra-O-acetyl-α-D-glucopyranosylbromid<br>
+(„Acetobromo-Glucose" = klassisches Aktivierungsreagenz für Glykosylierungen)<br><br>
+C1: Br (axial, α-Konfiguration bevorzugt)<br>
+C2,C3,C4,C6: alle OAc<br>
+Formel: C₁₄H₁₉BrO₉
+</div>
+</div>
+
+<div class="arrow-box">↓ EtOH, 50°C, 2,4,6-Collidin (Hilfsbase), p-TsOH, MS 4Å</div>
+
+<div class="struct-card">
+<div class="struct-title">J – Ethyl-2,3,4,6-tetra-O-acetyl-β-D-glucopyranosid (Formel C₁₆H₂₄O₁₀)</div>
+<p>Das Acetobromoglucosid (I) reagiert mit Ethanol als Nukleophil in der Koenigs-Knorr-Reaktion. 2,4,6-Collidin ist eine sterisch gehinderte Base, die HBr neutralisiert aber selbst nicht glycosyliert wird.</p>
+<div class="struct-body">
+J = Ethyl-2,3,4,6-tetra-O-acetyl-β-D-glucopyranosid<br><br>
+C1: O–CH₂CH₃ (Ethyl-Glycosid, β-Konfiguration durch SN2-artigen Mechanismus)<br>
+C2,C3,C4,C6: alle OAc<br><br>
+Formel-Check C₁₆H₂₄O₁₀:<br>
+C: 6(Glc) + 2(Et) + 4×2(Ac-CO) = 6+2+8 = 16 ✓<br>
+O: 1(Ring-O) + 1(Et-O) + 4×2(OAc) = 10 ✓
+</div>
+</div>
+
+<div class="box">
+<strong>Weg zu K:</strong> J → (1) DBU/H₂O (basische Deacetylierung → freie OH) → (2) p-TsOH, DBU, MS 4Å (intramolekulare Acetalbildung → Adamantan-artiges bicyclisches K mit CH₃). Das Adamantan-Gerüst entsteht durch dreifache intramolekulare Acetalbrückenbildung zwischen den Hydroxy-Gruppen und dem C1-Ethyl-Glycosid.
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Strukturen L, M und Trisaccharid „Gal-Gal-Glc"</h2>
+
+<h3>Ausgangsstoff: Glucosid-Derivat</h3>
+<div class="struct-body" style="background:#fafafa; border-radius:6px; padding:10px 14px; margin-bottom:14px;">
+Glucosid-Derivat: C1=OMe (Methyl-Glucosid), C6=CH₂OBn (Benzylether), zwei freie OH-Gruppen (C2-OH und C3-OH = cis-Diol oder trans-Diol je nach Anomer)
+</div>
+
+<div class="struct-card">
+<div class="struct-title">L – Boronsäureester-Glucosid</div>
+<p><span class="badge-reagent">RB(OH)₂, Py</span> → Boronsäure (Arylboronsäure) bildet einen cyclischen Boronsäureester mit dem Diol des Glucosids. Boronsäuren reagieren reversibel mit cis-1,2- und 1,3-Diolen zu stabilen 5- oder 6-gliedrigen cyclischen Boronsäureestern.</p>
+<div class="struct-body">
+L = Glucosid-2,3-O-[Aryl-boronsäureester]<br><br>
+Der Boronsäureester schützt das 2,3-Diol als cyclisches Boronat:<br>
+Fünfgliedriger Ring: C2–O–B(Ar)–O–C3<br>
+Das Bor ist trivalent (sp²-hybridisiert, Lewis-Säure)<br>
+Mit Pyridin als Base und der weiteren Reaktion kann Bor als temporäre<br>
+Schutzgruppe ODER als Aktivierungsgruppe für selektive Glycosylierung wirken.
+</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">M – Disaccharid (Glc-Gal-Derivat)</div>
+<p>Reagenzien:</p>
+<ul>
+  <li><span class="badge-reagent">1) NIS, TMSOTf</span>: NIS (N-Iodsuccinimid) + TMSOTf aktivieren das Thio-Glycosid (SEt-Donor, Galactosyl-SEt) durch Oxidation des Schwefels → reaktives Oxocarbenium-Ion</li>
+  <li>Der Galactosyl-SEt-Donor mit Fmoc-Schutzgruppe an C2 reagiert mit der freien OH am Glucosid-Akzeptor (Boronsäureester freigesetzt oder Boronat als dirigierende Gruppe)</li>
+  <li><span class="badge-reagent">2) Et₃N</span>: Entfernt die Fmoc-Schutzgruppe (Base-labil)</li>
+</ul>
+<div class="struct-body">
+M = Disaccharid-Derivat:<br>
+Galactose(1→?)-Glucose-OMe<br><br>
+Struktur: Zwei Pyranose-Ringe verknüpft über eine glycosidische Bindung;<br>
+am Galactose-Ring: OBn (von BnOOC-Donor), freie OH an C2 (nach Fmoc-Entfernung),<br>
+SEt-Gruppe für zweite Glycosylierung noch vorhanden,<br>
+OBz-Gruppe an einer weiteren Position<br>
+Formel: C₉₆H₄₂BO₁₂R (laut Aufgabe: C₉₆H₄₂BO₁₂R)
+</div>
+</div>
+
+<div class="struct-card">
+<div class="struct-title">Trisaccharid „Gal-Gal-Glc"</div>
+<p>Reagenzien für M → Trisaccharid:</p>
+<ul>
+  <li><span class="badge-reagent">1) NIS, TMSOTf</span>: Zweite Glycosylierung – die freie OH an Galactose-C2 greift das aktivierte Thio-Glycosid an → zweite Galactose-Einheit wird angehängt</li>
+  <li><span class="badge-reagent">2) H₂O, Erhitzen</span>: Entfernung der verbleibenden Schutzgruppen (Boronat-Hydrolyse, OBz-Verseifung)</li>
+</ul>
+<div class="struct-body">
+„Gal-Gal-Glc" = Trisaccharid<br><br>
+Vollständige Struktur (alle Schutzgruppen entfernt):<br>
+Galactose–(1→2)–Galactose–(1→?)–Glucose–OMe<br><br>
+• Drei Pyranose-Ringe (6-gliedrig)<br>
+• Zwei glycosidische Bindungen (Gal–Gal und Gal–Glc)<br>
+• An Glc: C1-OMe (Methyl-Glucosid), C6-OH (nach BnO-Entfernung?),<br>
+  alle anderen OH frei<br>
+• An den Gal-Einheiten: alle OH frei (nach Entschützung)<br>
+• Anomere Konfiguration der neuen Glycosidbindungen: nicht spezifiziert (laut Aufgabe)
+</div>
+</div>
+
+<div class="box">
+<strong>Rolle der Boronsäure in der Synthese:</strong><br>
+Der Boronsäureester erfüllt eine Doppelrolle: (1) Er schützt temporär das 2,3-Diol des Glucosids. (2) Er aktiviert gleichzeitig die benachbarte OH für die erste Glycosylierung (dirigierende Wirkung). Nach der zweiten Glycosylierung wird der Boronsäureester durch Hydrolyse (H₂O, Hitze) einfach entfernt – ohne die glycosidischen Bindungen zu schädigen. Das ist die Eleganz dieser Methode!
+</div>
+
+<div class="result">
+L = Glucosid-2,3-O-[Aryl-boronsäureester]: cyclischer Boronsäureester schützt das 2,3-Diol<br>
+M = Disaccharid Gal-Glc-OMe mit SEt-aktivierbarer Gruppe für 2. Glycosylierung<br>
+Gal-Gal-Glc = Vollständig entschütztes Trisaccharid Galactose–Galactose–Glucose-OMe
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background: #fdf8ff;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Produkt</th><th>Reagenz</th><th>Strukturbeschreibung</th></tr>
+  <tr><td><strong>I</strong></td><td>NaBH₄</td><td>D-Sorbitol: CH₂OH–(CHOH)₄–CH₂OH (Hexaol)</td></tr>
+  <tr><td><strong>II</strong></td><td>NaIO₄ (Überschuss)</td><td>Ameisensäure HCOOH (5 Äquivalente)</td></tr>
+  <tr><td><strong>III</strong></td><td>NaIO₄ (Überschuss)</td><td>Formaldehyd HCHO (1 Äquivalent)</td></tr>
+  <tr><td><strong>IV</strong></td><td>Br₂/H₂O</td><td>D-Gluconsäure: COOH–(CHOH)₄–CH₂OH</td></tr>
+  <tr><td><strong>V</strong></td><td>Konz. HNO₃</td><td>D-Glucarsäure: HOOC–(CHOH)₄–COOH</td></tr>
+  <tr><td><strong>A</strong></td><td>CH₃OH, HCl</td><td>Methyl-α-D-glucopyranosid: C1-OMe, C2/C3/C4/C6-OH</td></tr>
+  <tr><td><strong>B</strong></td><td>PhCH(OMe)₂, p-TsOH</td><td>Methyl-4,6-O-benzyliden-glucopyranosid: 3 Sechsringe (Pyranose + Dioxan + Ph)</td></tr>
+  <tr><td><strong>C</strong></td><td>NaH, MeI (excess)</td><td>Methyl-2,3-di-OMe-4,6-O-benzyliden-glucopyranosid: 3 Sechsringe, C2/C3 methyliert</td></tr>
+  <tr><td><strong>D</strong></td><td>p-TsOH, H₂O</td><td>Methyl-2,3-di-OMe-glucopyranosid: Acetal hydrolysiert, C4/C6-OH frei; gleiche Gruppen wie A,G; um CH₂ kleiner als G</td></tr>
+  <tr><td><strong>E</strong></td><td>Ac₂O, Py; dann DIBAL-H</td><td>Partiell geschütztes Glucosid: enthält 2 verschiedene CH₃ (OAc-CH₃ + OMe-CH₃)</td></tr>
+  <tr><td><strong>F</strong></td><td>NaH, MeI (excess) auf Glucopyranose</td><td>2,3,4,6-Tetra-O-methyl-α-D-glucopyranose: alle freien OH methyliert</td></tr>
+  <tr><td><strong>G</strong></td><td>H₂O, HCl</td><td>2,3,4,6-Tetra-OMe-D-glucose: Glycosid hydrolysiert → anomeres C1-OH frei; gleiche Gruppen wie A,D</td></tr>
+  <tr><td><strong>H1</strong></td><td>(S)-Diol, CSA</td><td>Glucosid-2,3-O-[(S)-diphenyl-dioxolan]: Ph äquatorial, (S)-chirale Schutzgruppe</td></tr>
+  <tr><td><strong>H2</strong></td><td>(R)-Diol, CSA</td><td>Glucosid-2,3-O-[(R)-diphenyl-dioxolan]: Ph äquatorial, (R)-chirale Schutzgruppe</td></tr>
+  <tr><td><strong>I</strong></td><td>Ac₂O, Py; HBr, AcOH</td><td>2,3,4,6-Tetra-O-acetyl-α-D-glucopyranosylbromid (Acetobromo-Glucose): C1-Br</td></tr>
+  <tr><td><strong>J</strong></td><td>EtOH, Collidin</td><td>Ethyl-2,3,4,6-tetra-O-acetyl-β-D-glucopyranosid: C₁₆H₂₄O₁₀</td></tr>
+  <tr><td><strong>L</strong></td><td>RB(OH)₂, Py</td><td>Glucosid-2,3-O-[Aryl-boronsäureester]: cyclischer Boronat-Ester über C2,C3-Diol</td></tr>
+  <tr><td><strong>M</strong></td><td>NIS/TMSOTf; Et₃N</td><td>Gal–Glc-Disaccharid-Derivat mit weiterer SEt-Gruppe für zweite Glycosylierung</td></tr>
+  <tr><td><strong>Gal-Gal-Glc</strong></td><td>NIS/TMSOTf; H₂O, Δ</td><td>Vollständig entschütztes Trisaccharid: Gal–(1→?)–Gal–(1→?)–Glc-OMe</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #e1d5f0; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 17 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
