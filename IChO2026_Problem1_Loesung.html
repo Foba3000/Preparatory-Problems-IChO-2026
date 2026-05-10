@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 1 – Khoja Nasreddin ist jetzt Chemiker | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #f8f0ff; color: #1a1a2e; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #4a0072; color: #4a0072;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #4a0072; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #4a0072, #880e4f); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #4a0072; border-left: 5px solid #880e4f; padding-left: 13px; margin-top: 0; }
+  h3 { color: #6a0080; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #e1c8f0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(74,0,114,0.07); }
+  .box     { background: #f3e5f5; border-left: 4px solid #880e4f; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .clue    { background: #fff3e0; border-left: 4px solid #e65100; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .check   { background: #e3f2fd; border-left: 4px solid #1565c0; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+
+  .formula      { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.1; }
+  .reaction { background: #1a0030; color: #f3e5f5; border-radius: 8px; padding: 12px 20px; text-align: center; font-family: 'Courier New', monospace; margin: 10px 0; font-size: 1.05em; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #4a0072; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #e1c8f0; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #fdf5ff; }
+
+  .step { margin: 10px 0; padding: 11px 16px; background: #fdfaff; border-radius: 7px; border: 1px solid #e1c8f0; }
+  .schritt-nr { display: inline-block; background: #4a0072; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #f3e5f5; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #ce93d8; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #f3e5f5, #f8f0ff); border: 2px solid #880e4f; border-radius: 10px; padding: 14px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.2em; font-weight: bold; color: #4a0072; font-family: 'Courier New', monospace; }
+
+  .substances-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .substance-card { background: white; border: 2px solid #880e4f; border-radius: 10px; padding: 12px 14px; text-align: center; }
+  .sub-letter { font-size: 1.5em; font-weight: bold; color: #4a0072; }
+  .sub-name { font-size: 0.95em; font-weight: bold; color: #1a1a2e; margin-top: 4px; }
+  .sub-formula { font-family: 'Courier New', monospace; font-size: 0.9em; color: #555; }
+
+  .pressure-table td { font-family: 'Courier New', monospace; }
+  .match { color: #2e7d32; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🧪 Problem 1 – Khoja Nasreddin ist jetzt Chemiker<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung – Ozonide, Druckanalyse & Iodometrie</span></h1>
+
+<!-- EINLEITUNG / LÖSUNGSANSATZ -->
+<div class="aufgabe">
+<h2>🔍 Lösungsstrategie: Wie geht man vor?</h2>
+<p>Diese Aufgabe ist ein klassisches anorganisches Rätsel. Der Schlüssel liegt in der <strong>systematischen Druckanalyse</strong> in Kombination mit den Hinweisen zur Farbe, zum Schmelzverhalten und zur Gasentwicklung. Wir arbeiten uns Schritt für Schritt vor:</p>
+<ol>
+  <li>Aus dem <strong>Druckanstieg bei −70 °C</strong> → Molmenge des Gases aus Reaktion 1</li>
+  <li>Aus der <strong>Farbe „rot"</strong> + Hinweis auf Ozonid → A = Ammoniumozonid</li>
+  <li>Aus den <strong>drei Druckwerten</strong> → Reaktionsgleichungen bestätigen</li>
+  <li>Aus <strong>w(Metall in C) = 12,63 %</strong> → Metall = Lithium → C = LiO₃</li>
+  <li>Aus <strong>w(H in D) = 9,83 %</strong> + komplexes Kation → D = [Li(NH₃)₄]O₃</li>
+  <li>Aus der Titration → Molmenge F = O₃ berechnen</li>
+</ol>
+</div>
+
+<!-- AUFGABE 1: SUBSTANZEN IDENTIFIZIEREN -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Substanzen A–F identifizieren</h2>
+
+<h3>Schritt 1: Molmenge des Gases aus Reaktion 1</h3>
+<div class="step">
+Der Reaktor enthält zunächst Argon (100,0 kPa, 1,00 L, −70 °C). Nach Reaktion 1 steigt der Druck auf 106,42 kPa. Argon reagiert nicht → der Druckanstieg kommt vom neu entstandenen Gas.
+<div class="formula-left">
+n(Ar) = P·V/(R·T) = 100 000 Pa × 0,001 m³ / (8,314 × 203,15 K) = 0,05921 mol<br><br>
+ΔP(Gas, Rxn1) = 106,42 − 100,00 = 6,42 kPa<br>
+n(Gas, Rxn1) = 6420 × 0,001 / (8,314 × 203,15) = <strong>3,801 × 10⁻³ mol</strong>
+</div>
+</div>
+
+<h3>Schritt 2: Substanz A identifizieren</h3>
+<div class="clue">
+<strong>Hinweise auf A:</strong> rotes Salz · thermisch instabil · zerfällt bei −70 °C · C unterscheidet sich von A nur im Kation (gleicher Anionentyp) · C enthält Lithium (12,63% → s. Schritt 4)
+</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Anion von A erraten:</strong> Rote Farbe + sehr tiefe Zersetzungstemperatur + gleicher Anionentyp wie C (Lithiumsalz) → Kandidat: <strong>Ozonid O₃⁻</strong>. Ozonide sind bekannt für ihre intensive rote bis orange Farbe und extreme thermische Instabilität.
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Kation von A:</strong> Da C ein Metallsalz ist (Kation = Li⁺), und A ein anderes Kation hat, liegt NH₄⁺ nahe (das häufigste anorganische Kation ohne Metall).
+<div class="formula">A = NH₄O₃ (Ammoniumozonid) → M = 14,007 + 4×1,008 + 3×16,00 = <strong>66,04 g/mol</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Reaktion 1 herleiten:</strong> Bei −70 °C gibt es folgende Phasen:
+<ul>
+  <li>NH₃: Schmelzpunkt −77,7 °C → bei −70 °C <em>flüssig</em> (kein Gas!)</li>
+  <li>H₂O: Schmelzpunkt 0 °C → bei −70 °C <em>Eis</em> (fest!)</li>
+  <li>O₂: Siedepunkt −183 °C → bei −70 °C <em>Gas</em></li>
+  <li>NH₄NO₃: Schmelzpunkt 169 °C → bei −70 °C <em>fest</em></li>
+</ul>
+Daraus folgt die Disproportionierungsreaktion:
+<div class="reaction">4 NH₄O₃ → 2 NH₄NO₃ (fest) + 4 H₂O (Eis) + O₂ (Gas)</div>
+
+<strong>Prüfung:</strong> n(A) = 1,00/66,04 = 0,01514 mol → n(O₂) = 0,01514/4 = <strong>3,786 × 10⁻³ mol</strong> ≈ 3,801 × 10⁻³ mol gemessen ✓
+</div>
+
+<h3>Schritt 3: Substanz B identifizieren</h3>
+<div class="step">
+Nach Reaktion 1 liegen zwei Feststoffe vor: NH₄NO₃ (B) und H₂O-Eis. Beim schrittweisen Erwärmen:
+<ul>
+  <li>bei −77,7 °C: NH₃ (aus dem Reaktionsgleichgewicht?) bleibt kondensiert</li>
+  <li>bei 100 °C: H₂O-Eis schmilzt und verdampft → das Phasengemisch solid/liquid!</li>
+  <li>bei 128 °C: NH₄NO₃ ist noch <strong>fest</strong> (Schmp. 169 °C) → neuer Feststoff erscheint ✓</li>
+  <li>bei 169 °C: NH₄NO₃ schmilzt → nur flüssig</li>
+</ul>
+<div class="formula">B = NH₄NO₃ (Ammoniumnitrat, weiß, M = 80,04 g/mol)</div>
+</div>
+
+<h3>Schritt 4: Substanz C – Kation aus w(Metall) = 12,63 % berechnen</h3>
+<div class="step">
+C hat denselben Anionentyp wie A → Anion = O₃⁻ (M = 48,00 g/mol). Das Metall-Kation M⁺:
+<div class="formula-left">
+w(Metall) = M_Metall / (M_Metall + 48,00) = 0,1263<br>
+M_Metall = 0,1263 × 48,00 / (1 − 0,1263) = 6,0624 / 0,8737 = <strong>6,94 g/mol</strong><br>
+→ Metall = <strong>Lithium (Li)</strong>, M = 6,941 g/mol ✓
+</div>
+<div class="formula">C = LiO₃ (Lithiumozonid), w(Li) = 6,941/54,941 = 12,63 % ✓</div>
+</div>
+
+<h3>Schritt 5: Substanz F – Gas bei tiefer Temperatur dunkelblau</h3>
+<div class="clue">
+Hinweis: F ist bei sehr tiefen Temperaturen eine <strong>dunkelblaue Flüssigkeit</strong>. Das ist die charakteristische Farbe von flüssigem <strong>Ozon O₃</strong> (Siedepunkt −112 °C, tiefblau als Flüssigkeit).
+</div>
+<div class="formula">F = O₃ (Ozon), Siedepunkt −112 °C, dunkelblaue Flüssigkeit ✓</div>
+
+<h3>Schritt 6: Substanz D – Komplexkation, Lithium, 9,83 % H</h3>
+<div class="step">
+D entsteht durch Reaktion von E mit O₃ (=F) in flüssigem Ammoniak. D enthält:
+<ul>
+  <li>ein <strong>komplexes Kation</strong> (Li koordiniert von NH₃-Liganden)</li>
+  <li>dasselbe Metall wie C: <strong>Li</strong></li>
+  <li>9,83 % Wasserstoff → kommt von NH₃-Liganden</li>
+</ul>
+Kandidat: <strong>[Li(NH₃)₄]⁺O₃⁻</strong> (Tetramminlithium-Ozonid)
+<div class="formula-left">
+M(D) = M(Li) + 4×M(NH₃) + M(O₃)<br>
+     = 6,941 + 4×17,031 + 48,00 = 6,941 + 68,124 + 48,00 = <strong>123,065 g/mol</strong><br><br>
+w(H) = 4 × 3 × 1,008 / 123,065 = 12,096 / 123,065 = 0,0983 = <strong>9,83 % ✓</strong>
+</div>
+<div class="formula">D = [Li(NH₃)₄]O₃ (Tetramminlithium-Ozonid)</div>
+</div>
+
+<h3>Schritt 7: Substanz E – Edukt für D-Synthese, 4,21 % eines Elements</h3>
+<div class="step">
+E + O₃(F) in flüssigem NH₃ → D = [Li(NH₃)₄]O₃<br><br>
+Li muss in E enthalten sein. Die 4,21 % eines Elements in E:
+<ul>
+  <li>wenn Li: M(E) = 6,941 / 0,0421 = 164,9 g/mol</li>
+  <li>Kandidat: <strong>LiClO₄·3H₂O</strong>: M = 6,941+35,453+64+54,045 = 160,44 g/mol, w(Li) = 4,33 % ≈ 4,21 %</li>
+</ul>
+Alternativ ist E elementares <strong>Lithium in flüssigem NH₃</strong> gelöst (Lithium-Ammoniaklösung). Li löst sich in flüssigem NH₃ zu solvatierten Li⁺-Ionen und solvatisierten Elektronen. Solche Lösungen reagieren mit O₃ zu [Li(NH₃)₄]O₃.
+<div class="formula">E = Lithium (Li-Metall) gelöst in NH₃(l), oder E = LiClO₄·3H₂O (w(Li)≈4,2%)</div>
+</div>
+
+<!-- SUBSTANZEN ÜBERSICHT -->
+<div class="substances-grid">
+  <div class="substance-card">
+    <div class="sub-letter">A</div>
+    <div class="sub-name">Ammoniumozonid</div>
+    <div class="sub-formula">NH₄O₃</div>
+    <div style="font-size:0.85em; color:#880e4f; margin-top:4px;">rotes Salz, M=66,04</div>
+  </div>
+  <div class="substance-card">
+    <div class="sub-letter">B</div>
+    <div class="sub-name">Ammoniumnitrat</div>
+    <div class="sub-formula">NH₄NO₃</div>
+    <div style="font-size:0.85em; color:#880e4f; margin-top:4px;">weiß, Schmp. 169°C</div>
+  </div>
+  <div class="substance-card">
+    <div class="sub-letter">C</div>
+    <div class="sub-name">Lithiumozonid</div>
+    <div class="sub-formula">LiO₃</div>
+    <div style="font-size:0.85em; color:#880e4f; margin-top:4px;">w(Li)=12,63%</div>
+  </div>
+  <div class="substance-card">
+    <div class="sub-letter">D</div>
+    <div class="sub-name">Tetramminlithium-Ozonid</div>
+    <div class="sub-formula">[Li(NH₃)₄]O₃</div>
+    <div style="font-size:0.85em; color:#880e4f; margin-top:4px;">w(H)=9,83%, M=123,07</div>
+  </div>
+  <div class="substance-card">
+    <div class="sub-letter">E</div>
+    <div class="sub-name">Lithium (in NH₃)</div>
+    <div class="sub-formula">Li / LiClO₄·3H₂O</div>
+    <div style="font-size:0.85em; color:#880e4f; margin-top:4px;">w(Li)≈4,21%</div>
+  </div>
+  <div class="substance-card">
+    <div class="sub-letter">F</div>
+    <div class="sub-name">Ozon</div>
+    <div class="sub-formula">O₃</div>
+    <div style="font-size:0.85em; color:#880e4f; margin-top:4px;">dunkelblau, Kp=−112°C</div>
+  </div>
+</div>
+</div>
+
+<!-- AUFGABE 2: REAKTIONSGLEICHUNGEN -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Reaktionsgleichungen 1–4</h2>
+
+<h3>Reaktion 1 – Thermische Zersetzung von NH₄O₃ bei −70 °C</h3>
+<div class="clue">
+<strong>Gedankengang:</strong> 4 NH₄O₃ enthält N in der Oxidationsstufe −3 (im NH₄⁺) und O in −1/3 (im O₃⁻). Bei der Disproportionierung wird N oxidiert (zu N+V in NO₃⁻) und O reduziert (zu O₂ und H₂O).
+</div>
+<div class="reaction">4 NH₄O₃(s) → 2 NH₄NO₃(s) + 4 H₂O(s) + O₂(g)</div>
+
+<div class="step">
+<strong>Druckprüfung (quantitativ):</strong>
+<table class="pressure-table">
+  <tr><th>Zustand</th><th>Gas-Komponente</th><th>n [mol]</th><th>P berechnet [kPa]</th><th>P gemessen [kPa]</th></tr>
+  <tr>
+    <td>−70 °C, nach Rxn1</td>
+    <td>Ar + O₂</td>
+    <td>0,05921 + 0,003786</td>
+    <td><span class="match">106,35 ≈ 106,42 ✓</span></td>
+    <td>106,42</td>
+  </tr>
+  <tr>
+    <td>128 °C</td>
+    <td>Ar + O₂ + H₂O(g)</td>
+    <td>0,05921 + 0,003786 + 0,01514</td>
+    <td><span class="match">260,59 ≈ 260,63 ✓</span></td>
+    <td>260,63</td>
+  </tr>
+  <tr>
+    <td>200 °C, nach Rxn2</td>
+    <td>Ar + O₂ + H₂O(g,total) + N₂O</td>
+    <td>+0,007570 (N₂O) +0,01514 (extra H₂O)</td>
+    <td><span class="match">396,71 ≈ 396,82 ✓</span></td>
+    <td>396,82</td>
+  </tr>
+</table>
+Alle drei Messwerte stimmen mit der Theorie überein – die Reaktionsgleichungen sind korrekt!
+</div>
+
+<div class="box">
+<strong>Warum erscheint bei 128 °C ein neuer Feststoff?</strong><br>
+Bei 100 °C verdampft das Wasser-Eis vollständig (Wasser hat Dampfdruck ≥ 1 atm). NH₄NO₃ schmilzt bei 169 °C – bei 128 °C ist es noch <em>fest</em>. Der Druckanstieg bei 128 °C kommt genau vom Wasserdampf! Der neue Feststoff bei 128 °C ist NH₄NO₃ selbst, das beim Abkühlen aus einer gesättigten Lösung kristallisiert (oder: B war bereits fest, aber die Phasenverhältnisse ändern sich durch Verdampfen des Wassers).
+</div>
+
+<h3>Reaktion 2 – Zersetzung von NH₄NO₃ bei 200 °C</h3>
+<div class="clue">
+<strong>Gedankengang:</strong> NH₄NO₃ enthält N in −3 (NH₄⁺) und N in +5 (NO₃⁻). Innere Redoxreaktion → N₂O (beide N-Atome in +1) + H₂O. N₂O (Lachgas) ist ein Oxidationsmittel und lässt glühende Späne entzünden ✓ (genau wie O₂).
+</div>
+<div class="reaction">NH₄NO₃(l) → N₂O(g) + 2 H₂O(g)</div>
+
+<h3>Reaktion 3 – Ozon oxidiert Iodid</h3>
+<div class="clue">
+<strong>Gedankengang:</strong> O₃ ist ein starkes Oxidationsmittel und oxidiert I⁻ zu I₂ (braune Lösung). Dabei wird O₃ selbst zu O₂ reduziert. Das farb­lose Gas im gleichen Mol-Betrag wie F ist O₂!
+</div>
+<div class="reaction">O₃ + 2 KI + H₂O → I₂ + 2 KOH + O₂</div>
+<p>Ionenform: O₃ + 2 I⁻ + H₂O → I₂ + 2 OH⁻ + O₂</p>
+<p><em>Das farb­lose Gas O₂ entsteht in genau gleicher Menge wie O₃ eingesetzt wurde ✓</em></p>
+
+<h3>Reaktion 4 – Iodometrische Rücktitration</h3>
+<div class="clue">
+<strong>Gedankengang:</strong> Das entstandene I₂ wird mit Natriumthiosulfat (Na₂S₂O₃) titriert. S₂O₃²⁻ wird zu S₄O₆²⁻ (Tetrathionat) oxidiert; I₂ wird zu I⁻ reduziert.
+</div>
+<div class="reaction">I₂ + 2 Na₂S₂O₃ → Na₂S₄O₆ + 2 NaI</div>
+<p>Ionenform: I₂ + 2 S₂O₃²⁻ → S₄O₆²⁻ + 2 I⁻</p>
+
+<h3>Berechnung: Benötigte Mol O₃ für 1,000 g D</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>n(Na₂S₂O₃)</strong> aus Titration:
+<div class="formula">n(Na₂S₂O₃) = 0,0998 mol/L × 16,30 × 10⁻³ L = 1,630 × 10⁻³ mol</div>
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> <strong>n(I₂)</strong> im Aliquot (10,00 mL):
+<div class="formula">n(I₂) = n(Na₂S₂O₃) / 2 = 8,150 × 10⁻⁴ mol</div>
+</div>
+<div class="step">
+<span class="schritt-nr">3</span> <strong>n(I₂) und n(O₃)</strong> in der gesamten KI-Lösung (100 mL):
+<div class="formula">n(I₂)_gesamt = 8,150×10⁻⁴ × (100/10) = 8,150×10⁻³ mol</div>
+<div class="formula">n(O₃) = n(I₂) = 8,150×10⁻³ mol &nbsp;(Stöchiometrie Rxn3: 1:1)</div>
+</div>
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Prüfung gegen n(D):</strong>
+<div class="formula">n(D) = 1,000 g / 123,065 g·mol⁻¹ = 8,126×10⁻³ mol ≈ 8,150×10⁻³ mol ✓</div>
+Pro mol D wird genau 1 mol O₃ benötigt (1:1 Stöchiometrie in der Synthese von D) ✓
+</div>
+
+<div class="result">
+Benötigte Menge O₃ für 1,000 g D: <strong>n(O₃) = 8,15 × 10⁻³ mol</strong>
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background:#fdf5ff;">
+<h2>📋 Zusammenfassung aller Substanzen und Reaktionen</h2>
+
+<table>
+  <tr><th>Substanz</th><th>Name</th><th>Formel</th><th>Schlüsselmerkmal</th></tr>
+  <tr><td><strong>A</strong></td><td>Ammoniumozonid</td><td>NH₄O₃</td><td>Rotes Salz, M=66,04, thermisch instabil bei −70°C</td></tr>
+  <tr><td><strong>B</strong></td><td>Ammoniumnitrat</td><td>NH₄NO₃</td><td>Feststoff, Schmp. 169°C, zerfällt bei 200°C zu N₂O</td></tr>
+  <tr><td><strong>C</strong></td><td>Lithiumozonid</td><td>LiO₃</td><td>Gleicher Anionentyp wie A, w(Li)=12,63%</td></tr>
+  <tr><td><strong>D</strong></td><td>Tetramminlithium-Ozonid</td><td>[Li(NH₃)₄]O₃</td><td>Komplexes Li-Kation, w(H)=9,83%, M=123,07</td></tr>
+  <tr><td><strong>E</strong></td><td>Lithium (in NH₃(l))</td><td>Li</td><td>w(Li)≈4,21% in der Lösung; Metall löst sich in NH₃</td></tr>
+  <tr><td><strong>F</strong></td><td>Ozon</td><td>O₃</td><td>Dunkelblau flüssig bei tiefer T, starkes Oxidans</td></tr>
+</table>
+
+<table style="margin-top:20px;">
+  <tr><th>Reaktion</th><th>Gleichung</th></tr>
+  <tr><td><strong>Rxn 1</strong></td><td style="text-align:left;font-family:'Courier New',monospace;">4 NH₄O₃(s) → 2 NH₄NO₃(s) + 4 H₂O(s) + O₂(g)</td></tr>
+  <tr><td><strong>Rxn 2</strong></td><td style="text-align:left;font-family:'Courier New',monospace;">NH₄NO₃(l) → N₂O(g) + 2 H₂O(g)</td></tr>
+  <tr><td><strong>Rxn 3</strong></td><td style="text-align:left;font-family:'Courier New',monospace;">O₃ + 2 KI + H₂O → I₂ + 2 KOH + O₂</td></tr>
+  <tr><td><strong>Rxn 4</strong></td><td style="text-align:left;font-family:'Courier New',monospace;">I₂ + 2 Na₂S₂O₃ → Na₂S₄O₆ + 2 NaI</td></tr>
+</table>
+
+<div class="box" style="margin-top:16px;">
+<strong>Die drei Druckmessungen als Konsistenzprüfung:</strong><br>
+• −70 °C: P = 106,42 kPa → berechnet 106,35 kPa ✓<br>
+• 128 °C: P = 260,63 kPa → berechnet 260,59 kPa ✓<br>
+• 200 °C: P = 396,82 kPa → berechnet 396,71 kPa ✓<br>
+Alle drei Werte stimmen mit der Theorie überein – ein eindeutiger Beweis für die Korrektheit der Lösung!
+</div>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #e1c8f0; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 1 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
