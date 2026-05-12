@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 23 – HAT und XAT | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #f0f4f8; color: #1a1a2e; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1a3a5c; color: #1a3a5c;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1a3a5c; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1a3a5c, #2c5f8a); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #1a3a5c; border-left: 5px solid #2c5f8a; padding-left: 13px; margin-top: 0; }
+  h3 { color: #2c4a6e; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #c8d8e8; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(26,58,92,0.07); }
+  .box     { background: #e8f0f8; border-left: 4px solid #2c5f8a; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .key     { background: #fce4ec; border-left: 4px solid #c62828; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+
+  .formula      { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.1; }
+  .reaction { background: #1a3a5c; color: #e8f0f8; border-radius: 8px; padding: 12px 20px; text-align: center; font-family: 'Courier New', monospace; margin: 10px 0; font-size: 1.02em; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #1a3a5c; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c8d8e8; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f0f4f8; }
+
+  .step { margin: 10px 0; padding: 11px 16px; background: #fafcff; border-radius: 7px; border: 1px solid #c8d8e8; }
+  .schritt-nr { display: inline-block; background: #1a3a5c; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #e8f0f8; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #c8d8e8; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #e8f0f8, #f0f4f8); border: 2px solid #2c5f8a; border-radius: 10px; padding: 14px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.15em; font-weight: bold; color: #1a3a5c; font-family: 'Courier New', monospace; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 14px 0; }
+
+  .ni-card { background: white; border: 2px solid #2c5f8a; border-radius: 10px; padding: 14px 16px; }
+  .ni-title { font-weight: bold; color: #1a3a5c; border-bottom: 1px solid #c8d8e8; padding-bottom: 6px; margin-bottom: 10px; font-size: 1.0em; }
+  .param-badge { display: inline-block; background: #1a3a5c; color: white; border-radius: 6px; padding: 2px 8px; font-size: 0.85em; margin: 2px; font-family: 'Courier New', monospace; }
+
+  .isotope-box { font-family: 'Courier New', monospace; background: #f0f4f8; border: 1px solid #c8d8e8; border-radius: 8px; padding: 14px; margin: 10px 0; font-size: 0.95em; }
+
+  .cycle-step { background: #e8f0f8; border: 1px solid #2c5f8a; border-radius: 8px; padding: 12px 16px; margin: 8px 0; }
+  .cycle-num { display: inline-block; background: #2c5f8a; color: white; border-radius: 50%; width: 28px; height: 28px; text-align: center; line-height: 28px; font-weight: bold; margin-right: 10px; }
+
+  .bde-compare { font-size: 1.3em; font-weight: bold; color: #1a3a5c; font-family: 'Courier New', monospace; text-align: center; padding: 10px; background: #e8f0f8; border-radius: 8px; margin: 8px 0; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>⚗️ Problem 23 – HAT und XAT (HalAT)<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung – Wasserstoff- und Halogenatomtransfer mit Ni/Pd-Katalyse</span></h1>
+
+<!-- GRUNDWISSEN -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: HAT, XAT und Metall-Komplexe</h2>
+<div class="box">
+<strong>HAT (Hydrogen Atom Transfer):</strong> Ein Wasserstoffatom (H• = Proton + Elektron) wird von einem Donormolekül auf ein Radikalmolekül übertragen. Intramolekulares HAT folgt der Geometrie eines 6-gliedrigen Übergangszustands (1,5-HAT ist besonders günstig).<br><br>
+<strong>XAT (Halogen Atom Transfer):</strong> Analog zum HAT, aber ein Halogenatom (X•) wird übertragen. Metall-Komplexe können XAT durch Oxidationsstandsänderung des Metalls vermitteln.<br><br>
+<strong>OS / CN / VE:</strong> Oxidationsstufe des Metalls / Koordinationszahl / Valenz-Elektronenanzahl (alle Elektronen am Metall + Ligand-Elektronen)
+</div>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Strukturen von 2 und 3 aus Massenspektren</h2>
+
+<h3>Schlüsselprinzip: Isotopenmuster im Massenspektrum</h3>
+<div class="isotope-box">
+Natürliche Häufigkeiten relevanter Isotope:<br>
+<br>
+<strong>Brom:</strong> ⁷⁹Br = 50,69 % &nbsp;|&nbsp; ⁸¹Br = 49,31 %<br>
+→ Bei 1 Br-Atom: M : M+2 = 100 : 97 (fast 1:1 !) → charakteristisches Br-Isotopenmuster<br>
+<br>
+<strong>Schwefel:</strong> ³²S = 94,93 % &nbsp;|&nbsp; ³⁴S = 4,29 %<br>
+→ M : M+2 ≈ 100 : 4,5 (kleiner M+2-Peak)
+</div>
+
+<h3>Struktur von 2 (MS: m/z 224 und 226 im Verhältnis 100:97)</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Isotopenmuster:</strong> Das 1:1-Verhältnis der Peaks bei m/z 224 und 226 ist das eindeutige Fingerabdruck-Muster für <strong>genau ein Bromatom</strong> (⁷⁹Br:⁸¹Br = 50,69:49,31 ≈ 100:97).
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Molmasse berechnen:</strong> M(2, ⁷⁹Br) = 224<br>
+Rest ohne Br = 224 − 79 = 145<br>
+Was hat M = 145? → <strong>4-CF₃-Phenyl-Gruppe</strong>: C₆H₄ (76) + CF₃ (69) = 145 ✓
+</div>
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Struktur:</strong> Hinweis aus Aufgabe: R¹ = Br → Br sitzt direkt am Phenylring (para zu CF₃):
+<div class="formula">2 = 4-Brom-α,α,α-trifluortoluol (4-Brombenzotrifluorid)</div>
+Strukturformel: Benzolring mit Br und CF₃ in para-Position zueinander.<br>
+Summenformel: C₇H₄BrF₃ &nbsp;→&nbsp; M(⁷⁹Br) = 7×12+4×1+79+3×19 = 84+4+79+57 = <strong>224 ✓</strong>
+</div>
+
+<div class="result">2 = <strong>4-Brombenzotrifluorid</strong> (4-CF₃-C₆H₄-Br), M = 224/226 (Br-Isotopenmuster 1:1) ✓</div>
+
+<h3>Struktur von 3 (MS: m/z 456 als Basispeak)</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Hinweis:</strong> R² = Ph (Phenyl) in Verbindung 3. Das bedeutet: die SO₂-Gruppe in 3 trägt eine <em>unsubstituierte</em> Phenyl-Gruppe (kein Brom mehr!).
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Welche Atome enthält 3?</strong> Im katalytischen Zyklus werden <em>beide</em> Brom-Atome (aus 1 und 2) durch den Ni-Katalysator übernommen. Produkt 3 enthält daher <strong>kein Halogen</strong>. Die Peaks 456:458 ≈ 100:30 kommen von den natürlichen Isotopen von ¹³C und ³⁴S.
+</div>
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Aufbau von 3:</strong> Aus der Reaktion entstehen folgende Fragmente:
+<ul>
+  <li>Von <strong>1</strong>: Ph-SO₂-N(-O-CMe₃)- mit organischer Kette (der SO₂-Aryl ist jetzt Ph statt BrPh, da Br auf Ni übertragen wird)</li>
+  <li>Von <strong>2</strong>: die 4-CF₃-Phenyl-Gruppe (nach XAT-Übertragung des Br auf Ni)</li>
+</ul>
+<div class="formula">3 = Ph-SO₂-N(-O-CMe₃)-(Kette mit 4-CF₃-Phenyl), M ≈ 456</div>
+Konkrete Struktur laut Katalysezyklus (1,7-HAT + radikalische C-C-Kupplung):<br>
+<code>Ph-SO₂-N(-O-C(CH₃)₃)-CH₂-CMe₂-CH₂-C₆H₄-CF₃</code><br>
+wobei die Kette durch den 1,7-HAT-Schritt entsteht (Radikal springt von C1 zu C7).
+</div>
+
+<div class="result">3 = <strong>Sulfonimid-Kopplungsprodukt</strong> mit Ph-SO₂, N-O-tBu und 4-CF₃-Benzyl-Kette. M ≈ 456, kein Halogen im Produkt. R² = Ph bestätigt den Phenylsulfonyl-Rest.</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Struktur von Komplex 4 und OS/CN/VE von Ni</h2>
+
+<p>Komplex 4 entsteht aus NiBr₂ und einem Bis(imino)-Pyridin-Liganden (oder ähnlichem Diimin-Chelatliganden mit zwei N-Donoren).</p>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>VE = 16 (gegeben):</strong> Ein 16-Elektronen-Ni-Komplex ist typisch für Ni(II) mit quadratisch-planarer oder tetraedrischer Geometrie.
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Oxidationsstufe:</strong> NiBr₂ liefert Ni²⁺. Der Bisiminligand ist neutral. Also: <strong>OS(Ni) = +2</strong>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Koordinationszahl:</strong> Bidentater Ligand (2N) + 2 Br⁻-Liganden = <strong>CN = 4</strong>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>VE-Überprüfung:</strong><br>
+Ni(II) = d⁸ → 8 Elektronen vom Metall<br>
++ 2×2e (2 Br⁻ als 2e-Donoren) + 2×2e (2 N-Donoren des Bisiminliganden) = + 8e<br>
+VE = 8 + 8 = <strong>16 ✓</strong>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">4 = [Ni(Biimin)(Br)₂]</div>
+<div style="margin-top:8px;">
+<span class="param-badge">OS = +2</span>
+<span class="param-badge">CN = 4</span>
+<span class="param-badge">VE = 16</span>
+</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">Quadratisch-planarer oder tetraedrischer Ni(II)-Komplex mit zwei Brom-Liganden und einem chelatisierenden Diimin-Liganden</div>
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: OS, CN und VE für HAT- und XAT-Komplexe</h2>
+
+<h3>Allgemeines Prinzip</h3>
+<div class="box">
+Bei HAT und XAT überträgt der Metallkomplex ein Atom (H oder X) und verändert dabei seinen Oxidationszustand um +1 (das Metall oxidiert, da es ein Elektron an das übertragene Radikal abgibt). Die Koordinationszahl ändert sich entsprechend durch Bindung des neuen Liganden.
+</div>
+
+<div class="grid2">
+  <div class="ni-card">
+    <div class="ni-title">XAT-Prozess</div>
+    <div class="reaction" style="font-size:0.9em;">ML_n + Br-CH(CH₃)₂ → Br-ML_n + •CH(CH₃)₂</div>
+    <p>Das Metall <strong>abstrahiert Br•</strong> (ein Radikal = 1 Elektron + Br).</p>
+    <ul>
+      <li><strong>OS(neu) = x + 1</strong> (Metall oxidiert um 1)</li>
+      <li><strong>CN(neu) = n + 1</strong> (Br wird neuer Ligand)</li>
+      <li><strong>VE(neu) = y + 1</strong> (1 Elektron + 2 aus Br-Ligand → netto +1)</li>
+    </ul>
+    <div style="margin-top:8px;">
+      <span class="param-badge">OS = x+1</span>
+      <span class="param-badge">CN = n+1</span>
+      <span class="param-badge">VE = y+1</span>
+    </div>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">HAT-Prozess</div>
+    <div class="reaction" style="font-size:0.9em;">O=ML_n + H-CH(Ph)CH₃ → HO-ML_n + •CH(Ph)CH₃</div>
+    <p>Das Metall-Oxo abstrahiert <strong>H•</strong> (ein Radikal). Das O=M wird zu HO-M.</p>
+    <ul>
+      <li><strong>OS(neu) = x + 1</strong> (Metall oxidiert um 1)</li>
+      <li>CN: das Oxo-O bleibt Ligand (wird jetzt OH) → <strong>CN unverändert</strong></li>
+      <li><strong>VE(neu) = y + 1</strong> (1 extra Elektron durch H•)</li>
+    </ul>
+    <div style="margin-top:8px;">
+      <span class="param-badge">OS = x+1</span>
+      <span class="param-badge">CN = unverändert</span>
+      <span class="param-badge">VE = y+1</span>
+    </div>
+  </div>
+</div>
+
+<div class="result">
+XAT: OS=x+1, CN=n+1, VE=y+1<br>
+HAT: OS=x+1, CN=unverändert (O=M → HO-M, gleiches CN), VE=y+1
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Strukturen 5–11 im katalytischen Zyklus</h2>
+
+<p>Der Katalysezyklus für 1+2→3 läuft über Ni-Redoxchemie (Ni(I)/Ni(II)/Ni(III) oder Ni(0)/Ni(I)/Ni(II)) und kombiniert XAT, 1,7-HAT und C-C-Kupplung.</p>
+
+<div class="box">
+<strong>Ausgangspunkt:</strong> Komplex 4 = [Ni(Biimin)(Br)₂], OS=+2, CN=4, VE=16<br>
+Durch Reduktion (+1e): 4 → 5 (Ni(I)-Komplex)
+</div>
+
+<div class="grid2">
+  <div class="ni-card">
+    <div class="ni-title">Komplex 5: Ni(I) nach 1e-Reduktion von 4</div>
+    <div class="formula-left" style="font-size:0.9em;">
+4 (Ni(II), VE=16) + 1e → 5 (Ni(I))<br>
+OS = +1, CN = ?, VE = 15 (gegeben)
+    </div>
+    <p>VE = 15: Ni(I) = d⁹, CN bleibt 4 (Biimin + Br⁻ bleibt, 1 Br geht?):<br>
+    Wenn ein Br⁻ als Br• abgegeben oder CN= 3:<br>
+    8(d⁹) + 2×2(2×Biimin-N?) + 1×2(1 Br) = 14 nein...</p>
+    <p>VE=15: d⁹ Ni(I) + 3 Liganden × 2e = 9+6=15, CN=3</p>
+    <div><span class="param-badge">OS = +1</span><span class="param-badge">CN = 3</span><span class="param-badge">VE = 15</span></div>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Komplex 6: Ni(I) + MeCN</div>
+    <div class="formula-left" style="font-size:0.9em;">
+5 + MeCN → 6 (CN=3, gegeben)<br>
+OS = ?, VE = ?
+    </div>
+    <p>6 hat CN=3 (gegeben). MeCN tritt als Ligand bei. Wenn 5 (CN=3) → 6 (CN=3): kein Wechsel in CN?<br>
+    Oder: 5 verliert Br, gewinnt MeCN:<br>
+    OS = +1 (bleibt Ni(I)), CN = 3</p>
+    <p>VE: d⁹ + 3×2 = 9+6=15</p>
+    <div><span class="param-badge">OS = +1</span><span class="param-badge">CN = 3</span><span class="param-badge">VE = 15</span></div>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Komplex 7: Ni nach XAT mit 1 (OS=0)</div>
+    <div class="formula-left" style="font-size:0.9em;">
+6 + 1(enthält Br) → XAT → 7 + 8<br>
+7: OS = 0, CN = ?, VE = ?
+    </div>
+    <p>Im Schema: 7 hat OS=0. Ni(0) entsteht durch Reduktion. VE?<br>
+    Ni(0) = d¹⁰, CN=2 (nur Biimin-Ligand):<br>
+    VE = 10 + 2×2 = 14<br>
+    Oder CN=3: VE = 10+6 = 16</p>
+    <p>Wenn 7 = [Ni(0)(Biimin)(MeCN)]: VE = 10+2×2+2 = 16, CN=3</p>
+    <div><span class="param-badge">OS = 0</span><span class="param-badge">CN = 3</span><span class="param-badge">VE = 16</span></div>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Komplex 8: org. Radikal aus 1 (nach XAT)</div>
+    <div class="formula-left" style="font-size:0.9em;">
+8 ist das organische Radikal aus 1<br>
+nach Abgabe von Br an Ni
+    </div>
+    <p>8 = Sulfonimidyl-Radikal: das N-zentrierte Radikal aus 1 nachdem Br abgespalten wurde (aus C-Br wird C•).<br><br>
+    Genauer: 8 = (BrC₆H₄)SO₂-N(-OtBu)-CH₂• (Kohlenstoffradikal am C neben N)</p>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Komplex 9: nach 1,7-HAT</div>
+    <div class="formula-left" style="font-size:0.9em;">
+8 → 1,7-HAT → 9<br>
+Radikal springt von C1 zu C7
+    </div>
+    <p>Das C-Radikal in 8 abstrahiert über einen 8-gliedrigen Übergangszustand ein H-Atom von der 7. Position (1,7-HAT). Das Radikal „wandert" zur stabileren Position.</p>
+    <p>9 = Radikal-Isomer von 8 mit dem Radikal an C7 (weiter entfernt von N)</p>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Komplex 10: Ni nach XAT mit 2</div>
+    <div class="formula-left" style="font-size:0.9em;">
+7 (Ni(0)) + 2 (4-BrCF₃-Ph) → XAT → 10<br>
+10: CN=4, OS=?, VE=?
+    </div>
+    <p>7 (Ni(0)) abstrahiert Br von 2 via XAT: Ni(0) → Ni(I)-Br. Aus CN(7)=3, nach XAT mit Br: CN=4.</p>
+    <p>OS = +1 (von 0 zu +1 durch XAT)<br>
+    VE = d⁹ + 4×2 = 9+8 = 17? Oder CN=4:<br>
+    VE = 9 + 2×2(Biimin) + 1×2(Br) + 1×2? </p>
+    <p>Mit CN=4, OS=+1: VE = 9(d⁹) + 4×2 = 17 (17-VE Radikal-Komplex)</p>
+    <div><span class="param-badge">OS = +1</span><span class="param-badge">CN = 4</span><span class="param-badge">VE = 17</span></div>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Komplex 11: Ni(II) nach C-C-Kupplung + 2</div>
+    <div class="formula-left" style="font-size:0.9em;">
+9 (org. Radikal) + 10 (Ni(I)-Br) → 11<br>
+OS=?, CN=?, VE=15
+    </div>
+    <p>Das Radikal 9 reagiert mit Ni(I)-Komplex 10: radikalische Rekombination → Ni(II)-gebundener Aryl-Rest.<br>
+    VE=15 (gegeben): Ni(II) d⁸ + Liganden = 15<br>
+    d⁸ + 3×2 = 14 oder d⁸ + 3,5×2=15? Möglich: 1 Radikal-Ligand (1e).<br>
+    OS = +2, VE = 15</p>
+    <div><span class="param-badge">OS = +2</span><span class="param-badge">CN = 4</span><span class="param-badge">VE = 15</span></div>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Verbindungen 8 und 9: organische Radikale</div>
+    <p><strong>5</strong>: Ni(I)-Komplex mit Biimin-Ligand<br>
+    <strong>8</strong>: N-sulfonyl-O-t-Bu-Alkylradikal (aus 1 nach C-Br-Spaltung via XAT)<br>
+    <strong>9</strong>: Isomeres Radikal (nach 1,7-HAT, wandert von C1 zu C7)</p>
+  </div>
+</div>
+
+<div class="box">
+<strong>Zusammenfassung der OS im Zyklus:</strong><br>
+4[Ni(II)] → (+1e) → 5[Ni(I)] → (XAT mit 1) → 7[Ni(0)] + 8•<br>
+8• → (1,7-HAT) → 9•<br>
+7[Ni(0)] + 2 → (XAT) → 10[Ni(I)] + 4-CF₃-Ph•<br>
+9• + 4-CF₃-Ph• → (Rekombination, Ni-vermittelt) → 11[Ni(II)] → 3 + 5[Ni(I)] regeneriert
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Elektronendonor im katalytischen Zyklus</h2>
+
+<div class="step">
+Die Reaktion braucht Elektronen für die Schritte <code>4 → 5</code> und andere Reduktionen (+1e). Im Reaktionsansatz sind Zn (Metall) und Pyridin vorhanden.
+</div>
+
+<div class="step">
+<strong>Zn als Reduktionsmittel:</strong> Zink ist ein unedles Metall mit Standardpotenzial E°(Zn²⁺/Zn) = −0,76 V. Es kann leicht Elektronen abgeben:
+<div class="formula">Zn → Zn²⁺ + 2e⁻</div>
+</div>
+
+<div class="result">
+Der <strong>Elektronendonor ist Zink (Zn)</strong>. Es reduziert den Ni(II)-Komplex 4 zu Ni(I) (Komplex 5) und hält den Katalysezyklus durch Bereitstellung von Elektronen am Laufen. Pyridin dient als Hilfsbase/Ligand. Licht (hν) initiiert möglicherweise den Radikalmechanismus (photoredox).
+</div>
+</div>
+
+<!-- AUFGABE 6 -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Struktur von 13 aus dem Massenspektrum</h2>
+
+<h3>MS von 13: Basispeak bei m/z 261</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Ausgangsmaterial 12:</strong> Phenyl-Iod-Diethylsilylether mit Deuterium-Markierung:<br>
+<code>Ph-I + Et₂Si-O-D-Cyclopentan</code>-artige Verbindung<br>
+12 = (Iodphenyl)-CH₂-Si(OEt)₂-D (vereinfacht: Benzyl-Iodid mit Silylether-Deuterium)
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Reaktion 12 → 13:</strong> Pd-katalysierte Desaturierung (Einführung einer C=C-Doppelbindung). Das Iod und ein H (oder D) werden eliminiert → Alken entsteht.
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>M(13) = 261:</strong> Das Massenspektrum zeigt den Basispeak bei 261 ohne Br/Cl-Isotopenmuster. 13 enthält Iod (I, M=127) nicht mehr, aber Si (Si = 28 ist schwer).
+<div class="formula-left">
+12 enthält: I (127), Si (28), O (16), Et₂ (2×29=58), D (2), Cyclopentylring+Ph<br>
+13 = 12 − I − D (durch XAT/HAT eliminiert) + Doppelbindung<br>
+M(13) ≈ M(12) − 127 − 2 = M(12) − 129<br>
+Wenn M(13) = 261: M(12) ≈ 390
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Struktur:</strong> 13 ist das Alken-Produkt: der Phenylring ist über eine C=C-Doppelbindung mit der Silylether-Kette verknüpft. Das Deuterium wurde im HAT-Schritt auf den Pd-Komplex übertragen und das Iod durch XAT.
+</div>
+
+<div class="result">
+13 = <strong>Diethylsilylether-Alken-Derivat</strong> (die Desaturierung hat zwischen dem Aryl-C und dem α-C eine neue C=C-Doppelbindung erzeugt). M = 261, kein Halogen im Produkt.
+</div>
+</div>
+
+<!-- AUFGABE 7 -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Strukturen 14–19 und Pd-Parameter</h2>
+
+<div class="box">
+<strong>Pd(OAc)₂ + L₂ → Pd(0)L₂ (Komplex 14) via Reduktion</strong><br>
+L₂ ist ein chelatisierender Bisphosphin-Ligand (das gezeigte Fe-Diphosphin-Ligand mit PPh₂ und P(tBu)₂ = z.B. Josiphos-artig)
+</div>
+
+<div class="grid2">
+  <div class="ni-card">
+    <div class="ni-title">Komplex 14: Pd(0)L₂</div>
+    <p>Pd(0) mit bidentatem Phosphinligand L₂. Pd(0) = d¹⁰.</p>
+    <div class="formula-left" style="font-size:0.9em;">
+OS = 0 (Pd(0))<br>
+CN = 2 (bidentater L₂-Ligand, 2 P-Atome)<br>
+VE = 10(d¹⁰) + 2×2 = 14 (14-VE-Komplex)
+    </div>
+    <div><span class="param-badge">OS = 0</span><span class="param-badge">CN = 2</span><span class="param-badge">VE = 14</span></div>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Komplex 15: Pd nach XAT mit 12</div>
+    <p>14 (Pd(0)) abstrahiert Iod von 12 via XAT. CN=3 (gegeben).</p>
+    <div class="formula-left" style="font-size:0.9em;">
+OS = +1 (Pd(0) → Pd(I) durch XAT)<br>
+CN = 3 (L₂ + I = 3)<br>
+VE = 9(d⁹) + 3×2 = 15
+    </div>
+    <div><span class="param-badge">OS = +1</span><span class="param-badge">CN = 3</span><span class="param-badge">VE = 15</span></div>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Komplex 16 und 17: organische Radikale</div>
+    <p>Nach XAT: 16 ist das Kohlenstoffradikal aus 12 (mit D). Nach HAT: 17 ist das isomere Radikal (D wurde auf Pd übertragen, C-Radikal wandert).</p>
+    <p><strong>16</strong> = Aryl-Radikal aus 12 (nach C-I-Spaltung via XAT)<br>
+    <strong>17</strong> = Radikal nach 1,5-HAT (D von Si-O-C-D wandert auf Pd)</p>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Komplex 18: Pd(II) nach HAT</div>
+    <p>15 (Pd(I)) abstrahiert D• (HAT) von 16. CN=3 (3 Liganden). OS = +2.</p>
+    <div class="formula-left" style="font-size:0.9em;">
+OS = +2 (gegeben)<br>
+CN = ? (L₂ + I + D = 4? oder L₂ + D = 3)<br>
+VE = 8(d⁸) + Liganden×2
+    </div>
+    <p>Wenn CN=4 (L₂+I+D): VE = 8+8=16. Wenn CN=3: VE=14.</p>
+    <div><span class="param-badge">OS = +2</span><span class="param-badge">CN = 4</span><span class="param-badge">VE = 16</span></div>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Verbindung 19: das d-markierte Byprodukt</div>
+    <p>19 entsteht aus 18 + Cs₂CO₃ (Base): das D (als D⁻) wird durch die Base abstrahiert oder als CsHCO₃/CsDCO₃ abgefangen. 19 = Pd(II)-Komplex + CsHCO₃.</p>
+    <p><strong>19</strong> = Pd(II)(L₂)(I)-Verbindung die dann 13 freisetzt durch β-Hydrid-Eliminierung und Pd(0) regeneriert.</p>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">Verbindung 20: Pd(OAc)₂ + L₂ Vorstufe</div>
+    <p>20 = [Pd(OAc)₂(L₂)]: Pd(II)-Komplex mit Acetat und Bisphosphinligand.<br>
+    OS = +2, CN = 4 (2×P + 2×OAc)</p>
+    <p>→ Schritt X = Reduktion von Pd(II) zu Pd(0) durch den Phosphinliganden (L₂ wird oxidiert) oder durch das Lösungsmittel. Dieser Schritt heißt <strong>reduktive Eliminierung</strong> oder <strong>Phosphin-Reduktion</strong>.</p>
+  </div>
+</div>
+</div>
+
+<!-- AUFGABE 8 -->
+<div class="aufgabe">
+<h2>Aufgabe 8: Struktur von 20 und Schritt X</h2>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Struktur von 20:</strong><br>
+Pd(OAc)₂ reagiert mit dem bidentaten Phosphinliganden L₂. Pd(II) koordiniert mit L₂ unter Beibehaltung der Acetat-Gruppen:
+<div class="formula">20 = [Pd(OAc)₂(L₂)] = Pd(II)-Bisacetat-Bisphosphin-Komplex</div>
+Struktur: Pd im Zentrum, zwei Phosphoratome des L₂ (chelat), zwei Acetat-Anionen als Liganden. OS(Pd)=+2, CN=4, VE=16.
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Schritt X: Reduktion von Pd(II) → Pd(0):</strong><br>
+Der Schritt X ist eine <strong>reduktive Eliminierung</strong> oder <strong>Ligand-induzierte Reduktion</strong>. Der Phosphinligand kann als Reduktionsmittel wirken (durch Oxidation einer P-H-Bindung oder durch den Fe-Kern des Liganden).
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Reagenz für Schritt X aus den Reaktionsbedingungen:</strong><br>
+Cs₂CO₃ (Base) ist vorhanden. Die Base könnte den Liganden deprotonieren und so die Reduktion von Pd(II) zu Pd(0) vermitteln. Alternativ: das Lösungsmittel C₆H₆ (Benzol) oder der Ligand L₂ selbst (Josiphos-Liganden können Pd(II) reduzieren).
+</div>
+
+<div class="result">
+20 = [Pd(OAc)₂(L₂)], OS=+2, CN=4<br>
+Schritt X = <strong>Reduktion</strong> (z.B. durch den Liganden L₂ oder Cs₂CO₃ vermittelt) → Pd(0)L₂ = 14
+</div>
+</div>
+
+<!-- AUFGABE 9 -->
+<div class="aufgabe">
+<h2>Aufgabe 9: BDE(C–H)-Vergleich für Verbindungen 21–23</h2>
+
+<div class="box">
+<strong>Erinnerung aus der BDE-Tabelle:</strong><br>
+• BDE(C–H) aliphatisch: <strong>415 kJ/mol</strong> (aus Tabelle: sekundäres sp³-C-H)<br>
+• BDE(C–H) aromatisch/vinylisch: <strong>465 kJ/mol</strong> (aus Tabelle: Benzol-C-H)<br>
+• BDE(Ni–H): 290 kJ/mol (für Referenz)<br>
+• BDE(Ni–Br): 360 kJ/mol (für Referenz)
+</div>
+
+<div class="grid3">
+  <div class="ni-card">
+    <div class="ni-title">21 – Aryl-Si-H (vinylisch)</div>
+    <p>Das H sitzt <strong>direkt am Benzolring</strong> (sp²-hybridisiertes C). Das ist ein aromatisches/vinylisches C-H.</p>
+    <div class="formula">BDE(21) ≈ 465 kJ/mol</div>
+    <p>(Stark: sp²-C-H ist kurz und stark, vergleichbar mit Benzol-CH)</p>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">22 – Si-O-CH-H (α zu Silyloxy)</div>
+    <p>Das H sitzt am C, das direkt an das Si-O gebunden ist. Die Silyloxy-Gruppe ist ein schwacher elektronenziehender Substituent – erniedrigt BDE etwas.</p>
+    <div class="formula">BDE(22) &lt; 415 kJ/mol</div>
+    <p>(Schwächer als normales sp³-C-H: α-Silyloxy-Effekt stabilisiert das Radikal leicht)</p>
+  </div>
+
+  <div class="ni-card">
+    <div class="ni-title">23 – Si-O-C-CH-H (β zur Silyloxy)</div>
+    <p>Das H sitzt am sekundären sp³-C, das NICHT direkt an Si-O gebunden ist. Normales sekundäres aliphatisches C-H.</p>
+    <div class="formula">BDE(23) ≈ 415 kJ/mol</div>
+    <p>(Standard-aliphatisches C-H, ähnlich dem Tabellenwert)</p>
+  </div>
+</div>
+
+<div class="step">
+<strong>Paarweiser Vergleich:</strong>
+<ul>
+  <li>21 (sp²-Aryl, 465) vs 22 (α-O-Si, &lt;415): <strong>21 &gt; 22</strong></li>
+  <li>21 (sp²-Aryl, 465) vs 23 (sp³-sekundär, 415): <strong>21 &gt; 23</strong></li>
+  <li>22 (α-O-Si, &lt;415) vs 23 (sp³, 415): <strong>22 &lt; 23</strong></li>
+</ul>
+</div>
+
+<div class="highlight-box">
+<div class="bde-compare">BDE(C–H)₂₁ &nbsp;<span style="color:#c62828">&gt;</span>&nbsp; BDE(C–H)₂₂</div>
+<div class="bde-compare">BDE(C–H)₂₁ &nbsp;<span style="color:#c62828">&gt;</span>&nbsp; BDE(C–H)₂₃</div>
+<div class="bde-compare">BDE(C–H)₂₂ &nbsp;<span style="color:#c62828">&lt;</span>&nbsp; BDE(C–H)₂₃</div>
+</div>
+
+<div class="result">
+Reihenfolge: BDE(21) &gt; BDE(23) &gt; BDE(22)<br>
+465 kJ/mol (vinylisch/aromatisch) &gt; 415 kJ/mol (aliphatisch) &gt; &lt;415 kJ/mol (α-Silylether)
+</div>
+
+<div class="box">
+<strong>Chemische Bedeutung:</strong><br>
+Die <strong>schwächste</strong> C-H-Bindung (22) ist die, die im Katalysezyklus am leichtesten gespalten wird (HAT-Schritt)! Deshalb findet die Desaturierung selektiv an der α-Silylether-Position statt – das Pd-Komplex abstrahiert genau das H aus der schwächsten C-H-Bindung. Das ist das Prinzip der HAT-Selektivität!
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background:#f0f4f8;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage</th></tr>
+  <tr><td><strong>1</strong></td><td>2 = 4-Brombenzotrifluorid (C₇H₄BrF₃, M=224, 1:1 Br-Muster) &nbsp;|&nbsp; 3 = Ph-SO₂-Sulfonimid-Produkt (M≈456, R²=Ph)</td></tr>
+  <tr><td><strong>2</strong></td><td>4 = [Ni(Biimin)(Br)₂]: OS=+2, CN=4, VE=16</td></tr>
+  <tr><td><strong>3</strong></td><td>XAT: OS=x+1, CN=n+1, VE=y+1 &nbsp;|&nbsp; HAT: OS=x+1, CN unverändert, VE=y+1</td></tr>
+  <tr><td><strong>4</strong></td><td>5: OS=+1,VE=15 &nbsp;|&nbsp; 6: OS=+1,CN=3,VE=15 &nbsp;|&nbsp; 7: OS=0,VE=16 &nbsp;|&nbsp; 8,9: organische Radikale &nbsp;|&nbsp; 10: OS=+1,CN=4,VE=17 &nbsp;|&nbsp; 11: OS=+2,VE=15</td></tr>
+  <tr><td><strong>5</strong></td><td>Elektronendonor = <strong>Zink (Zn)</strong></td></tr>
+  <tr><td><strong>6</strong></td><td>13 = Diethylsilylether-Alken (M=261, kein Halogen)</td></tr>
+  <tr><td><strong>7</strong></td><td>14: OS=0,CN=2,VE=14 &nbsp;|&nbsp; 15: OS=+1,CN=3,VE=15 &nbsp;|&nbsp; 18: OS=+2,CN=4,VE=16 &nbsp;|&nbsp; 16,17: org. Radikale &nbsp;|&nbsp; 19: Pd-Byprodukt + CsHCO₃</td></tr>
+  <tr><td><strong>8</strong></td><td>20 = [Pd(OAc)₂(L₂)], Schritt X = Reduktion von Pd(II)→Pd(0) (durch L₂/Base)</td></tr>
+  <tr><td><strong>9</strong></td><td>BDE(21) &gt; BDE(23) &gt; BDE(22) &nbsp;→ 21&gt;22, 21&gt;23, 22&lt;23</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #c8d8e8; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 23 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
