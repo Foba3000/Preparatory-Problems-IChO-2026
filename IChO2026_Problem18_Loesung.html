@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 18 – Inositol | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 960px; margin: 0 auto; padding: 20px 30px;
+    background: #f0f8f0; color: #1a2e1a; line-height: 1.8;
+  }
+
+  /* Zurück-Button */
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1b5e20; color: #1b5e20;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1b5e20; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 {
+    background: linear-gradient(135deg, #1b5e20, #33691e);
+    color: white; padding: 18px 26px; border-radius: 12px;
+    font-size: 1.35em; margin-top: 0;
+  }
+  h2 { color: #1b5e20; border-left: 5px solid #388e3c; padding-left: 13px; margin-top: 0; }
+  h3 { color: #2e7d32; margin-top: 18px; }
+
+  .aufgabe {
+    background: white; border: 1px solid #a5d6a7; border-radius: 12px;
+    padding: 22px 28px; margin: 28px 0;
+    box-shadow: 0 2px 10px rgba(27,94,32,0.07);
+  }
+  .box {
+    background: #e8f5e9; border-left: 4px solid #388e3c;
+    border-radius: 6px; padding: 13px 18px; margin: 14px 0;
+  }
+  .result {
+    background: #f1f8e9; border-left: 5px solid #33691e;
+    border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold;
+  }
+  .warning {
+    background: #fff8e1; border-left: 4px solid #f9a825;
+    border-radius: 6px; padding: 11px 16px; margin: 11px 0;
+  }
+  .formula {
+    background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px;
+    padding: 11px 18px; font-family: 'Courier New', monospace;
+    margin: 11px 0; text-align: center; font-size: 1.05em;
+  }
+  .formula-left {
+    background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px;
+    padding: 11px 18px; font-family: 'Courier New', monospace;
+    margin: 11px 0; font-size: 1.02em;
+  }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #2e7d32; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #a5d6a7; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f1f8e9; }
+
+  .step {
+    margin: 11px 0; padding: 11px 16px; background: #fafafa;
+    border-radius: 7px; border: 1px solid #c8e6c9;
+  }
+  .schritt-nr {
+    display: inline-block; background: #2e7d32; color: white; border-radius: 50%;
+    width: 26px; height: 26px; text-align: center; line-height: 26px;
+    font-weight: bold; margin-right: 8px; font-size: 0.9em;
+  }
+
+  code { background: #eceff1; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  ul li, ol li { margin: 7px 0; }
+
+  .reaction-box {
+    background: #1b5e20; color: white; border-radius: 8px;
+    padding: 12px 20px; text-align: center; font-size: 1.1em;
+    font-family: 'Courier New', monospace; margin: 12px 0; letter-spacing: 0.4px;
+  }
+  .mech-box {
+    background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 8px;
+    padding: 14px 18px; margin: 12px 0;
+  }
+
+  .badge {
+    display: inline-block; border-radius: 20px; padding: 2px 12px;
+    font-weight: bold; font-size: 0.85em; margin-right: 6px; vertical-align: middle;
+  }
+  .badge-achiral { background: #43a047; color: white; }
+  .badge-chiral  { background: #e53935; color: white; }
+  .badge-sym     { background: #1e88e5; color: white; }
+  .badge-nosym   { background: #9e9e9e; color: white; }
+
+  .struct-grid { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; justify-content: flex-start; }
+  .struct-item {
+    text-align: center; padding: 10px 8px; background: #f9fbe7;
+    border: 1px solid #c5e1a5; border-radius: 8px; min-width: 145px;
+  }
+  .struct-label { font-size: 0.9em; font-weight: bold; color: #1b5e20; margin-top: 5px; }
+  .struct-note  { font-size: 0.75em; color: #555; margin-top: 3px; }
+
+  .sym-yes { color: #2e7d32; font-weight: bold; }
+  .sym-no  { color: #c62828; }
+
+  .highlight-row td { background: #e8f5e9 !important; font-weight: bold; }
+  .chiral-row  td  { background: #ffebee !important; }
+
+  @media (max-width: 650px) {
+    body { padding: 12px 14px; }
+    .struct-item { min-width: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="../index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🌿 Problem 18 – Inositol<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – Sterochemie, Biosynthese &amp; Phosphorylierungsmuster</span></h1>
+
+<!-- ===== ÜBERBLICK ===== -->
+<div class="aufgabe">
+<h2>📚 Überblick: Worum geht es?</h2>
+<p>
+  Reis enthält α-Amylose, ein Polysaccharid aus D-Glucose. D-Glucose kann enzymatisch in
+  <strong>myo-Inositol</strong> umgewandelt werden – ein Cyclohexanhexol mit enormer Bedeutung
+  in der Zellsignaltransduktion. Die Aufgabe behandelt die Struktur von Glucose und Amylose,
+  den Mechanismus der Inositol-Biosynthese (MIPS), die Stereoisomerie von Inositol sowie
+  die schrittweise Phosphorylierung zu Inositol-Hexaphosphat (IP₆).
+</p>
+<div class="box">
+  <strong>Zentrale Themen:</strong>
+  Sesselkonformation von D-Glucose · α(1→4)-Glykosid-Bindung · MIPS-Mechanismus ·
+  Haworth-Projektion · Inositol-Stereoisomere · Symmetrieanalyse · Phosphorylierungsmuster ·
+  Distanzregel · Chiralität
+</div>
+</div>
+
+<!-- ===== AUFGABE 1 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Struktur von D-Glucose und α-Amylose</h2>
+
+<h3>a) Stabilste Sesselkonformation von D-Glucose</h3>
+<p>
+  D-Glucose liegt bevorzugt als β-D-Glucopyranose vor. In der <strong>⁴C₁-Sesselkonformation</strong>
+  sind alle fünf großen Substituenten in <em>äquatorialer</em> Position – dies ist die thermodynamisch
+  stabilste Anordnung, da 1,3-diaxiale Wechselwirkungen minimal sind.
+</p>
+<div class="step">
+  <span class="schritt-nr">⁴C₁</span>
+  <strong>β-D-Glucopyranose – Orientierung der Substituenten:</strong>
+  <ul>
+    <li><strong>C1–OH</strong>: äquatorial (β-Anomer – beide OH und Ringkauerstoff äquatorial)</li>
+    <li><strong>C2–OH</strong>: äquatorial</li>
+    <li><strong>C3–OH</strong>: äquatorial</li>
+    <li><strong>C4–OH</strong>: äquatorial</li>
+    <li><strong>C5–H</strong>: axial (der Ringkohlenstoff mit Ringsauerstoff)</li>
+    <li><strong>C6–CH₂OH</strong>: äquatorial</li>
+  </ul>
+  → Alle 4 OH-Gruppen <strong>und</strong> die –CH₂OH-Gruppe sind äquatorial. Das β-Anomer (C1-OH äquatorial)
+  ist gegenüber dem α-Anomer (C1-OH axial) etwas stabiler.
+</div>
+<div class="box">
+  <strong>α-D-Glucopyranose (⁴C₁):</strong> Identisch, aber C1-OH ist <em>axial</em> (unterhalb der mittleren
+  Ringebene). Der anomere Effekt stabilisiert die axiale C1-OH teilweise, dennoch überwiegt beim
+  β-Anomer die Bevorzugung der äquatorialen Position.
+</div>
+<div class="result">
+  Stabilste Form: <strong>β-D-Glucopyranose in ⁴C₁</strong> – alle Substituenten äquatorial,
+  keine 1,3-diaxialen Abstoßungen.
+</div>
+
+<h3>b) Wiederholungseinheit der α-Amylose (Haworth-Projektion)</h3>
+<p>
+  α-Amylose ist ein lineares Polysaccharid aus <strong>α-D-Glucopyranose-Einheiten</strong>,
+  verbunden durch <strong>α(1→4)-glykosidische Bindungen</strong>. Das Haworth-Diagramm der
+  Wiederholungseinheit zeigt:
+</p>
+<div class="step">
+  <strong>6-gliedriger Pyranose-Ring (C1–O–C5–C4–C3–C2), Haworth-Darstellung:</strong>
+  <ul>
+    <li>Ringsauerstoff zwischen C1 und C5</li>
+    <li><strong>C1</strong>: α-glykosidische Bindung zur nächsten Einheit (O-Brücke nach links/rechts).
+        α-Konfiguration = C1-O-Bindung und Ringkauerstoff O5 stehen auf der gleichen Seite
+        (in Haworth: beide unterhalb bei D-Zucker)</li>
+    <li><strong>C2–OH</strong>: unterhalb der Ringebene</li>
+    <li><strong>C3–OH</strong>: oberhalb</li>
+    <li><strong>C4</strong>: O-Brücke zur nächsten α-D-Glucopyranose-Einheit (→4-Verknüpfung, oben)</li>
+    <li><strong>C6–CH₂OH</strong>: oberhalb</li>
+  </ul>
+</div>
+<div class="reaction-box">
+  ···–O–[α-D-Glcp(1→4)]–O–[α-D-Glcp(1→4)]–O–···
+</div>
+<div class="result">
+  Wiederholungseinheit: α-D-Glucopyranose mit <strong>α(1→4)-glykosidischer Bindung</strong>.
+  Das anomere C1 liegt in α-Konfiguration (axial in ⁴C₁), und die C4-OH-Gruppe
+  ist mit C1 der nächsten Einheit glykosidisch verknüpft.
+</div>
+</div>
+
+<!-- ===== AUFGABE 2 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Anzahl der Wiederholungseinheiten (243 kDa Amylose)</h2>
+
+<div class="step">
+  <span class="schritt-nr">1</span> <strong>Molmasse der Wiederholungseinheit:</strong>
+  <div class="formula">
+    M(Glucose) = 180,16 g/mol<br>
+    Bei jeder Glycosidbindung wird 1 H₂O (18,02 g/mol) abgespalten:<br>
+    M(Wiederholungseinheit) = 180,16 − 18,02 = <strong>162,14 g/mol</strong>
+  </div>
+</div>
+
+<div class="step">
+  <span class="schritt-nr">2</span> <strong>Anzahl der Einheiten n:</strong>
+  <div class="formula">
+    n = M(Kette) / M(Einheit) = 243 000 g/mol ÷ 162,14 g/mol ≈ <strong>1499 ≈ 1500</strong>
+  </div>
+</div>
+
+<div class="warning">
+  <strong>Genauere Berechnung:</strong> Streng gilt M(Kette) = n × 162,14 + 18,02
+  (Abschluss der Kettenenden). Da 18,02 ≪ 243 000, ist diese Korrektur vernachlässigbar.
+</div>
+<div class="result">
+  Die Amylosekette enthält ca. <strong>1500 Wiederholungseinheiten</strong> (α-D-Glucopyranose-Reste).
+</div>
+</div>
+
+<!-- ===== AUFGABE 3 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Sesselkonformationen der Intermediate A–F und myo-Inositol</h2>
+
+<p>Der MIPS-Enzym-Mechanismus (myo-Inositol-1-Phosphat-Synthase) wandelt D-Glucose-6-phosphat
+stufenweise in L-myo-Inositol-1-phosphat (F) um:</p>
+
+<div class="mech-box">
+  <strong>Mechanistischer Überblick:</strong><br>
+  <strong>A</strong> = D-Glucose-6-phosphat (Pyranose-Ring) →
+  <strong>B</strong> = offenkettiges D-Glucose-6-phosphat (Rinköffnung) →
+  <strong>C</strong> = 5-Keto-D-glucose-6-phosphat (NAD⁺-Oxidation an C5) →
+  <strong>D</strong> = Enolform von C (Enolisierung) →
+  <strong>E</strong> = 2-Keto-myo-Inositol-1-phosphat (intramolekularer Ringschluss: neue C1–C6-Bindung) →
+  <strong>F</strong> = L-myo-Inositol-1-phosphat (NADH-Reduktion der C2-Ketogruppe)
+</div>
+
+<h3>Verbindung A – α-D-Glucopyranose-6-phosphat (⁴C₁-Sessel)</h3>
+<div class="step">
+  Sechsgliedriger <em>Hemiacetal</em>-Ring mit Ringsauerstoff zwischen C1 und C5:
+  <ul>
+    <li>C1–OH: axial (α-Form) oder äquatorial (β-Form)</li>
+    <li>C2–OH, C3–OH, C4–OH: alle äquatorial</li>
+    <li>C5: trägt den Ringsauerstoff (nicht frei substituiert)</li>
+    <li>C6–CH₂OPi: äquatorial (Phosphat am primären C6-Kohlenstoff)</li>
+  </ul>
+</div>
+
+<h3>Verbindungen B, C, D – offenkettige Intermediate (kein klassischer Sechsring)</h3>
+<div class="step">
+  <strong>B</strong>: offenkettiges D-Glucose-6-phosphat; linearer Aldehyd:
+  <code>OHC–C2(OH)–C3(OH)–C4(OH)–C5(OH)–CH₂OPi</code>. Darstellung als gestreckte Zickzack-Kette.<br><br>
+  <strong>C</strong>: 5-Keto-D-glucose-6-phosphat; C5=O (Ketonfunktion): <code>OHC–C2(OH)–C3(OH)–C4(OH)–(C=O)–CH₂OPi</code><br><br>
+  <strong>D</strong>: Enol-Tautomer von C; erzeugt eine C=C-Doppelbindung (C4=C5 oder C5=C6),
+  die für den nucleophilen Ringschluss notwendig ist.
+</div>
+
+<h3>Verbindung E – 2-Keto-myo-Inositol-1-phosphat (carbocyclischer Ring nach Ringschluss)</h3>
+<div class="step">
+  <strong>Sechsgliedriger Carbocyclus</strong> (Cyclohexanring C1–C2–C3–C4–C5–C6,
+  kein Ringsauerstoff mehr!). Der neue Ring entsteht durch eine neue <strong>C1–C6-Bindung</strong>
+  (zwischen dem ehemaligen C6-OPi und dem C1-Aldehyd der Glucose):
+  <ul>
+    <li>C1–OPi: axiale Position (das ehemalige C6 der Glucose trägt das Phosphat)</li>
+    <li>C2=O: <strong>Ketofunktion</strong> (sp²-Kohlenstoff, das ehemalige C1 der Glucose nach Cyclisierung)</li>
+    <li>C3–OH, C4–OH, C5–OH, C6–OH: alle äquatorial</li>
+  </ul>
+</div>
+
+<h3>Verbindung F – L-myo-Inositol-1-phosphat ✦ enthält Symmetrieebene</h3>
+<div class="step">
+  <strong>⁴C₁-Sesselkonformation</strong> des vollständig gesättigten Cyclohexanhexol-monophosphats:
+  <ul>
+    <li>C1–OPi: <strong>axiale</strong> Position (einzige axiale Gruppe!)</li>
+    <li>C2–OH, C3–OH, C4–OH, C5–OH, C6–OH: alle <strong>äquatorial</strong></li>
+  </ul>
+  <strong>Symmetrieebene</strong>: Eine vertikale Spiegelebene verläuft durch C1 (axial-OPi) und
+  C4 (äquatorial-OH) und spiegelt C2↔C6 (beide äquatorial-OH ↑) sowie C3↔C5
+  (beide äquatorial-OH ↓). Damit ist F eine <em>achiral</em>e meso-Verbindung. ✓
+</div>
+
+<h3>myo-Inositol ✦ enthält Symmetrieebene</h3>
+<div class="step">
+  Identische ⁴C₁-Sesselkonformation wie F, jedoch <em>ohne</em> Phosphatgruppe:
+  <ul>
+    <li>C1–OH: <strong>axial</strong> (einziger axialer OH-Rest im Cyclohexanring)</li>
+    <li>C2–OH, C3–OH, C4–OH, C5–OH, C6–OH: alle <strong>äquatorial</strong></li>
+  </ul>
+  <strong>Symmetrieebene</strong>: durch C1(ax-OH) und C4(äq-OH), spiegelt C2↔C6 und C3↔C5.
+  myo-Inositol ist achiral (meso-Verbindung). ✓
+</div>
+
+<div class="result">
+  <strong>Zusammenfassung:</strong> A (Glucopyranose), E und F sowie myo-Inositol sind cyclische
+  Verbindungen mit echten Sesselkonformationen. B, C, D sind offenkettige Intermediate.
+  F und myo-Inositol besitzen jeweils genau eine Symmetrieebene (durch C1 und C4) und sind
+  daher achiral, obwohl sie mehrere Stereozentren enthalten.
+</div>
+</div>
+
+<!-- ===== AUFGABE 4 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Alle Inositol-Stereoisomere</h2>
+
+<p>
+  Inositol = Cyclohexan-1,2,3,4,5,6-hexol. Theoretisch wären 2⁶ = 64 Konfigurationen denkbar,
+  aber die Symmetrie des Sechsrings (Rotation, Spiegelung) reduziert dies erheblich.
+</p>
+
+<div class="result">
+  <strong>Insgesamt: 9 Inositol-Stereoisomere</strong><br>
+  7 achiral (meso-Verbindungen) + 1 chirales Enantiomerenpaar (D-chiro und L-chiro)
+</div>
+
+<p>
+  In der Haworth-Projektion wird angegeben, ob jede OH-Gruppe <strong>↑ oberhalb</strong>
+  oder <strong>↓ unterhalb</strong> der Ringebene liegt (bei der IUPAC-Standardnummerierung).
+  Das Muster für myo-Inositol: Positionen 1,2,3,5 oben; 4,6 unten (= 1,2,3,5/4,6).
+</p>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Haworth (C1–C6: ↑/↓)</th>
+    <th>Beschreibung</th>
+    <th>Axiale OH (⁴C₁)</th>
+    <th>Chiral?</th>
+  </tr>
+  <tr>
+    <td><strong>cis</strong></td>
+    <td>↑↑↑↑↑↑</td>
+    <td>Alle OH auf einer Seite</td>
+    <td>0 (in ¹C₄: alle äq.) oder 6 (in ⁴C₁)</td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+  <tr>
+    <td><strong>epi</strong></td>
+    <td>↑↑↑↑↑↓</td>
+    <td>5 OH cis, 1 OH trans</td>
+    <td>4</td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+  <tr>
+    <td><strong>allo</strong></td>
+    <td>↑↑↑↑↓↓</td>
+    <td>4 benachbarte OH cis, 2 benachbarte trans</td>
+    <td>3</td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+  <tr>
+    <td><strong>neo</strong></td>
+    <td>↑↑↑↓↑↓</td>
+    <td>2 nicht-benachbarte, nicht-para OH trans</td>
+    <td>2</td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+  <tr class="highlight-row">
+    <td><strong>myo</strong></td>
+    <td>↑↑↑↓↑↓</td>
+    <td>Biologisch wichtigstes Isomer; 1 axiales OH in ⁴C₁; Symmetrieebene ✓</td>
+    <td><strong>1 axial</strong></td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+  <tr>
+    <td><strong>muco</strong></td>
+    <td>↑↑↓↑↑↓</td>
+    <td>3+3 Muster mit Symmetrie</td>
+    <td>2</td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+  <tr>
+    <td><strong>scyllo</strong></td>
+    <td>↑↓↑↓↑↓</td>
+    <td>Alle OH alternierend; 0 axiale OH in ⁴C₁</td>
+    <td><strong>0 axial</strong></td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+  <tr class="chiral-row">
+    <td><strong>D-chiro</strong></td>
+    <td>↑↑↑↓↓↑</td>
+    <td>Keine Symmetrieebene; 2 benachbarte axiale OH</td>
+    <td>2 benachbart</td>
+    <td><span class="badge badge-chiral">CHIRAL</span></td>
+  </tr>
+  <tr class="chiral-row">
+    <td><strong>L-chiro</strong></td>
+    <td>↓↓↑↑↑↓</td>
+    <td>Spiegelbild von D-chiro; ebenfalls keine Symmetrieebene</td>
+    <td>2 benachbart</td>
+    <td><span class="badge badge-chiral">CHIRAL</span></td>
+  </tr>
+</table>
+
+<div class="box">
+  <strong>Chiralitätsanalyse im Überblick:</strong>
+  <ul>
+    <li><strong>D-chiro und L-chiro</strong> sind die einzigen chiralen Inositol-Stereoisomere. Sie bilden ein
+      <em>Enantiomerenpaar</em> – keine Symmetrieebene, kein Inversionszentrum. Die anderen 7 Isomere sind
+      trotz mehrerer Stereozentren achiral (meso), da sie mindestens eine Symmetrieebene besitzen.</li>
+    <li><strong>scyllo-Inositol</strong> ist das stabilste Isomer (0 axiale OH-Gruppen in ⁴C₁).</li>
+    <li><strong>myo-Inositol</strong> ist das biologisch häufigste (1 axiale OH, Symmetrieebene durch C1–C4).</li>
+  </ul>
+</div>
+
+<div class="result">
+  9 Stereoisomere gesamt: <strong>7 achiral</strong> (cis, epi, allo, neo, myo, muco, scyllo) +
+  <strong>2 chiral</strong> (D-chiro, L-chiro als Enantiomerenpaar).
+</div>
+</div>
+
+<!-- ===== AUFGABE 5 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Maximale Anzahl der myo-Inositol-Diphosphat (G)-Isomere aus F</h2>
+
+<p>
+  F = myo-Inositol-1-phosphat hat ein Phosphat an <strong>C1</strong> (axiale Position) und besitzt
+  eine Symmetrieebene durch C1 und C4 (C1: OPi axial-↑; C4: OH äquatorial-↑; C2↔C6 und C3↔C5
+  symmetrisch gespiegelt). Die zweite Phosphatgruppe kann an jede der 5 verbleibenden freien
+  OH-Positionen (C2, C3, C4, C5, C6) addiert werden.
+</p>
+
+<div class="step">
+  <strong>Symmetrieüberlegung zu F:</strong> Die Spiegelebene durch C1–C4 macht C2 und C6
+  zu symmetrieäquivalenten Positionen <em>in F</em>. Die entstehenden Diphosphat-Produkte
+  Ins(1,2)P₂ und Ins(1,6)P₂ sind jedoch verschiedene Verbindungen (Enantiomere voneinander),
+  da die Phosphatgruppe die Symmetrie in F bricht.
+</div>
+
+<div class="struct-grid" id="q5-svgs"></div>
+
+<table>
+  <tr>
+    <th>G-Isomer</th>
+    <th>OPi-Positionen</th>
+    <th>Äq./Ax.</th>
+    <th>Symmetrieebene?</th>
+    <th>Chiral?</th>
+  </tr>
+  <tr>
+    <td><strong>Ins(1,2)P₂</strong></td>
+    <td>C1(ax), C2(äq)</td>
+    <td>1 axial + 1 äquatorial</td>
+    <td>Nein</td>
+    <td><span class="badge badge-chiral">CHIRAL</span> (Enantiomer von Ins(1,6)P₂)</td>
+  </tr>
+  <tr>
+    <td><strong>Ins(1,3)P₂</strong></td>
+    <td>C1(ax), C3(äq)</td>
+    <td>1 axial + 1 äquatorial</td>
+    <td>Nein</td>
+    <td><span class="badge badge-chiral">CHIRAL</span> (Enantiomer von Ins(1,5)P₂)</td>
+  </tr>
+  <tr class="highlight-row">
+    <td><strong>Ins(1,4)P₂</strong></td>
+    <td>C1(ax), C4(äq)</td>
+    <td>1 axial + 1 äquatorial</td>
+    <td><span class="sym-yes">✓ durch C1–C4</span></td>
+    <td><span class="badge badge-achiral">ACHIRAL</span></td>
+  </tr>
+  <tr>
+    <td><strong>Ins(1,5)P₂</strong></td>
+    <td>C1(ax), C5(äq)</td>
+    <td>1 axial + 1 äquatorial</td>
+    <td>Nein</td>
+    <td><span class="badge badge-chiral">CHIRAL</span> (Enantiomer von Ins(1,3)P₂)</td>
+  </tr>
+  <tr>
+    <td><strong>Ins(1,6)P₂</strong></td>
+    <td>C1(ax), C6(äq)</td>
+    <td>1 axial + 1 äquatorial</td>
+    <td>Nein</td>
+    <td><span class="badge badge-chiral">CHIRAL</span> (Enantiomer von Ins(1,2)P₂)</td>
+  </tr>
+</table>
+
+<div class="box">
+  <strong>Erklärung der Achiral-Bedingung:</strong> Nur Ins(1,4)P₂ ist achiral, weil beide Phosphate
+  auf der einzigen Symmetrieebene (C1–C4-Achse) des myo-Inositols liegen. Die Spiegelebene macht
+  C2(↑)↔C6(↑) und C3(↓)↔C5(↓) – wenn diese alle OH sind, bleibt das Molekül symmetrisch.
+</div>
+
+<div class="result">
+  <strong>Maximum: 5 G-Isomere</strong> können aus F gebildet werden.<br>
+  <strong>4 chiral</strong> (bilden 2 Enantiomerenpaare: {Ins(1,2)P₂/Ins(1,6)P₂} und {Ins(1,3)P₂/Ins(1,5)P₂}) +
+  <strong>1 achiral</strong> (Ins(1,4)P₂).
+</div>
+</div>
+
+<!-- ===== AUFGABE 6 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Alle theoretisch möglichen myo-Inositol-Diphosphat-Isomere</h2>
+
+<p>
+  Ohne die Beschränkung auf F können beliebige 2 der 6 OH-Gruppen von myo-Inositol
+  phosphoryliert werden. Die maximale Anzahl der Möglichkeiten:
+</p>
+
+<div class="formula">
+  Kombinationen: C(6, 2) = 6! / (2! · 4!) = <strong>15 verschiedene Isomere</strong>
+</div>
+
+<p>
+  <strong>Chiralitätsanalyse:</strong> myo-Inositol hat eine einzige Symmetrieebene durch C1 (axial-↑)
+  und C4 (äquatorial-↑), welche C2(äq-↑)↔C6(äq-↑) und C3(äq-↓)↔C5(äq-↓) spiegelt.
+  Eine Diphosphat-Verbindung ist achiral, wenn ihre Phosphatpositionen durch diese Spiegelebene
+  auf sich selbst abgebildet werden:
+</p>
+
+<table>
+  <tr>
+    <th>Isomer</th>
+    <th>OPi-Positionen</th>
+    <th>Geometrie beider OPi</th>
+    <th>Symmetrieebene durch C1–C4?</th>
+    <th>Chiral?</th>
+  </tr>
+  <tr class="highlight-row">
+    <td><strong>Ins(1,4)P₂</strong></td>
+    <td>C1, C4 (auf der Achse)</td>
+    <td>C1: ax-↑, C4: äq-↑</td>
+    <td><span class="sym-yes">✓ Beide auf der Ebene</span></td>
+    <td><span class="badge badge-achiral">ACHIRAL</span></td>
+  </tr>
+  <tr class="highlight-row">
+    <td><strong>Ins(2,6)P₂</strong></td>
+    <td>C2, C6 (gespiegelt)</td>
+    <td>Beide äq-↑ (gespiegeltes Paar)</td>
+    <td><span class="sym-yes">✓ C2↔C6 identisch</span></td>
+    <td><span class="badge badge-achiral">ACHIRAL</span></td>
+  </tr>
+  <tr class="highlight-row">
+    <td><strong>Ins(3,5)P₂</strong></td>
+    <td>C3, C5 (gespiegelt)</td>
+    <td>Beide äq-↓ (gespiegeltes Paar)</td>
+    <td><span class="sym-yes">✓ C3↔C5 identisch</span></td>
+    <td><span class="badge badge-achiral">ACHIRAL</span></td>
+  </tr>
+  <tr><td>Ins(1,2)P₂</td><td>C1, C2</td><td>ax-↑, äq-↑</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(1,3)P₂</td><td>C1, C3</td><td>ax-↑, äq-↓</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(1,5)P₂</td><td>C1, C5</td><td>ax-↑, äq-↓</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(1,6)P₂</td><td>C1, C6</td><td>ax-↑, äq-↑</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(2,3)P₂</td><td>C2, C3</td><td>äq-↑, äq-↓</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(2,4)P₂</td><td>C2, C4</td><td>äq-↑, äq-↑</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(2,5)P₂</td><td>C2, C5</td><td>äq-↑, äq-↓</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(3,4)P₂</td><td>C3, C4</td><td>äq-↓, äq-↑</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(3,6)P₂</td><td>C3, C6</td><td>äq-↓, äq-↑</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(4,5)P₂</td><td>C4, C5</td><td>äq-↑, äq-↓</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(4,6)P₂</td><td>C4, C6</td><td>äq-↑, äq-↑</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+  <tr><td>Ins(5,6)P₂</td><td>C5, C6</td><td>äq-↓, äq-↑</td><td>Nein</td><td><span class="badge badge-chiral">CHIRAL</span></td></tr>
+</table>
+
+<div class="box">
+  <strong>Enantiomerenpaare unter den 12 chiralen Isomeren:</strong><br>
+  {Ins(1,2)P₂ / Ins(1,6)P₂} · {Ins(1,3)P₂ / Ins(1,5)P₂} · {Ins(2,3)P₂ / Ins(5,6)P₂} ·
+  {Ins(2,4)P₂ / Ins(4,6)P₂} · {Ins(2,5)P₂ / Ins(3,6)P₂} · {Ins(3,4)P₂ / Ins(4,5)P₂}
+</div>
+
+<div class="result">
+  <strong>15 myo-Inositol-Diphosphat-Isomere</strong> sind theoretisch möglich:<br>
+  • <strong>3 achiral</strong>: Ins(1,4)P₂, Ins(2,6)P₂, Ins(3,5)P₂<br>
+  • <strong>12 chiral</strong>: alle übrigen (6 Enantiomerenpaare)
+</div>
+</div>
+
+<!-- ===== AUFGABE 7 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Strukturen G–J und IP₆ nach der Distanzregel</h2>
+
+<p>
+  <strong>Distanzregel:</strong> Die der <em>zuletzt</em> phosphorylierten OH-Gruppe am weitesten
+  entfernte, <em>noch freie</em> OH-Gruppe wird als nächstes phosphoryliert. Die Entfernung
+  wird als kürzeste Weglänge (Anzahl der Bindungsschritte) entlang des Sechsrings gemessen.
+  Maximale Entfernung im Sechsring = 3 Schritte (gegenüberliegende Position).
+</p>
+
+<div class="mech-box">
+  <strong>Ringabstände im Sechsring (Positionen 1–6):</strong><br>
+  1 Schritt: benachbarte Positionen (z.B. C1–C2) · 2 Schritte: übernächste (z.B. C1–C3) ·
+  3 Schritte: gegenüberliegende Position (z.B. C1–C4) – <strong>maximaler Abstand</strong>
+</div>
+
+<h3>Schritt F → G: Ausgangspunkt C1 (erste Phosphorylierung von F)</h3>
+<div class="step">
+  <span class="schritt-nr">F→G</span>
+  F = Ins(1)P₁. Zuletzt phosphoryliert: <strong>C1</strong>.<br>
+  Abstände von C1 zu allen freien OH-Gruppen: C2(1 Schritt), C3(2), <strong>C4(3)</strong>, C5(2), C6(1).<br>
+  → Weiteste zugängliche Position: <strong>C4</strong> (3 Schritte = maximale Entfernung)<br>
+  → <strong>G = Ins(1,4)P₂</strong><br>
+  <span class="sym-yes">✓ G besitzt eine Symmetrieebene durch C1–C4.</span>
+  Beide OPi-Gruppen liegen auf der Achse; C2(OH-↑)↔C6(OH-↑) und C3(OH-↓)↔C5(OH-↓). <strong>ACHIRAL.</strong>
+</div>
+
+<h3>Schritt G → H: Ausgangspunkt C4</h3>
+<div class="step">
+  <span class="schritt-nr">G→H</span>
+  G = Ins(1,4)P₂. Zuletzt phosphoryliert: <strong>C4</strong>.<br>
+  Freie OH-Gruppen: C2, C3, C5, C6.<br>
+  Abstände von C4: C3(1), C5(1), <strong>C2(2)</strong>, <strong>C6(2)</strong>.<br>
+  → Weiteste Positionen: C2 <em>und</em> C6 (beide 2 Schritte – Gleichstand!).<br>
+  Da G eine Symmetrieebene durch C1–C4 hat, sind C2 und C6 in G äquivalent.
+  Enzymspezifisch: <strong>H = Ins(1,4,6)P₃</strong> (Phosphorylierung an C6).<br>
+  <span class="sym-no">✗ H besitzt keine Symmetrieebene.</span> C2(OH-↑) ≠ C6(OPi). <strong>CHIRAL.</strong>
+</div>
+
+<h3>Schritt H → I: Ausgangspunkt C6</h3>
+<div class="step">
+  <span class="schritt-nr">H→I</span>
+  H = Ins(1,4,6)P₃. Zuletzt phosphoryliert: <strong>C6</strong>.<br>
+  Freie OH-Gruppen: C2, C3, C5.<br>
+  Abstände von C6: C5(1), C2(2), <strong>C3(3)</strong>.<br>
+  → Weiteste Position: <strong>C3</strong> (3 Schritte)<br>
+  → <strong>I = Ins(1,3,4,6)P₄</strong><br>
+  <span class="sym-no">✗ I besitzt keine Symmetrieebene.</span>
+  C2(OH-↑) ≠ C6(OPi-↑) unter der C1–C4-Spiegelebene. <strong>CHIRAL.</strong>
+</div>
+
+<h3>Schritt I → J: Ausgangspunkt C3</h3>
+<div class="step">
+  <span class="schritt-nr">I→J</span>
+  I = Ins(1,3,4,6)P₄. Zuletzt phosphoryliert: <strong>C3</strong>.<br>
+  Freie OH-Gruppen: C2, C5.<br>
+  Abstände von C3: C2(1), <strong>C5(2)</strong>.<br>
+  → Weiteste Position: <strong>C5</strong> (2 Schritte)<br>
+  → <strong>J = Ins(1,3,4,5,6)P₅</strong><br>
+  <span class="sym-no">✗ J besitzt keine Symmetrieebene.</span>
+  Einzige freie OH bei C2(äq-↑); C1(ax-OPi) und andere OPi-Gruppen brechen alle möglichen
+  Spiegelebenen. <strong>CHIRAL.</strong>
+</div>
+
+<h3>Schritt J → IP₆: Ausgangspunkt C5</h3>
+<div class="step">
+  <span class="schritt-nr">J→IP₆</span>
+  J = Ins(1,3,4,5,6)P₅. Zuletzt phosphoryliert: <strong>C5</strong>.<br>
+  Einzig verbleibende freie OH: <strong>C2</strong> (keine Wahl!).<br>
+  → <strong>IP₆ = Ins(1,2,3,4,5,6)P₆</strong> (myo-Inositol-Hexaphosphat, alle 6 Positionen phosphoryliert).<br>
+  <span class="sym-yes">✓ IP₆ besitzt eine Symmetrieebene durch C1–C4.</span>
+  In IP₆ tragen alle 6 Positionen OPi; die Spiegelebene ist dieselbe wie in myo-Inositol
+  (C2(OPi-↑)↔C6(OPi-↑), C3(OPi-↓)↔C5(OPi-↓)). <strong>ACHIRAL.</strong>
+</div>
+
+<div class="struct-grid" id="q7-svgs"></div>
+
+<table>
+  <tr>
+    <th>Verbindung</th>
+    <th>OPi-Positionen</th>
+    <th>Freie OH</th>
+    <th>Symmetrieebene?</th>
+    <th>Chiral?</th>
+  </tr>
+  <tr>
+    <td><strong>F</strong> (Ausgangsmaterial)</td>
+    <td>C1</td>
+    <td>C2, C3, C4, C5, C6</td>
+    <td><span class="sym-yes">✓ durch C1–C4</span></td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+  <tr class="highlight-row">
+    <td><strong>G</strong> = Ins(1,4)P₂</td>
+    <td>C1, C4</td>
+    <td>C2, C3, C5, C6</td>
+    <td><span class="sym-yes">✓ durch C1–C4</span></td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+  <tr>
+    <td><strong>H</strong> = Ins(1,4,6)P₃</td>
+    <td>C1, C4, C6</td>
+    <td>C2, C3, C5</td>
+    <td><span class="sym-no">✗ keine</span></td>
+    <td><span class="badge badge-chiral">chiral</span></td>
+  </tr>
+  <tr>
+    <td><strong>I</strong> = Ins(1,3,4,6)P₄</td>
+    <td>C1, C3, C4, C6</td>
+    <td>C2, C5</td>
+    <td><span class="sym-no">✗ keine</span></td>
+    <td><span class="badge badge-chiral">chiral</span></td>
+  </tr>
+  <tr>
+    <td><strong>J</strong> = Ins(1,3,4,5,6)P₅</td>
+    <td>C1, C3, C4, C5, C6</td>
+    <td>C2</td>
+    <td><span class="sym-no">✗ keine</span></td>
+    <td><span class="badge badge-chiral">chiral</span></td>
+  </tr>
+  <tr class="highlight-row">
+    <td><strong>IP₆</strong> = Ins(1,2,3,4,5,6)P₆</td>
+    <td>C1, C2, C3, C4, C5, C6</td>
+    <td>–</td>
+    <td><span class="sym-yes">✓ durch C1–C4</span></td>
+    <td><span class="badge badge-achiral">achiral</span></td>
+  </tr>
+</table>
+
+<div class="box">
+  <strong>Warum sind H, I, J chiral (keine Symmetrieebene)?</strong><br>
+  In myo-Inositol gibt es genau eine Symmetrieebene (durch C1 und C4). Diese Ebene spiegelt:
+  C2(äq-↑)↔C6(äq-↑) und C3(äq-↓)↔C5(äq-↓). Eine Verbindung ist nur dann achiral, wenn die
+  OPi/OH-Belegung an C2 und C6 identisch ist UND an C3 und C5 identisch ist – und C1, C4 selbst auf
+  der Achse liegen. Bei H, I und J tragen spiegelbildlich-äquivalente Positionen unterschiedliche
+  Gruppen (OPi vs. OH), was die Symmetrie bricht.
+</div>
+
+<div class="result">
+  <strong>Phosphorylierungsweg (Dictyostelium):</strong><br>
+  F (C1) → G (C1,4) → H (C1,4,6) → I (C1,3,4,6) → J (C1,3,4,5,6) → IP₆ (C1–6)<br><br>
+  <strong>Symmetrieebenen vorhanden bei: G ✓ und IP₆ ✓</strong> (beide achiral).<br>
+  H, I, J besitzen keine Symmetrieebene (chiral).
+</div>
+</div>
+
+<!-- ===== ZUSAMMENFASSUNG ===== -->
+<div class="aufgabe" style="background: #e8f5e9;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+  <tr>
+    <td><strong>1a</strong></td>
+    <td>β-D-Glucopyranose in ⁴C₁: alle Substituenten äquatorial – stabilste Konformation</td>
+  </tr>
+  <tr>
+    <td><strong>1b</strong></td>
+    <td>Wiederholungseinheit der α-Amylose: α-D-Glucopyranose mit α(1→4)-Glykosid-Bindung (C1-O axial)</td>
+  </tr>
+  <tr>
+    <td><strong>2</strong></td>
+    <td>n = 243 000 / 162,14 g/mol ≈ <strong>1500 Wiederholungseinheiten</strong></td>
+  </tr>
+  <tr>
+    <td><strong>3</strong></td>
+    <td>A: Glucopyranose-6-P (Sechsring-Sessel); B,C,D: offenkettig; E: 2-Keto-Inositol-1-P (Sechsring); F und myo-Inositol: Cyclohexan-Sessel, C1 axial, Spiegelebene durch C1–C4</td>
+  </tr>
+  <tr>
+    <td><strong>4</strong></td>
+    <td><strong>9 Inositol-Stereoisomere</strong>: 7 achiral (cis, epi, allo, neo, myo, muco, scyllo) + 2 chiral (D-chiro, L-chiro)</td>
+  </tr>
+  <tr>
+    <td><strong>5</strong></td>
+    <td>Max. <strong>5 G-Isomere</strong> aus F: Ins(1,2)P₂, Ins(1,3)P₂, Ins(1,4)P₂ (achiral), Ins(1,5)P₂, Ins(1,6)P₂ | 4 chiral, 1 achiral</td>
+  </tr>
+  <tr>
+    <td><strong>6</strong></td>
+    <td><strong>15 myo-Inositol-Diphosphat-Isomere</strong> gesamt: 3 achiral (Ins(1,4)P₂, Ins(2,6)P₂, Ins(3,5)P₂) + 12 chiral (6 Enantiomerenpaare)</td>
+  </tr>
+  <tr>
+    <td><strong>7</strong></td>
+    <td>G=Ins(1,4)P₂<span class="sym-yes">✓</span> → H=Ins(1,4,6)P₃<span class="sym-no">✗</span> → I=Ins(1,3,4,6)P₄<span class="sym-no">✗</span> → J=Ins(1,3,4,5,6)P₅<span class="sym-no">✗</span> → IP₆<span class="sym-yes">✓</span></td>
+  </tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #c8e6c9; margin-top:30px;">
+  IChO 2026 Vorbereitungsaufgaben – Problem 18 | Vollständige Lösung auf Deutsch
+</div>
+
+<!-- ===== SVG-GENERIERUNG (JavaScript) ===== -->
+<script>
+(function() {
+  // -------------------------------------------------------
+  // Hilfsfunktion: Erzeugt ein SVG-Sechseck für myo-Inositol
+  // phosphorylated: Array mit Positionsnummern (1–6) die OPi tragen
+  // freeAtC1: true = C1 ist die axiale Position (Standard)
+  // -------------------------------------------------------
+  const NS = 'http://www.w3.org/2000/svg';
+
+  function makeHex(phosphorylated) {
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 160 170');
+    svg.setAttribute('width', '145');
+    svg.setAttribute('height', '155');
+
+    const cx = 80, cy = 82, r = 48;
+    // C1 oben (−90°), dann im Uhrzeigersinn
+    const ang = [-90, -30, 30, 90, 150, 210];
+    const pts = ang.map(a => [
+      cx + r * Math.cos(a * Math.PI / 180),
+      cy + r * Math.sin(a * Math.PI / 180)
+    ]);
+
+    // Sechseck zeichnen
+    const poly = document.createElementNS(NS, 'polygon');
+    poly.setAttribute('points', pts.map(p => p.join(',')).join(' '));
+    poly.setAttribute('fill', '#f9fbe7');
+    poly.setAttribute('stroke', '#33691e');
+    poly.setAttribute('stroke-width', '2');
+    svg.appendChild(poly);
+
+    const pSet = new Set(phosphorylated);
+
+    for (let i = 0; i < 6; i++) {
+      const [vx, vy] = pts[i];
+      // Richtungsvektor nach außen
+      const dx = Math.cos(ang[i] * Math.PI / 180);
+      const dy = Math.sin(ang[i] * Math.PI / 180);
+
+      // Positionsnummer (klein, innen nahe am Eckpunkt)
+      const numEl = document.createElementNS(NS, 'text');
+      numEl.setAttribute('x', vx - dx * 14);
+      numEl.setAttribute('y', vy - dy * 14 + 4);
+      numEl.setAttribute('text-anchor', 'middle');
+      numEl.setAttribute('font-size', '9');
+      numEl.setAttribute('fill', '#777');
+      numEl.setAttribute('font-style', 'italic');
+      numEl.textContent = i + 1;
+      svg.appendChild(numEl);
+
+      // Substituenten-Label (außen)
+      const isP = pSet.has(i + 1);
+      const lbl = document.createElementNS(NS, 'text');
+      lbl.setAttribute('x', vx + dx * 21);
+      lbl.setAttribute('y', vy + dy * 21 + 4);
+      lbl.setAttribute('text-anchor', 'middle');
+      lbl.setAttribute('font-size', i === 0 ? '10' : '11'); // C1 etwas kleiner wegen "OPi"
+      lbl.setAttribute('fill', isP ? '#c62828' : '#1b5e20');
+      lbl.setAttribute('font-weight', isP ? 'bold' : 'normal');
+      lbl.textContent = isP ? 'OPi' : 'OH';
+      svg.appendChild(lbl);
+
+      // Axial-Indikator für C1 (kleine Doppellinie)
+      if (i === 0) {
+        const axLine = document.createElementNS(NS, 'line');
+        axLine.setAttribute('x1', vx + dx * 3);
+        axLine.setAttribute('y1', vy + dy * 3);
+        axLine.setAttribute('x2', vx + dx * 8);
+        axLine.setAttribute('y2', vy + dy * 8);
+        axLine.setAttribute('stroke', '#555');
+        axLine.setAttribute('stroke-width', '1');
+        svg.appendChild(axLine);
+      }
+    }
+    return svg;
+  }
+
+  function addCard(containerId, phosphorylated, caption, note, achiral) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const div = document.createElement('div');
+    div.className = 'struct-item';
+    div.appendChild(makeHex(phosphorylated));
+
+    const lbl = document.createElement('div');
+    lbl.className = 'struct-label';
+    lbl.textContent = caption;
+    div.appendChild(lbl);
+
+    if (note) {
+      const n = document.createElement('div');
+      n.className = 'struct-note';
+      n.textContent = note;
+      div.appendChild(n);
+    }
+    if (achiral !== undefined) {
+      const b = document.createElement('div');
+      b.style.marginTop = '5px';
+      b.innerHTML = achiral
+        ? '<span class="badge badge-achiral">achiral</span>'
+        : '<span class="badge badge-chiral">chiral</span>';
+      div.appendChild(b);
+    }
+    container.appendChild(div);
+  }
+
+  // Aufgabe 5: G-Isomere aus F
+  addCard('q5-svgs', [1, 2], 'Ins(1,2)P₂',  'Enantiomer von Ins(1,6)P₂', false);
+  addCard('q5-svgs', [1, 3], 'Ins(1,3)P₂',  'Enantiomer von Ins(1,5)P₂', false);
+  addCard('q5-svgs', [1, 4], 'Ins(1,4)P₂',  'Symmetrieebene durch C1–C4', true);
+  addCard('q5-svgs', [1, 5], 'Ins(1,5)P₂',  'Enantiomer von Ins(1,3)P₂', false);
+  addCard('q5-svgs', [1, 6], 'Ins(1,6)P₂',  'Enantiomer von Ins(1,2)P₂', false);
+
+  // Aufgabe 7: G bis IP₆
+  addCard('q7-svgs', [1, 4],             'G = Ins(1,4)P₂',       '✓ Ebene durch C1–C4', true);
+  addCard('q7-svgs', [1, 4, 6],          'H = Ins(1,4,6)P₃',     '✗ Keine Ebene', false);
+  addCard('q7-svgs', [1, 3, 4, 6],       'I = Ins(1,3,4,6)P₄',   '✗ Keine Ebene', false);
+  addCard('q7-svgs', [1, 3, 4, 5, 6],    'J = Ins(1,3,4,5,6)P₅', '✗ Keine Ebene', false);
+  addCard('q7-svgs', [1, 2, 3, 4, 5, 6], 'IP₆',                  '✓ Ebene durch C1–C4', true);
+})();
+</script>
+
+</body>
+</html>
