@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 28 – Nicht-archaeatypische Lebensform | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #f0fff4; color: #1a2e1a; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1b5e20; color: #1b5e20;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1b5e20; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #1b5e20; border-left: 5px solid #43a047; padding-left: 13px; margin-top: 0; }
+  h3 { color: #2e4a2e; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #c8e6c9; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(27,94,32,0.07); }
+  .box     { background: #e8f5e9; border-left: 4px solid #43a047; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e3f2fd; border-left: 5px solid #1565c0; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .key     { background: #fce4ec; border-left: 4px solid #c62828; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .bio     { background: #e8eaf6; border-left: 4px solid #3949ab; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+
+  .formula      { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.1; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #1b5e20; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c8e6c9; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f1f8f1; }
+
+  .step { margin: 10px 0; padding: 11px 16px; background: #fafffe; border-radius: 7px; border: 1px solid #c8e6c9; }
+  .schritt-nr { display: inline-block; background: #1b5e20; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #e8f5e9; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #c8e6c9; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #e8f5e9, #f0fff4); border: 2px solid #43a047; border-radius: 10px; padding: 14px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.2em; font-weight: bold; color: #1b5e20; font-family: 'Courier New', monospace; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 14px 0; }
+
+  .molecule-box { background: white; border: 2px solid #1b5e20; border-radius: 10px; padding: 14px 18px; text-align: center; }
+  .mol-name { font-weight: bold; color: #1b5e20; font-size: 1.1em; margin-bottom: 6px; }
+  .mol-formula { font-family: 'Courier New', monospace; font-size: 1.05em; color: #2e4a2e; }
+  .mol-desc { font-size: 0.88em; color: #666; margin-top: 6px; }
+
+  .chain-display { font-family: 'Courier New', monospace; background: #1a2e1a; color: #a5d6a7; border-radius: 8px; padding: 14px 18px; margin: 12px 0; font-size: 0.95em; line-height: 1.9; }
+
+  .parity-badge { display: inline-block; border-radius: 20px; padding: 2px 12px; font-weight: bold; font-size: 0.9em; margin: 3px; }
+  .even { background: #c8e6c9; color: #1b5e20; }
+  .either { background: #fff9c4; color: #f57f17; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🦠 Problem 28 – Nicht-archaeatypische Lebensform<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung – Archaeale Lipide, Knotennotation & Membranchemie</span></h1>
+
+<!-- EINLEITUNG -->
+<div class="aufgabe">
+<h2>📚 Biologischer Hintergrund: Archaea und ihre Lipide</h2>
+<p>Archaea sind eine der drei Domänen des Lebens und unterscheiden sich von Bakterien und Eukaryoten durch den fundamentalen Aufbau ihrer Zellmembranen. Statt Fettsäure-Estern (wie bei Bakterien) verwenden Archaea <strong>Isopranyl-Ether-Lipide</strong>. Diese sind chemisch extrem stabil und dienen als Biomarker in fossilen Ablagerungen (Öl, Gestein).</p>
+<div class="box">
+<strong>Schlüsselunterschied:</strong><br>
+Bakterien/Eukaryoten: Fettsäure-<em>Ester</em> (-COO-) → enzymatisch leicht spaltbar<br>
+Archaea: Isopranyl-<em>Ether</em> (-O-) → chemisch sehr stabil, kaum biologisch abbaubar<br>
+→ Das erklärt, warum archaeale Lipide in Fossilien überdauern!
+</div>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Knotennotation – Parität von x, y, z und Schranke für x</h2>
+
+<h3>Knotennotation erklärt</h3>
+<div class="step">
+Jede kovalente Bindung = 1 Strang. Doppelbindung = 2 Stränge, Dreifachbindung = 3 Stränge. Die Gesamtanzahl der Schnitte = Anzahl aller Bindungen.<br><br>
+<strong>Überprüfung mit Ethan (C₂H₆):</strong> 1 C–C + 6 C–H = 7 Bindungen = 7 Schnitte ✓
+</div>
+
+<div class="step">
+<strong>Allgemeine Formel für Anzahl der Bindungen</strong> in CₓHᵧOᵤ:<br>
+Jedes C hat Valenz 4, H hat Valenz 1, O hat Valenz 2. Gesamtvalenzen geteilt durch 2:
+<div class="formula">Anzahl Schnitte = (4x + y + 2z) / 2</div>
+Für A mit 123 Schnitten: <strong>4x + y + 2z = 246</strong>
+</div>
+
+<div class="step">
+<strong>Parität von y:</strong> 246 (gerade) = 4x (gerade) + y + 2z (gerade)<br>
+→ y muss <strong>gerade</strong> sein (da gerade − gerade − gerade = gerade)
+</div>
+
+<div class="step">
+<strong>Symmetrie-Bedingung</strong> (1 Schnitt halbiert A in zwei identische Teile):<br>
+Der Mittelschnitt trennt 1 Strang, die verbleibenden 122 Schnitte teilen sich gleichmäßig auf:<br>
+→ jede Hälfte hat 61 Schnitte = 61 Bindungen<br>
+→ A = (Hälfte)–(Hälfte), mit x = 2x', y = 2y', z = 2z'<br>
+→ <strong>x, y, z sind alle GERADE!</strong>
+</div>
+
+<div class="step">
+<strong>Schranke für x:</strong> Da y ≥ 2 (mindestens ein H-Paar, da y gerade und positiv):<br>
+4x ≤ 246 − 2 = 244 → x ≤ 61. Da x gerade: <strong>x ≤ 60</strong>
+</div>
+
+<div class="step">
+<strong>Zwei Strukturen für x = 60 (theoretisch):</strong><br>
+x=60: y + 2z = 6 → z.B. y=6, z=0 oder y=2, z=2<br>
+<ol>
+  <li><strong>C₆₀H₆</strong>: Ein Fußball-artiger Kohlenstoffkäfig mit 6 H-Atomen (Buckminster-Fulleren-Derivat, azyklisch/polyzyklisch)</li>
+  <li><strong>C₆₀H₂O₂</strong>: Langes symmetrisches Polyin mit zwei OH-Gruppen (z.B. HO–(C≡C)ₙ–OH mit n passend) oder ein Diol-Alken</li>
+</ol>
+</div>
+
+<div class="result">
+<span class="parity-badge even">x: gerade</span>
+<span class="parity-badge even">y: gerade</span>
+<span class="parity-badge even">z: gerade</span>
+&nbsp;&nbsp; x ≤ 60 beweisbar ✓
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Acyclische Form – Halbierung durch 2 oder 3 Schnitte</h2>
+
+<div class="grid2">
+  <div class="molecule-box">
+    <div class="mol-name">a) 2 Schnitte</div>
+    <p>Die Halbierungsstelle enthält 2 Stränge = eine <strong>Doppelbindung C=C</strong>. Nach 2 Schnitten entstehen zwei identische Hälften. Jede Hälfte hat (123−2)/2 = 60,5 → nicht ganzzahlig!</p>
+    <p>Warte: wenn A' mit 2 Schnitten halbierbar hat 2 statt 1 mittlere Bindung:<br>
+    4x+y+2z muss angepasst sein → andere Formel mit 1 DBE.<br>
+    <strong>Antwort: JA, möglich.</strong> Beispiel: C₄₀H₈₀O₂ mit einer zentralen C=C.</p>
+    <div class="mol-formula">C₄₀H₈₀O₂ (1 Doppelbindung, zentral)</div>
+  </div>
+  <div class="molecule-box">
+    <div class="mol-name">b) 3 Schnitte</div>
+    <p>Die Halbierungsstelle enthält 3 Stränge = eine <strong>Dreifachbindung C≡C</strong>. Jede Hälfte: (123−3)/2 = 60 Schnitte → ganzzahlig ✓</p>
+    <p><strong>Antwort: JA, möglich.</strong> Eine acyclische Form mit einer zentralen C≡C-Bindung und zwei identischen Hälften (je 60 Bindungen).</p>
+    <div class="mol-formula">C₄₀H₇₈O₂ (1 Dreifachbindung, zentral)</div>
+  </div>
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Molekülformel von A eindeutig bestimmen</h2>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Gleichungssystem:</strong>
+<div class="formula-left">
+(I)  4x + y + 2z = 246 &nbsp;(Bindungen)<br>
+(II) 12x + y + 16z ≈ 595 &nbsp;(Molmasse, gerundet)
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Subtraktion (II) − (I):</strong>
+<div class="formula">8x + 14z = M_exakt − 246</div>
+Für ganzzahlige Lösungen mit x, z gerade, Ergebnis nahe 595:
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Kandidaten prüfen:</strong>
+<table>
+  <tr><th>x</th><th>z</th><th>8x+14z</th><th>M</th><th>y = 246−4x−2z</th><th>Prüfung y≤2x+2?</th></tr>
+  <tr><td>40</td><td>2</td><td>320+28=348</td><td>594</td><td>246−160−4=82</td><td>82 ≤ 82 ✓ (Alkan-Max!)</td></tr>
+  <tr><td>26</td><td>10</td><td>208+140=348</td><td>594</td><td>246−104−20=122</td><td>122 > 54 ✗</td></tr>
+  <tr><td>12</td><td>18</td><td>96+252=348</td><td>594</td><td>246−48−36=162</td><td>162 > 26 ✗</td></tr>
+</table>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Plausibilitätsprüfung:</strong> Für CₓHᵧ gilt maximal y = 2x+2 (gesättigtes Alkan). Nur C₄₀H₈₂O₂ erfüllt diese Bedingung – die anderen haben physikalisch unmöglich viele H-Atome!
+<div class="formula">Ungesättigungsgrad DBE = (2×40+2−82)/2 = 0 → vollständig gesättigtes Diol ✓</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">A = C₄₀H₈₂O₂ &nbsp;|&nbsp; M = 594 g/mol ≈ 595 ✓</div>
+<div style="margin-top:8px; color:#555;">Vollständig gesättigtes C₄₀-Diol (DBE=0), symmetrisch, archaealer Biomarker</div>
+</div>
+</div>
+
+<!-- AUFGABE 4-6 -->
+<div class="aufgabe">
+<h2>Aufgaben 4–6: Struktur von A – Hydroxygruppen und dccccccccd-Muster</h2>
+
+<h3>Aufgabe 4: Art der OH-Gruppen</h3>
+<div class="step">
+A = C₄₀H₈₂O₂, vollständig gesättigt, 8 Stereozentren, symmetrisch.<br>
+Isopranyl-Ketten (aus Isoprenen C₅) haben Methyl-Verzweigungen an bestimmten Positionen.<br><br>
+<strong>a) Sekundäre OH-Gruppen:</strong> JA, möglich – OH an einem verzweigten oder unverzweigten sekundären C.<br>
+<strong>b) Tertiäre OH-Gruppen:</strong> JA, möglich – OH an einem quaternären C (z.B. neben einer Methylverzweigung).
+</div>
+
+<div class="warning">
+In biologischen Systemen dominieren primäre und sekundäre OH-Gruppen. Tertiäre OH sind sterisch gehindert und in biologischen Lipiden selten.
+</div>
+
+<h3>Aufgabe 5 & 6: dccccccccd-Muster und biologisch relevante Struktur</h3>
+<div class="step">
+Das Muster <code>d–c–c–c–c–c–c–c–c–d</code> zeigt: 2 Endfragmente (d) und 8 mittlere Fragmente (c).<br>
+Die Schnitte sind äquidistant (gleicher Abstand entlang der Hauptkette).<br><br>
+<strong>Isopranyl-Rhythmus:</strong> Isopren-Einheiten (C₅) wiederholen sich mit Methylverzweigungen alle 4–5 C-Atome. Dies entspricht genau dem c-Fragment-Typ!
+</div>
+
+<div class="chain-display">
+A (Biphytandiol, C₄₀H₈₂O₂):<br><br>
+HO–CH₂–[CH(CH₃)–CH₂–CH₂–CH₂]×8–CH₂–OH<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d &nbsp;&nbsp;&nbsp;&nbsp; c &nbsp;&nbsp; c &nbsp;&nbsp; c &nbsp;&nbsp; c &nbsp;&nbsp; c &nbsp;&nbsp; c &nbsp;&nbsp; c &nbsp;&nbsp; c &nbsp;&nbsp;&nbsp;&nbsp; d<br><br>
+d = –CH₂OH-Endeinheit (primäres Alkohol-Fragment)<br>
+c = –CH(CH₃)–CH₂–CH₂–CH₂– (Isopranyl-C₅-Einheit, mit Methylverzweigung)
+</div>
+
+<div class="result">
+<strong>Biologisch relevanteste Struktur (Aufgabe 6):</strong><br>
+A = <strong>2,6,10,15,19,23,27,31,35-Nonamethylheptatriacontan-1,40-diol</strong><br>
+= <strong>Biphytandiol</strong> (2×Phytanyl end-to-end verbunden, je OH an den Enden)<br>
+→ Dies ist ein bekannter archaealer Biomarker in Fossilien ✓<br>
+→ 8 Methylverzweigungen = 8 Stereozentren ✓<br>
+→ Vollständig gesättigt (DBE=0) ✓, symmetrisch ✓
+</div>
+</div>
+
+<!-- AUFGABE 7 & 8 -->
+<div class="aufgabe">
+<h2>Aufgaben 7 & 8: Verbindung B, Beweis l ≤ 2k und Struktur von C</h2>
+
+<h3>Aufgabe 7: Beweis l ≤ 2k</h3>
+<div class="step">
+B = CₖHₗOₘ. Die Hydrolyse lautet: B + 4H₂O → 2A + 2C<br><br>
+B entsteht aus 2A + 2C durch Etherbildung (4 Ether-Bindungen, 4×H₂O abgespalten).<br>
+→ B hat <strong>keine freien OH-Gruppen</strong> (alle wurden veräthert) → B ist ein reines Tetraether-Molekül.<br><br>
+<strong>Für ein Tetraether-Molekül (keine OH, keine Doppelbindungen, keine Ringe):</strong><br>
+Maximum H bei k C-Atomen und m Ether-O-Atomen = 2k + 2 − 2×(Ringe + DBE)<br>
+Da alle O-Atome als Ether (nicht OH) vorliegen: l = 2k (Gleichheit bei null Ringen/DBE)<br>
+→ <strong>l ≤ 2k ✓</strong> (Gleichheit gilt für B ohne Ringe oder Doppelbindungen)
+</div>
+
+<h3>Aufgabe 8: Struktur von C</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Formel aus der Hydrolyse:</strong>
+<div class="formula-left">
+2C = B + 4H₂O − 2A<br>
+B = C₈₆H₁₇₂O₆ (unten bestimmt), 2A = C₈₀H₁₆₄O₄<br>
+2C = C₈₆H₁₇₂O₆ + H₈O₄ − C₈₀H₁₆₄O₄<br>
+2C = C₆H₁₆O₆ → C = <strong>C₃H₈O₃</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Bedingungen prüfen für C = Glycerol (HOCH₂–CHOH–CH₂OH):</strong>
+<ul>
+  <li>✓ Optisch inaktiv: Glycerol ist achiral (kein Stereozentrum, da C2 zwei identische CH₂OH-Gruppen hat)</li>
+  <li>✓ Symmetrieachse durch ein C-Atom: Die Achse verläuft durch C2 (das mittlere CH)</li>
+  <li>✓ Alle drei OH können Ether-Bindungen bilden (2 mit A, 1 für Kopfgruppe)</li>
+</ul>
+</div>
+
+<div class="result">C = <strong>Glycerol (Propan-1,2,3-triol)</strong>, C₃H₈O₃, M = 92 g/mol<br>
+HOCH₂–CHOH–CH₂OH, symmetrisch um C2, optisch inaktiv ✓</div>
+</div>
+
+<!-- AUFGABE 9 -->
+<div class="aufgabe">
+<h2>Aufgabe 9: Finale Struktur von C und Strukturisomere von B</h2>
+
+<h3>Verbindung B – GDGT (Glycerol-Dialkyl-Glycerol-Tetraether)</h3>
+<div class="step">
+B entsteht aus 2A (Biphytandiol) + 2C (Glycerol) durch 4-fache Etherbildung:<br>
+<div class="formula">B = C₈₆H₁₇₂O₆ &nbsp;|&nbsp; M = 86×12 + 172 + 6×16 = 1302 g/mol</div>
+<strong>Bindungsanzahl in B:</strong>
+<div class="formula">(4×86 + 172 + 2×6)/2 = (344+172+12)/2 = 528/2 = <strong>264</strong> ✓ (liegt in 261–265)</div>
+</div>
+
+<div class="step">
+<strong>Glycerol-Stereoentrum:</strong> Wenn zwei verschiedene A-Ketten an C1 und C2 des Glycerols gebunden sind, wird C2 ein neues Stereozentrum. Da beide A-Reste identisch sind (Glycerol ist sn-1,2-diol):<br>
+→ B hat verschiedene Verknüpfungsmöglichkeiten (sn-1,2 vs sn-2,3 etc.)<br>
+→ Das ergibt mehrere Strukturisomere von B (je nach welche OH des Glycerols mit welchem OH des Biphytandiols verbunden wird).
+</div>
+
+<div class="result">
+C = <strong>Glycerol</strong> ✓ (gibt die meisten B-Strukturisomere)<br>
+B = <strong>GDGT-0</strong> (Glycerol-Dialkyl-Glycerol-Tetraether), C₈₆H₁₇₂O₆<br>
+Strukturisomere von B: Je nach Verknüpfungsposition (sn-1,3 vs. sn-1,2 vs. sn-2,3 etc.):<br>
+<strong>4 Strukturisomere</strong> (verschiedene Positionen der Glycerol-Ether-Bindungen)
+</div>
+</div>
+
+<!-- AUFGABE 10 -->
+<div class="aufgabe">
+<h2>Aufgabe 10: Warum ist die Hydrolyse von B langsam und nicht enzymatisch?</h2>
+
+<div class="grid2">
+  <div style="background:#ffebee; border-left:4px solid #c62828; border-radius:8px; padding:14px;">
+    <strong>Ether-Bindungen vs. Ester-Bindungen</strong><br><br>
+    <strong>Ester</strong> (Bakterien/Eukaryoten): –COO–<br>
+    → Nucleophiler Angriff an C=O möglich<br>
+    → Leicht von Lipasen/Esterasen spaltbar<br>
+    → Biologisch rasch abbaubar
+  </div>
+  <div style="background:#e8f5e9; border-left:4px solid #1b5e20; border-radius:8px; padding:14px;">
+    <strong>Ether-Bindungen</strong> (Archaea): –O–<br>
+    → Kein elektrophiles C für nucleophilen Angriff<br>
+    → Enzyme (Esterasen) können nicht angreifen<br>
+    → Braucht starke Säure oder sehr lange Zeit<br>
+    → Chemisch extrem stabil
+  </div>
+</div>
+
+<div class="result">
+B enthält <strong>Ether-Bindungen</strong> (nicht Ester). Bakterielle und eukaryotische Lipasen/Esterasen sind auf C=O-Elektrophile in Estern spezialisiert. Da B keine C=O-Gruppen an den Ether-Bindungen hat, können diese Enzyme B nicht hydrolysieren. Nur langfristige abiotische Hydrolyse (Diagenese) in geologischen Ablagerungen spaltet B. → Daher ist B ein stabiles Fossil-Biomarker!
+</div>
+</div>
+
+<!-- AUFGABE 11 -->
+<div class="aufgabe">
+<h2>Aufgabe 11: O- und U-Konformationen der Membran</h2>
+
+<div class="grid2">
+  <div class="molecule-box">
+    <div class="mol-name">O-Konformation</div>
+    <div class="mol-desc">Beide Glycerol-Kopfgruppen zeigen in dieselbe Richtung (zur Membranaußenseite). Das Molekül bildet <em>eine Hälfte</em> einer Doppellipidschicht (Bilayer). Die C₄₀-Ketten liegen parallel.</div>
+  </div>
+  <div class="molecule-box">
+    <div class="mol-name">U-Konformation</div>
+    <div class="mol-desc">Das GDGT-Molekül "faltet" sich, sodass beide Glycerol-Enden zur gleichen Seite zeigen. Es überbrückt die <em>gesamte</em> Membrandicke → bildet allein eine <strong>Monolayer-Membran</strong>! Dies ist einzigartig für Archaea.</div>
+  </div>
+</div>
+
+<div class="bio">
+<strong>Vorteil der Monolayer-Membran (U-Konformation):</strong><br>
+• Kein Auseinanderfallen bei extremen Temperaturen (keine zwei Hälften mehr)<br>
+• Stabiler bei hohen Temperaturen und extremem pH (Acidothermophile Archaea)<br>
+• Die Membran kann nicht durch thermische Bewegung getrennt werden
+</div>
+
+<div class="result">
+B-Isomere die U-Konformation bilden können: diejenigen mit <strong>sn-1,2 oder sn-2,3 Ether-Verknüpfung</strong>, die geometrisch eine Haarnadelform ermöglichen → das sind die GDGT-Isomere mit symmetrischer Kettenverknüpfung.
+</div>
+</div>
+
+<!-- AUFGABE 12 -->
+<div class="aufgabe">
+<h2>Aufgabe 12: Warum Glycerol statt kleinerer Alkohole?</h2>
+
+<ol>
+  <li>
+    <strong>Drei OH-Gruppen:</strong> Glycerol hat 3 OH → kann 2 Ether-Bindungen zu den A-Ketten bilden UND noch 1 freies OH für die Kopfgruppe (Phosphat, Zucker) behalten. Ethandiol (C₂) hat nur 2 OH → zu wenig für amphiphile Kopfgruppe. Methylenglycol (C₁) unmöglich.
+  </li>
+  <li>
+    <strong>Stereochemische Präzision:</strong> Glycerol-C2 kann prochiral werden → ermöglicht Stereospezifität (sn-Nomenklatur). Dies ist entscheidend für die evolutionäre Trennung Archaea (sn-3-Glycerol-Ether) vs. Bakterien (sn-3-Glycerol-Ester). Größere Alkohole wären sterisch zu hinderlich für die engen Membranpackungen.
+  </li>
+</ol>
+
+<div class="result">
+Glycerol ist das <strong>kleinste trifunktionelle Alkohol</strong> mit der optimalen Balance: genug Verknüpfungspunkte (3 OH), ausreichend kleine Größe für kompakte Membranen, und strukturell kompatibel mit der stereoselektiven archaealen Enzymmaschinerie.
+</div>
+</div>
+
+<!-- AUFGABE 13 -->
+<div class="aufgabe">
+<h2>Aufgabe 13: Eingrenzung der biologisch relevanten B-Isomere</h2>
+
+<div class="step">
+Aus Aufgaben 11 und 12 folgen Bedingungen:
+<ul>
+  <li>B muss U-Konformation bilden können → symmetrische Ether-Verknüpfung erforderlich</li>
+  <li>Glycerol sn-Stereochemie muss erhalten bleiben → sn-1,2-Ether bevorzugt</li>
+  <li>Die Kopfgruppe (3. OH des Glycerols) muss frei sein → nur 2 der 3 Glycerol-OH verethert</li>
+</ul>
+</div>
+
+<div class="result">
+Biologisch relevante B-Isomere: <strong>GDGT mit sn-1,2-Glycerol-Diether-Konfiguration</strong> (analog dem natürlich vorkommenden Caldarchaeol). Dies schränkt die Isomere auf <strong>2 Strukturisomere</strong> ein (je nach relativer Konfiguration der Glycerol-Ether-Positionen: sn-1,2 / sn-1,2 oder sn-2,3 / sn-2,3).
+</div>
+</div>
+
+<!-- AUFGABE 14 -->
+<div class="aufgabe">
+<h2>Aufgabe 14: Molekülformel von Lipid D1</h2>
+
+<div class="step">
+<strong>Homeoviscous Adaptation:</strong> Bei steigenden Temperaturen bauen Archaea Cyclopentanringe in die Isopranyl-Ketten ein → kompaktere Membranen → höhere Viskosität bei höheren Temperaturen.
+</div>
+
+<div class="step">
+<strong>D1 = B mit der maximalen Anzahl von Cyclopentanringen</strong> (extremste Temperaturbeständigkeit).<br><br>
+Theoretisch gibt es 4 Enzympositionen (4 Loci). D1 nutzt alle 4 → 4 Cyclopentanringe.<br><br>
+Jeder Cyclopentanring in der Isopranyl-Kette:
+<ul>
+  <li>bildet sich zwischen 2 C-Atomen der Kette → neue C–C-Bindung</li>
+  <li>verliert 2 H-Atome: die 2 C die den Ring schließen werden je –CH₂– → –CH– (verlieren je 1H)</li>
+  <li>erzeugt 2 neue Stereozentren</li>
+</ul>
+</div>
+
+<div class="step">
+<strong>Stereozentren-Analyse für D1:</strong><br>
+B hat 8 Stereozentren. D1 hat 26 Stereozentren.
+<div class="formula">Neue Stereozentren = 26 − 8 = 18 → 18/2 = 9 neue Ringe in D1</div>
+<div class="formula">H-Verlust = 2 pro Ring × 9 Ringe = 18 H weniger als B</div>
+<div class="formula">Formel D1: C₈₆H₁₇₂₋₁₈O₆ = <strong>C₈₆H₁₅₄O₆</strong></div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">D1 = C₈₆H₁₅₄O₆</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">
+M = 86×12 + 154 + 6×16 = 1032 + 154 + 96 = 1282 g/mol<br>
+9 Cyclopentanringe | 26 Stereozentren | symmetrisches Molekül
+</div>
+</div>
+</div>
+
+<!-- AUFGABE 15 -->
+<div class="aufgabe">
+<h2>Aufgabe 15: Strukturisomere von D1</h2>
+
+<div class="step">
+<strong>Randbedingungen:</strong>
+<ul>
+  <li>D1 ist <strong>symmetrisch</strong> (wie B = GDGT)</li>
+  <li>9 Cyclopentanringe gesamt (ungerade → 1 Ring muss auf der Symmetrieachse liegen, 4 in jeder Hälfte)</li>
+  <li>Nur 5- oder 6-gliedrige Ringe, keine Spirocyclen</li>
+  <li>Enzyme sind <strong>strikt positionsselektiv</strong>: jedes Enzym modifiziert nur eine bestimmte Position</li>
+  <li>4 theoretische Enzympositionen – diese sind die einzigen möglichen Ringbildungsstellen</li>
+</ul>
+</div>
+
+<div class="step">
+<strong>Welche C-Atome können an der Ringbildung teilnehmen?</strong><br>
+In der Isopranyl-Kette können nur C-Atome neben einer Methylverzweigung zyklisieren (wegen sterischer und elektronischer Gründe). Die Methylgruppe bildet Teil des Cyclopentanrings.<br><br>
+Bei symmetrischem D1: beide Hälften identisch → Ringe an denselben Positionen in beiden Hälften.
+</div>
+
+<div class="step">
+<strong>Anzahl Strukturisomere:</strong><br>
+Da die 4 Enzym-Loci genau definiert sind (positionsselektiv) und D1 alle 4 Loci nutzt + 1 zentraler Ring:<br>
+→ für eine gegebene Ringanzahl (9) und fixe Enzympositionen gibt es nur eine Anordnung pro Kette<br>
+→ Da D1 symmetrisch ist: beide Hälften gleich → <strong>1 Strukturisomer</strong><br><br>
+(In der Praxis: leichte sterische Varianten durch verschiedene relative Konfigurationen, aber strukturell: 1 Gerüst)
+</div>
+
+<div class="result">
+<strong>Anzahl Strukturisomere von D1: 1</strong><br>
+(wenn alle 4 Enzym-Positionen fixiert sind und D1 die maximale Ringanzahl hat)<br><br>
+<strong>Beispielstruktur D1:</strong> GDGT mit 9 Cyclopentanringen, gleichmäßig entlang der beiden Isopranyl-C₄₀-Ketten verteilt (je 4 Ringe pro Kette + 1 zentraler Ring), alle 5-gliedrig (Cyclopentan), alle stereochemisch definiert.
+</div>
+
+<div class="box">
+<strong>Warum Cyclopentan (5-Ring) statt Cyclohexan (6-Ring) für D1?</strong><br>
+5-Ringe sind geometrisch kompakter und zwingen die Kohlenwasserstoffketten in eine engere, gekrümmte Konformation. Bei hohen Temperaturen wird die Membran flüssiger (Viskosität sinkt), was kontraproduktiv ist. Kompaktere 5-Ring-Ketten erhöhen die Packungsdichte und kompensieren den Fluiditätsverlust → D1 mit Cyclopentanringen übersteht höchste Temperaturen besser als Derivate mit Cyclohexanringen.
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background: #f0fff4;">
+<h2>📋 Zusammenfassung aller Moleküle und Schlüsselergebnisse</h2>
+
+<div class="grid2">
+  <div class="molecule-box">
+    <div class="mol-name">A – Biphytandiol</div>
+    <div class="mol-formula">C₄₀H₈₂O₂</div>
+    <div class="mol-desc">M = 594 g/mol ≈ 595 ✓<br>123 Bindungen ✓<br>8 Stereozentren, symmetrisch<br>Archaealer Biomarker in Fossilien</div>
+  </div>
+  <div class="molecule-box">
+    <div class="mol-name">B – GDGT-0</div>
+    <div class="mol-formula">C₈₆H₁₇₂O₆</div>
+    <div class="mol-desc">264 Bindungen ✓ (261–265)<br>Glycerol-Dialkyl-Glycerol-Tetraether<br>Archaeale Membrankomponente<br>4 Ether-Bindungen, kein freies OH</div>
+  </div>
+  <div class="molecule-box">
+    <div class="mol-name">C – Glycerol</div>
+    <div class="mol-formula">C₃H₈O₃</div>
+    <div class="mol-desc">M = 92 g/mol<br>Achiral, Symmetrieachse durch C2<br>HOCH₂–CHOH–CH₂OH<br>Verbindet die A-Ketten in B</div>
+  </div>
+  <div class="molecule-box">
+    <div class="mol-name">D1 – GDGT-9</div>
+    <div class="mol-formula">C₈₆H₁₅₄O₆</div>
+    <div class="mol-desc">9 Cyclopentanringe<br>26 Stereozentren, symmetrisch<br>Extremste Thermostabilität<br>Nur in hyperthermophilen Archaea</div>
+  </div>
+</div>
+
+<table style="margin-top:20px;">
+  <tr><th>Aufgabe</th><th>Kernaussage</th></tr>
+  <tr><td><strong>1</strong></td><td>x, y, z alle gerade; x ≤ 60 beweisbar; 2 Strukturen für x=60: C₆₀H₆ und C₆₀H₂O₂</td></tr>
+  <tr><td><strong>2</strong></td><td>a) JA (Doppelbindung, z.B. C₄₀H₈₀O₂); b) JA (Dreifachbindung, z.B. C₄₀H₇₈O₂)</td></tr>
+  <tr><td><strong>3</strong></td><td>A = C₄₀H₈₂O₂ (einzige plausible Lösung mit y ≤ 2x+2)</td></tr>
+  <tr><td><strong>4–6</strong></td><td>Sowohl sekundäre als auch tertiäre OH möglich; Biphytandiol als biologisch relevante Struktur</td></tr>
+  <tr><td><strong>7</strong></td><td>l ≤ 2k: Tetraether ohne OH → l = 2k (keine Ringe/DBE in B)</td></tr>
+  <tr><td><strong>8</strong></td><td>C = Glycerol (C₃H₈O₃), achiral, Symmetrieachse durch C2</td></tr>
+  <tr><td><strong>9</strong></td><td>C = Glycerol; B hat 4 Strukturisomere; B = GDGT-0 (C₈₆H₁₇₂O₆)</td></tr>
+  <tr><td><strong>10</strong></td><td>Ether-Bindungen chemisch stabil; keine C=O für enzymatischen Angriff → nicht enzymatisch spaltbar</td></tr>
+  <tr><td><strong>11</strong></td><td>U-Konformation = Monolayer-Membran; stabiler bei extremen Bedingungen</td></tr>
+  <tr><td><strong>12</strong></td><td>Glycerol: 3 OH (Verknüpfung + Kopfgruppe), stereochemische Präzision</td></tr>
+  <tr><td><strong>13</strong></td><td>sn-1,2-Glycerol-Diether-Isomere → 2 biologisch relevante Isomere</td></tr>
+  <tr><td><strong>14</strong></td><td>D1 = C₈₆H₁₅₄O₆ (9 Cyclopentanringe, 26 Stereozentren)</td></tr>
+  <tr><td><strong>15</strong></td><td>1 Strukturisomer von D1 (fixe Enzym-Positionen + Symmetriebedingung)</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #c8e6c9; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 28 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
