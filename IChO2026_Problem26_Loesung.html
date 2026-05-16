@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 26 – Sensing of Acetaldehyde | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔬</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 950px; margin: 0 auto; padding: 20px 30px; background: #f0f4ff; color: #1a1a2e; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1a237e; color: #1a237e;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1a237e; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.35em; margin-top: 0; }
+  h2 { color: #1a237e; border-left: 5px solid #3949ab; padding-left: 13px; margin-top: 0; }
+  h3 { color: #37474f; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #c5cae9; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(26,35,126,0.07); }
+  .box { background: #e8eaf6; border-left: 4px solid #3949ab; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #e3f2fd; border-left: 5px solid #0d47a1; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .formula { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; }
+  .mech-box { background: #e8eaf6; border: 1px solid #9fa8da; border-radius: 8px; padding: 14px 18px; margin: 12px 0; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #283593; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c5cae9; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #e8eaf6; }
+
+  .step { margin: 11px 0; padding: 11px 16px; background: #fafafa; border-radius: 7px; border: 1px solid #e0e0e8; }
+  .schritt-nr { display: inline-block; background: #283593; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #eceff1; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  ul li, ol li { margin: 7px 0; }
+
+  .reaction-box { background: #1a237e; color: white; border-radius: 8px; padding: 12px 20px; text-align: center; font-size: 1.1em; font-family: 'Courier New', monospace; margin: 12px 0; letter-spacing: 0.4px; }
+
+  .badge { display: inline-block; border-radius: 20px; padding: 2px 12px; font-weight: bold; font-size: 0.85em; margin-right: 6px; }
+  .badge-yes { background: #43a047; color: white; }
+  .badge-no  { background: #e53935; color: white; }
+  .badge-info{ background: #1e88e5; color: white; }
+
+  .struct-grid { display: flex; flex-wrap: wrap; gap: 18px; margin: 16px 0; justify-content: flex-start; }
+  .struct-item { text-align: center; padding: 12px; background: #f5f5ff; border: 1px solid #c5cae9; border-radius: 8px; flex: 1; min-width: 160px; }
+  .struct-label { font-size: 0.92em; font-weight: bold; color: #1a237e; margin-top: 8px; }
+  .struct-note { font-size: 0.78em; color: #555; margin-top: 4px; }
+
+  .highlight-row td { background: #e8eaf6 !important; font-weight: bold; }
+  .F-row-high td { background: #e8f5e9 !important; }
+  .F-row-low td { background: #ffebee !important; }
+
+  .fluor-bar { height: 28px; border-radius: 5px; margin: 4px 0; display: flex; align-items: center; padding-left: 10px; color: white; font-weight: bold; font-size: 0.9em; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="../index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🔬 Problem 26 – Sensing of Acetaldehyde<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – Reaktionsmechanismus, Kinetik &amp; Spektroskopie</span></h1>
+
+<!-- ===== ÜBERBLICK ===== -->
+<div class="aufgabe">
+<h2>📚 Überblick: Worum geht es?</h2>
+<p>
+  Acetaldehyd (AA, CH₃CHO) entsteht als Zwischenprodukt beim Ethanolabbau in Zellen und ist
+  in hohen Konzentrationen toxisch. Die Verbindung <strong>AAP-1</strong> erkennt AA hochselektiv
+  durch eine zweistufige Reaktion: zuerst bildet sich ein <em>Enamin</em> (A), das dann über eine
+  <strong>[4+2]-Cycloaddition</strong> (Diels-Alder) mit einer Tetrazin-Einheit in AAP-1 reagiert,
+  gefolgt von einer <strong>Retro-[4+2]-Cycloaddition</strong> unter Freisetzung von N₂ – der
+  entstandene fluoreszente Analyt P ermöglicht die Detektion.
+</p>
+<div class="box">
+  <strong>Zentrale Themen:</strong> Enamin-Bildung · Inverse Electron Demand Diels-Alder (IEDDA) · Tetrazin-Chemie ·
+  Selektivität · Gibbs-Energie · Eyring/Arrhenius · Fluoreszenzspektroskopie · Michaelis-Menten-Kinetik
+</div>
+</div>
+
+<!-- ===== AUFGABE 1 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Strukturen A–B, Produkt P und anorganisches Nebenprodukt C</h2>
+
+<h3>Schlüsselprinzip: Tetrazin-IEDDA (Inverse Electron Demand Diels-Alder)</h3>
+<div class="mech-box">
+  AAP-1 enthält zwei reaktive Gruppen:
+  <ul>
+    <li>Ein <strong>sekundäres Amin (Pyrrolidin, N–H)</strong> → reagiert mit AA zu einem Enamin (A)</li>
+    <li>Eine <strong>1,2,4,5-Tetrazin-Einheit</strong> (4π-Dien, LUMO-dominiert) → reagiert in der IEDDA mit dem Enamin-Dienophil</li>
+  </ul>
+  Nach dem Mechanismus AAP-1 + AA → A + H₂O → B → P + C (N₂)
+</div>
+
+<h3>Massenbilanzkontrolle</h3>
+<div class="step">
+<div class="formula">
+M(AAP-1) + M(AA) − M(H₂O) − M(N₂) = M(P)<br>
+494 + 44 − 18 − 28 = <strong>492 ✓</strong>
+</div>
+Damit sind: A (520), B (520), P (492), C = N₂ (28) vollständig konsistent.
+</div>
+
+<h3>Schritt 1: Bildung von A (Enamin) aus AAP-1 + AA − H₂O</h3>
+<div class="step">
+  <span class="schritt-nr">1</span>
+  Das sekundäre Amin des Pyrrolidin-Rings in AAP-1 (N–H) reagiert mit Acetaldehyd (CH₃CHO):
+  <div class="formula">
+    Pyrrolidin-NH + CH₃CHO  →  Hemiaminal  →  Iminium R₂N⁺=CH–CH₃  →  –H⁺  →  Enamin A
+  </div>
+  <strong>A = Enamin:</strong> Die N–H-Gruppe ist durch <strong>–N–CH=CH₂</strong> ersetzt worden.
+  Der N gibt seine Elektronen in das π-System; die Doppelbindung liegt zwischen den β- und γ-Kohlenstoffen (CH=CH₂).
+  A ist elektronenreich (N-Donator) → gutes Dienophil für die IEDDA. M(A) = 494 + 44 − 18 = <strong>520</strong>.
+</div>
+
+<h3>Schritt 2: [4+2]-Cycloaddition → B (intramolekular)</h3>
+<div class="step">
+  <span class="schritt-nr">2</span>
+  Das Enamin (2π-Dienophil, HOMO-reich) reagiert <em>intramolekular</em> mit der 1,2,4,5-Tetrazin-Einheit
+  (4π-Dien, LUMO-arm = inverse Elektronenbedarfs-DA):
+  <div class="formula">
+    Tetrazin (Dien, 4π) + Enamin CH₂=CH–NR₂ (Dienophil, 2π)  →  bicyclischer Addukt B
+  </div>
+  Die Tetrazin-N=N–C=N–N=C-Einheit dient als heterocyclisches Dien.
+  <strong>B = bicyclisches Zwischenprodukt</strong> (Diaza-Bicyclo[2.2.2]-Typ mit N–N-Brücke). M(B) = <strong>520</strong> (gleich wie A, keine Massenänderung bei Cyclisierung).
+</div>
+
+<!-- SVG: Mechanism scheme -->
+<div style="margin: 18px 0;">
+<svg viewBox="0 0 780 160" width="100%" style="max-width:780px; display:block; margin:0 auto;">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a237e"/>
+    </marker>
+    <marker id="arrow2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#c62828"/>
+    </marker>
+  </defs>
+
+  <!-- AAP-1 box -->
+  <rect x="5" y="55" width="90" height="50" rx="8" fill="#e8eaf6" stroke="#3949ab" stroke-width="1.5"/>
+  <text x="50" y="76" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a237e">AAP-1</text>
+  <text x="50" y="94" text-anchor="middle" font-size="11" fill="#444">M = 494</text>
+
+  <!-- +AA -->
+  <text x="102" y="83" font-size="13" fill="#333">+ AA</text>
+  <text x="100" y="100" font-size="10" fill="#666">−H₂O</text>
+  <!-- arrow -->
+  <line x1="132" y1="82" x2="155" y2="82" stroke="#1a237e" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- A box -->
+  <rect x="158" y="55" width="90" height="50" rx="8" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="203" y="76" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">A</text>
+  <text x="203" y="92" text-anchor="middle" font-size="10" fill="#2e7d32">Enamin</text>
+  <text x="203" y="105" text-anchor="middle" font-size="10" fill="#444">M = 520</text>
+
+  <!-- [4+2] arrow -->
+  <line x1="252" y1="82" x2="278" y2="82" stroke="#1a237e" stroke-width="1.8" marker-end="url(#arrow)"/>
+  <text x="264" y="74" text-anchor="middle" font-size="10" fill="#333">[4+2]</text>
+  <text x="264" y="98" text-anchor="middle" font-size="10" fill="#555">intramol.</text>
+
+  <!-- B box -->
+  <rect x="282" y="55" width="90" height="50" rx="8" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="327" y="76" text-anchor="middle" font-size="13" font-weight="bold" fill="#bf360c">B</text>
+  <text x="327" y="92" text-anchor="middle" font-size="10" fill="#e64a19">bicyclisch</text>
+  <text x="327" y="105" text-anchor="middle" font-size="10" fill="#444">M = 520</text>
+
+  <!-- retro [4+2] arrow -->
+  <line x1="376" y1="82" x2="402" y2="82" stroke="#c62828" stroke-width="1.8" marker-end="url(#arrow2)"/>
+  <text x="388" y="72" text-anchor="middle" font-size="9" fill="#c62828">retro</text>
+  <text x="388" y="82" text-anchor="middle" font-size="9" fill="#c62828">[4+2]</text>
+  <text x="388" y="98" text-anchor="middle" font-size="9" fill="#555">−N₂</text>
+
+  <!-- P box -->
+  <rect x="406" y="55" width="90" height="50" rx="8" fill="#e3f2fd" stroke="#0d47a1" stroke-width="1.5"/>
+  <text x="451" y="76" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">P</text>
+  <text x="451" y="92" text-anchor="middle" font-size="10" fill="#1565c0">fluoreszent</text>
+  <text x="451" y="105" text-anchor="middle" font-size="10" fill="#444">M = 492</text>
+
+  <!-- + C box -->
+  <text x="503" y="83" font-size="13" fill="#333">+</text>
+
+  <rect x="516" y="55" width="90" height="50" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="1.5"/>
+  <text x="561" y="76" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">C = N₂</text>
+  <text x="561" y="92" text-anchor="middle" font-size="10" fill="#b71c1c">anorganisch</text>
+  <text x="561" y="105" text-anchor="middle" font-size="10" fill="#444">M = 28</text>
+
+  <!-- Mass check -->
+  <text x="635" y="65" font-size="10" fill="#555">Massenbilanz:</text>
+  <text x="635" y="80" font-size="10" fill="#555">494 + 44 – 18</text>
+  <text x="635" y="94" font-size="10" fill="#555">= 492 + 28</text>
+  <text x="635" y="108" font-size="11" font-weight="bold" fill="#1b5e20">✓  520 = 520</text>
+</svg>
+</div>
+
+<h3>Schritt 3: Retro-[4+2] → P + C</h3>
+<div class="step">
+  <span class="schritt-nr">3</span>
+  Das bicyclische Zwischenprodukt B unterliegt der spontanen <strong>Retro-Diels-Alder-Reaktion</strong>:
+  Die N–N-Brücke des Bicyclus bricht, und <strong>N₂ (Diickstoff)</strong> wird freigesetzt.
+  <div class="formula">
+    B (bicyclisch)  →  P (Dihydropyridazin-Produkt) + N₂
+  </div>
+  <strong>P:</strong> Das Tetrazin-Ring-System ist in ein <strong>1,2-Dihydropyridazin</strong>-System
+  (6-Ring mit zwei benachbarten N-Atomen) umgewandelt worden. P hat gleich viele Ringe wie AAP-1,
+  da das alte Tetrazin (1 Ring) durch das neue Dihydropyridazin (1 Ring) ersetzt wird. P ist
+  <strong>stark fluoreszent</strong>, da die tetrazin-vermittelte Fluoreszenzlöschung entfällt.
+  M(P) = <strong>492</strong>.
+</div>
+
+<div class="struct-grid">
+  <div class="struct-item">
+    <svg viewBox="0 0 130 130" width="120" height="120">
+      <!-- Tetrazine ring (6-membered, N at 1,2,4,5) -->
+      <polygon points="65,10 110,32 110,78 65,100 20,78 20,32" fill="none" stroke="#c62828" stroke-width="2"/>
+      <text x="65" y="8"  text-anchor="middle" font-size="12" fill="#c62828" font-weight="bold">N</text>
+      <text x="117" y="35" text-anchor="middle" font-size="12" fill="#c62828" font-weight="bold">N</text>
+      <text x="117" y="80" text-anchor="middle" font-size="12" fill="#333">C–R</text>
+      <text x="65" y="115" text-anchor="middle" font-size="12" fill="#c62828" font-weight="bold">N</text>
+      <text x="13" y="80" text-anchor="middle" font-size="12" fill="#c62828" font-weight="bold">N</text>
+      <text x="13" y="35" text-anchor="middle" font-size="12" fill="#333">C–R</text>
+      <!-- Double bond lines inside the ring -->
+      <line x1="65" y1="14" x2="108" y2="35" stroke="#c62828" stroke-width="1.5"/>
+      <line x1="22" y1="34" x2="65" y2="14" stroke="#c62828" stroke-width="1.5"/>
+      <!-- Double bond annotations -->
+      <text x="65" y="58" text-anchor="middle" font-size="9" fill="#555">Dien (4π)</text>
+      <text x="65" y="69" text-anchor="middle" font-size="9" fill="#555">LUMO-arm</text>
+    </svg>
+    <div class="struct-label">1,2,4,5-Tetrazin</div>
+    <div class="struct-note">in AAP-1 (Dien für IEDDA)</div>
+  </div>
+
+  <div class="struct-item">
+    <svg viewBox="0 0 130 130" width="120" height="120">
+      <!-- Pyrrolidine ring -->
+      <polygon points="65,20 100,50 88,90 42,90 30,50" fill="none" stroke="#1b5e20" stroke-width="2"/>
+      <!-- N-H label -->
+      <text x="65" y="17" text-anchor="middle" font-size="13" fill="#1b5e20" font-weight="bold">N</text>
+      <text x="65" y="14" text-anchor="middle" font-size="9" fill="#1b5e20">H</text>
+      <!-- Arrow to enamine -->
+      <text x="65" y="110" text-anchor="middle" font-size="9" fill="#333">N–H in AAP-1</text>
+    </svg>
+    <div class="struct-label">Pyrrolidin-N–H</div>
+    <div class="struct-note">reaktive Gruppe für Enamin-Bildung</div>
+  </div>
+
+  <div class="struct-item">
+    <svg viewBox="0 0 130 130" width="120" height="120">
+      <!-- Pyrrolidine with vinyl group -->
+      <polygon points="40,45 75,25 105,50 95,85 50,85" fill="none" stroke="#1b5e20" stroke-width="2"/>
+      <text x="40" y="43" text-anchor="middle" font-size="13" fill="#1b5e20" font-weight="bold">N</text>
+      <!-- CH=CH2 -->
+      <line x1="35" y1="44" x2="15" y2="55" stroke="#1b5e20" stroke-width="2"/>
+      <text x="10" y="70" font-size="10" fill="#1b5e20" font-weight="bold">CH</text>
+      <line x1="8" y1="73" x2="8" y2="73" stroke="none"/>
+      <!-- Double bond indicator -->
+      <line x1="10" y1="72" x2="5" y2="88" stroke="#1b5e20" stroke-width="2"/>
+      <text x="2" y="100" font-size="10" fill="#1b5e20" font-weight="bold">CH₂</text>
+      <!-- Label -->
+      <text x="65" y="110" text-anchor="middle" font-size="10" fill="#1b5e20">N–CH=CH₂</text>
+    </svg>
+    <div class="struct-label">A – Enamin</div>
+    <div class="struct-note">Dienophil (2π); HOMO-reich durch N</div>
+  </div>
+
+  <div class="struct-item">
+    <svg viewBox="0 0 130 130" width="120" height="120">
+      <!-- Dihydropyridazine ring (6-membered, N at 1,2) -->
+      <polygon points="65,15 105,38 105,80 65,103 25,80 25,38" fill="none" stroke="#0d47a1" stroke-width="2"/>
+      <text x="65" y="12" text-anchor="middle" font-size="12" fill="#0d47a1" font-weight="bold">N</text>
+      <text x="112" y="43" text-anchor="middle" font-size="12" fill="#0d47a1" font-weight="bold">N</text>
+      <text x="112" y="83" text-anchor="middle" font-size="11" fill="#333">CH–NR₂</text>
+      <text x="65" y="117" text-anchor="middle" font-size="11" fill="#333">CH₂</text>
+      <text x="18" y="83" text-anchor="middle" font-size="11" fill="#333">C–R</text>
+      <text x="18" y="43" text-anchor="middle" font-size="11" fill="#333">C–R</text>
+      <!-- Part of P structure -->
+      <text x="65" y="59" text-anchor="middle" font-size="9" fill="#555">Dihydro-</text>
+      <text x="65" y="70" text-anchor="middle" font-size="9" fill="#555">pyridazin</text>
+    </svg>
+    <div class="struct-label">P – Produkt</div>
+    <div class="struct-note">Fluoreszent; M = 492; gleiche Ringzahl wie AAP-1</div>
+  </div>
+</div>
+
+<div class="result">
+  <strong>Zusammenfassung Aufgabe 1:</strong><br>
+  • <strong>A</strong> (M = 520): Enamin; AAP-1 mit N–CH=CH₂ statt N–H (Pyrrolidin + AA, –H₂O)<br>
+  • <strong>B</strong> (M = 520): Bicyclischer [4+2]-Addukt aus intramolekularer IEDDA (Enamin = Dienophil, Tetrazin = Dien)<br>
+  • <strong>C = N₂</strong> (Distickstoff, M = 28): Anorganisches Nebenprodukt der Retro-[4+2]-Reaktion<br>
+  • <strong>P</strong> (M = 492): Fluoreszentes Dihydropyridazin-Produkt; enthält gleich viele Ringe wie AAP-1
+</div>
+</div>
+
+<!-- ===== AUFGABE 2 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Warum reagieren Formaldehyd und Methylglyoxal nicht mit AAP-1?</h2>
+
+<h3>Voraussetzung für die Reaktion: Enamin-Bildung</h3>
+<div class="mech-box">
+  Der erste Schritt ist die Bildung eines Enamins an der Pyrrolidin-N–H-Gruppe. Dafür wird
+  benötigt: ein Iminium-Ion, das anschließend ein <strong>α-H am α-Kohlenstoff</strong> (neben dem Iminium-C)
+  verlieren kann. Nur dann bildet sich die C=C-Doppelbindung des Enamins.
+</div>
+
+<h3>Formaldehyd (Methanal, HCHO)</h3>
+<div class="step">
+  <strong>Reaktion mit dem Pyrrolidin-N–H:</strong><br>
+  R₂NH + H–CHO → R₂N–CH₂–OH → R₂N⁺=CH₂ (Iminium-Ion)
+  <div class="formula">
+    R₂N⁺=CH₂  →  <span style="color:#c62828"><strong>kein α-H verfügbar!</strong></span>
+  </div>
+  Das Iminium R₂N⁺=CH₂ besitzt <strong>keinen α-Kohlenstoff</strong>, von dem ein H⁺ abstrahiert
+  werden könnte, um die C=C-Doppelbindung zu bilden. Formaldehyd hat kein Kohlenstoff-
+  Rückgrat hinter dem Carbonyl → <strong>kein Enamin bildbar → keine Reaktion.</strong>
+</div>
+
+<h3>Methylglyoxal (2-Oxopropanal, CH₃–CO–CHO)</h3>
+<div class="step">
+  <strong>Versuch über die Aldehyd-Gruppe:</strong><br>
+  R₂NH + CHO–CO–CH₃ → R₂N⁺=CH–CO–CH₃ (Iminium)
+  <div class="formula">
+    α-Kohlenstoff zum Iminium-C = der Keton-Carbonyl-C (C=O, <strong>kein H!</strong>)
+  </div>
+  Der α-Kohlenstoff neben dem Iminium-Kohlenstoff ist das Carbonyl-C des Ketons, das <strong>kein H</strong>
+  trägt → keine Enamin-Bildung über den Aldehyd möglich.
+  <br><br>
+  <strong>Versuch über die Keton-Gruppe:</strong><br>
+  R₂NH + CH₃–CO–CHO → R₂N⁺=C(CH₃)–CHO (Iminium vom Keton)
+  → Enamin: R₂N–C(CHO)=CH₂
+  <div class="formula">
+    Das gebildete Enamin ist <span style="color:#c62828"><strong>elektronenarm</strong></span> (EWG = –CHO am Vinylkohlenstoff)
+  </div>
+  Das entstehende Enamin wäre durch die benachbarte <strong>CHO-Gruppe elektron-verarmt</strong>
+  (niedrige HOMO-Energie). Es ist damit ein <em>schlechtes Dienophil</em> für die IEDDA mit
+  dem ebenfalls elektronenarmen Tetrazin (LUMO-dominiert). Die Energiedifferenz zwischen
+  LUMO(Tetrazin) und HOMO(Enamin) wäre zu groß → <strong>keine IEDDA → keine Reaktion.</strong>
+</div>
+
+<div class="result">
+  <strong>Formaldehyd:</strong> Kein α-H vorhanden → kein Enamin bildbar<br>
+  <strong>Methylglyoxal:</strong> Via Aldehyd: α-C ist ein Carbonyl-C (kein H). Via Keton: das gebildete Enamin ist durch die CHO-Gruppe elektronenarm und daher als HOMO-armes Dienophil für die IEDDA mit dem elektronenarmen Tetrazin ungeeignet.
+</div>
+</div>
+
+<!-- ===== AUFGABE 3 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Gibbs-Energieänderungen für A→B und A'→B'</h2>
+<p>
+  Die Reaktions-Gibbs-Energie ΔG ergibt sich als Differenz der relativen Gibbs-Energien von
+  Produkt und Edukt. Alle Werte sind auf die Ausgangsmaterialien (Reagenzien) bezogen.
+</p>
+
+<h3>Reaktion A → B (Acetaldehyd-System)</h3>
+<div class="step">
+<div class="formula">
+ΔG(A→B) = ΔG(B) − ΔG(A) = (−21,74) − (−8,36) = −21,74 + 8,36 = <strong>−13,38 kJ·mol⁻¹</strong>
+</div>
+ΔG < 0 → die Reaktion A→B ist <span class="badge badge-yes">spontan</span>
+</div>
+
+<h3>Reaktion A' → B' (Hexanal-System)</h3>
+<div class="step">
+<div class="formula">
+ΔG(A'→B') = ΔG(B') − ΔG(A') = (−19,23) − (−12,96) = −19,23 + 12,96 = <strong>−6,27 kJ·mol⁻¹</strong>
+</div>
+ΔG < 0 → die Reaktion A'→B' ist ebenfalls <span class="badge badge-yes">spontan</span>, jedoch weniger stark getrieben als A→B.
+</div>
+
+<div class="warning">
+  <strong>Hinweis:</strong> Obwohl A'→B' weniger exergon ist und eine höhere Aktivierungsbarriere aufweist
+  (stärkere sterische Hinderung durch die Hexyl-Kette), bleibt die Reaktion thermodynamisch erlaubt.
+  Die Selektivität von AAP-1 gegenüber größeren Aldehyden beruht daher auf <em>kinetischen</em>, nicht
+  thermodynamischen Gründen.
+</div>
+
+<table>
+  <tr><th>Reaktion</th><th>ΔG(A)</th><th>ΔG(TS)</th><th>ΔG(B)</th><th>ΔG(Rxn)</th><th>Spontan?</th></tr>
+  <tr class="highlight-row">
+    <td>A → B (AA)</td><td>−8,36 kJ/mol</td><td>+63,95 kJ/mol</td><td>−21,74 kJ/mol</td><td><strong>−13,38 kJ/mol</strong></td><td><span class="badge badge-yes">Ja</span></td>
+  </tr>
+  <tr>
+    <td>A' → B' (Hexanal)</td><td>−12,96 kJ/mol</td><td>+68,13 kJ/mol</td><td>−19,23 kJ/mol</td><td><strong>−6,27 kJ/mol</strong></td><td><span class="badge badge-yes">Ja</span></td>
+  </tr>
+</table>
+</div>
+
+<!-- ===== AUFGABE 4 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Verhältnis der Geschwindigkeitskonstanten k(A→B) / k(A'→B') bei T = 310 K</h2>
+
+<div class="step">
+  <span class="schritt-nr">1</span> <strong>Aktivierungsenergien berechnen</strong> (= ΔG‡ = Aktivierungs-Gibbs-Energie):
+  <div class="formula">
+    Ea₁ = ΔG‡(A→B) = ΔG(TS₁) − ΔG(A) = 63,95 − (−8,36) = <strong>72,31 kJ·mol⁻¹</strong><br>
+    Ea₂ = ΔG‡(A'→B') = ΔG(TS₂) − ΔG(A') = 68,13 − (−12,96) = <strong>81,09 kJ·mol⁻¹</strong>
+  </div>
+</div>
+
+<div class="step">
+  <span class="schritt-nr">2</span> <strong>Arrhenius-Gleichung mit gleichem Präexponentialfaktor A:</strong>
+  <div class="formula">
+    k₁ = A · e^(−Ea₁/RT) &nbsp;&nbsp;&nbsp;&nbsp; k₂ = A · e^(−Ea₂/RT)
+  </div>
+  <div class="formula">
+    k₁/k₂ = exp[(Ea₂ − Ea₁) / (RT)] = exp[(81,09 − 72,31) · 1000 / (8,314 · 310)]
+  </div>
+</div>
+
+<div class="step">
+  <span class="schritt-nr">3</span> <strong>Numerische Auswertung:</strong>
+  <div class="formula">
+    ΔEa = Ea₂ − Ea₁ = 8,78 kJ·mol⁻¹ = 8780 J·mol⁻¹<br>
+    RT = 8,314 J·mol⁻¹·K⁻¹ × 310 K = 2577,3 J·mol⁻¹<br>
+    k₁/k₂ = exp(8780 / 2577,3) = exp(<strong>3,408</strong>) ≈ <strong>30,2</strong>
+  </div>
+</div>
+
+<div class="result">
+  k(A→B) / k(A'→B') ≈ <strong>30</strong><br><br>
+  Die Cycloaddition mit dem Acetaldehyd-Enamin (A) läuft ca. 30× schneller ab als mit dem
+  Hexanal-Enamin (A'). Der Grund: die größere sterische Hinderung der Hexyl-Kette erhöht die
+  Aktivierungsenergie um ~8,78 kJ/mol. Dies erklärt, warum AAP-1 selektiv für kleine Aldehyde
+  ist – größere Moleküle reagieren kinetisch zu langsam.
+</div>
+</div>
+
+<!-- ===== AUFGABE 5 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Zuordnung der Spektrallinien X und Y zu Anregungs- und Emissionsprozessen</h2>
+
+<p>
+  In der Fluoreszenzspektroskopie gilt das <strong>Stokes'sche Verschiebungsgesetz</strong>: Das emittierte
+  Licht hat immer eine <em>größere Wellenlänge</em> (geringere Energie) als das absorbierende/anregende Licht,
+  da ein Teil der Energie als Wärme (Schwingungsrelaxation) abgegeben wird.
+</p>
+
+<div class="step">
+  <strong>Aus dem Spektrum:</strong>
+  <ul>
+    <li><strong>X</strong> zeigt ein Maximum bei kürzerer Wellenlänge (~430 nm) → entspricht der
+        <strong>Absorption von hochenergetischem Licht</strong></li>
+    <li><strong>Y</strong> zeigt ein Maximum bei längerer Wellenlänge (~530 nm) → entspricht der
+        <strong>Emission von niederenergetischem Licht</strong></li>
+  </ul>
+</div>
+
+<!-- Visual spectrum illustration -->
+<svg viewBox="0 0 600 150" width="100%" style="max-width:600px; display:block; margin:12px auto;">
+  <!-- Axes -->
+  <line x1="40" y1="120" x2="580" y2="120" stroke="#555" stroke-width="1.5"/>
+  <line x1="40" y1="10" x2="40" y2="120" stroke="#555" stroke-width="1.5"/>
+  <!-- X-axis label -->
+  <text x="310" y="140" text-anchor="middle" font-size="12" fill="#444">Wellenlänge (nm)</text>
+  <text x="15" y="65" text-anchor="middle" font-size="12" fill="#444" transform="rotate(-90,15,65)">Intensität</text>
+  <!-- Scale marks -->
+  <text x="120" y="132" text-anchor="middle" font-size="10" fill="#666">350</text>
+  <text x="230" y="132" text-anchor="middle" font-size="10" fill="#666">400</text>
+  <text x="340" y="132" text-anchor="middle" font-size="10" fill="#666">450</text>
+  <text x="450" y="132" text-anchor="middle" font-size="10" fill="#666">500</text>
+  <text x="560" y="132" text-anchor="middle" font-size="10" fill="#666">550</text>
+  <!-- X curve (excitation, peaks ~430nm) → mapped to x=360 in SVG -->
+  <path d="M 80,115 Q 150,100 230,50 Q 270,20 300,15 Q 330,10 360,20 Q 390,50 420,90 Q 450,110 520,115" fill="none" stroke="#1a237e" stroke-width="2.5"/>
+  <text x="300" y="10" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a237e">X</text>
+  <!-- Y curve (emission, peaks ~530nm) → mapped to x=460 in SVG -->
+  <path d="M 200,115 Q 280,110 360,80 Q 400,55 440,30 Q 460,18 480,22 Q 510,40 540,80 Q 560,105 580,115" fill="none" stroke="#c62828" stroke-width="2.5"/>
+  <text x="480" y="16" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">Y</text>
+  <!-- Stokes shift arrow -->
+  <line x1="305" y1="30" x2="475" y2="30" stroke="#555" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="390" y="26" text-anchor="middle" font-size="10" fill="#555">Stokes-Verschiebung</text>
+</svg>
+
+<div class="result">
+  <strong>X = Anregungsspektrum (Excitation)</strong> – misst bei welchen Wellenlängen Licht absorbiert wird → kürzere Wellenlängen (höhere Energie)<br>
+  <strong>Y = Emissionsspektrum (Emission)</strong> – gibt das bei welchen Wellenlängen emittiert wird → längere Wellenlängen (niedrigere Energie, Stokes-Verschiebung)
+</div>
+</div>
+
+<!-- ===== AUFGABE 6 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Berechnung von F₀ und k</h2>
+<p>
+  Gegebene lineare Abhängigkeit: <code>F = F₀ + k·[P]</code>
+</p>
+
+<div class="step">
+  <span class="schritt-nr">1</span> <strong>Steigung k bestimmen</strong> aus den Differenzen:
+  <div class="formula">
+    Δ[P] = 10 μM → ΔF = 5,00 arb.u. (konstant bei allen Datenpunkten)<br>
+    k = ΔF / Δ[P] = 5,00 / 10 = <strong>0,50 arb.u.·μM⁻¹</strong>
+  </div>
+</div>
+
+<div class="step">
+  <span class="schritt-nr">2</span> <strong>F₀ berechnen</strong> (Einsetzen eines beliebigen Datenpunkts):
+  <div class="formula">
+    F₀ = F − k·[P] = 92,50 − 0,50 × 10 = 92,50 − 5,00 = <strong>87,50 arb.u.</strong>
+  </div>
+</div>
+
+<div class="step">
+  <span class="schritt-nr">3</span> <strong>Überprüfung mit allen Datenpunkten:</strong>
+  <table>
+    <tr><th>[P] / μM</th><th>F (gemessen)</th><th>F₀ + k·[P] (berechnet)</th><th>Übereinstimmung?</th></tr>
+    <tr><td>10</td><td>92,50</td><td>87,50 + 5,00 = 92,50</td><td><span class="badge badge-yes">✓</span></td></tr>
+    <tr><td>20</td><td>97,50</td><td>87,50 + 10,00 = 97,50</td><td><span class="badge badge-yes">✓</span></td></tr>
+    <tr><td>30</td><td>102,50</td><td>87,50 + 15,00 = 102,50</td><td><span class="badge badge-yes">✓</span></td></tr>
+    <tr><td>40</td><td>107,50</td><td>87,50 + 20,00 = 107,50</td><td><span class="badge badge-yes">✓</span></td></tr>
+  </table>
+</div>
+
+<div class="result">
+  F₀ = <strong>87,50 arb.u.</strong> (Hintergrundfluoreszenz bei [P] = 0)<br>
+  k = <strong>0,50 arb.u.·μM⁻¹</strong> (Proportionalitätskonstante)
+</div>
+</div>
+
+<!-- ===== AUFGABE 7 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Zeitberechnung für den Fluoreszenzabfall (Michaelis-Menten-Kinetik)</h2>
+
+<h3>Schritt 1: Konzentration von AA aus der Fluoreszenz ableiten</h3>
+<div class="step">
+  Die Fluoreszenz spiegelt die aktuelle [AA]-Konzentration wider ([P] ∝ [AA]).
+  <div class="formula">
+    [AA] = (F − F₀) / k
+  </div>
+  Bei F = 137,50 arb.u.: [AA]₀ = (137,50 − 87,50) / 0,50 = 50,00 / 0,50 = <strong>100 μM</strong><br>
+  Bei F = 90,65 arb.u.: [AA]f = (90,65 − 87,50) / 0,50 = 3,15 / 0,50 = <strong>6,30 μM</strong>
+</div>
+
+<h3>Schritt 2: Integrierte Michaelis-Menten-Gleichung anwenden</h3>
+<div class="step">
+  Die Michaelis-Menten-Kinetik lautet: −d[AA]/dt = Vmax·[AA] / (KM + [AA])
+  <br>Integration liefert:
+  <div class="formula">
+    t = (1 / Vmax) · { ([AA]₀ − [AA]f) + KM · ln([AA]₀ / [AA]f) }
+  </div>
+</div>
+
+<h3>Schritt 3: Einsetzen der Werte</h3>
+<div class="step">
+  Gegeben: Vmax = 4,1 mM·min⁻¹ = 4100 μM·min⁻¹, KM = 0,2 μM
+  <div class="formula">
+    t = (1 / 4100) · { (100 − 6,30) + 0,2 · ln(100 / 6,30) } [μM / (μM·min⁻¹)]<br>
+    t = (1 / 4100) · { 93,70 + 0,2 · ln(15,87) }<br>
+    t = (1 / 4100) · { 93,70 + 0,2 · 2,765 }<br>
+    t = (1 / 4100) · { 93,70 + 0,553 }<br>
+    t = (1 / 4100) · 94,25 min = 0,02299 min<br>
+    t = 0,02299 × 60 s = <strong>≈ 1,38 s</strong>
+  </div>
+</div>
+
+<div class="box">
+  <strong>Interpretation:</strong> Da [AA]₀ = 100 μM ≫ KM = 0,2 μM, arbeitet ALDH fast die gesamte Reaktionszeit
+  im Sättigungsbereich (v ≈ Vmax = 4100 μM/min). Dies entspricht einer nahezu nullten
+  Reaktionsordnung: t ≈ Δ[AA]/Vmax = 93,70/4100 min ≈ 1,37 s. Der KM-Korrekturterm (0,553/4100 min ≈ 0,008 s)
+  ist vernachlässigbar klein.
+</div>
+
+<div class="result">
+  Die Fluoreszenz fällt von 137,50 auf 90,65 arb.u. in ca. <strong>t ≈ 1,38 Sekunden</strong>.
+  Der Abbau durch ALDH ist also extrem schnell, da das Enzym unter Sättigungsbedingungen arbeitet.
+</div>
+</div>
+
+<!-- ===== AUFGABE 8 ===== -->
+<div class="aufgabe">
+<h2>Aufgabe 8: Reihenfolge F1–F4 nach zunehmender Fluoreszenzintensität</h2>
+
+<h3>Analyse jeder Bedingung</h3>
+<div class="step">
+  <strong>Stoffwechselweg:</strong> Ethanol → (ADH) → Acetaldehyd → (ALDH) → Essigsäure
+  <br>
+  Die Fluoreszenz von P spiegelt die <strong>Acetaldehyd-Konzentration [AA]</strong> in den Zellen wider.
+</div>
+
+<table>
+  <tr>
+    <th>Bedingung</th>
+    <th>ADH-Aktivität</th>
+    <th>ALDH-Aktivität</th>
+    <th>[AA] resultierend</th>
+    <th>Fluoreszenz</th>
+  </tr>
+  <tr class="F-row-low">
+    <td><strong>F3</strong><br>EtOH + Fomepizol (ADH-Inhibitor)</td>
+    <td>❌ blockiert</td>
+    <td>✅ aktiv</td>
+    <td>Sehr niedrig (EtOH nicht umgesetzt; ALDH baut Grundlevel-AA ab)</td>
+    <td><strong>Niedrigste</strong></td>
+  </tr>
+  <tr>
+    <td><strong>F1</strong><br>Kontrolle (kein Inhibitor, kein EtOH)</td>
+    <td>✅ aktiv</td>
+    <td>✅ aktiv</td>
+    <td>Endogenes Grundlevel (Normalsituation)</td>
+    <td><strong>Gering (Baseline)</strong></td>
+  </tr>
+  <tr>
+    <td><strong>F2</strong><br>EtOH</td>
+    <td>✅ aktiv (EtOH → AA)</td>
+    <td>✅ aktiv (AA → Acetat)</td>
+    <td>Erhöht (mehr AA produziert, teilweise von ALDH abgebaut)</td>
+    <td><strong>Erhöht</strong></td>
+  </tr>
+  <tr class="F-row-high">
+    <td><strong>F4</strong><br>EtOH + CVT-10216 (ALDH-Inhibitor)</td>
+    <td>✅ aktiv (EtOH → AA)</td>
+    <td>❌ blockiert</td>
+    <td>Sehr hoch (AA wird produziert ABER NICHT abgebaut → Akkumulation)</td>
+    <td><strong>Höchste</strong></td>
+  </tr>
+</table>
+
+<!-- Visual fluorescence bar chart -->
+<div style="margin: 16px 0;">
+  <div style="margin: 6px 0;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="width:30px; font-size:0.9em; font-weight:bold; color:#c62828;">F3</div>
+      <div class="fluor-bar" style="width:12%; background:#b71c1c;">min.</div>
+      <span style="font-size:0.85em; color:#555;">ADH blockiert, kein EtOH-Umsatz; ALDH aktiv</span>
+    </div>
+  </div>
+  <div style="margin: 6px 0;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="width:30px; font-size:0.9em; font-weight:bold; color:#555;">F1</div>
+      <div class="fluor-bar" style="width:22%; background:#37474f;">baseline</div>
+      <span style="font-size:0.85em; color:#555;">Normalzustand; endogenes [AA]-Grundlevel</span>
+    </div>
+  </div>
+  <div style="margin: 6px 0;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="width:30px; font-size:0.9em; font-weight:bold; color:#1565c0;">F2</div>
+      <div class="fluor-bar" style="width:50%; background:#1565c0;">erhöht</div>
+      <span style="font-size:0.85em; color:#555;">EtOH→AA via ADH; ALDH baut teilweise ab</span>
+    </div>
+  </div>
+  <div style="margin: 6px 0;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="width:30px; font-size:0.9em; font-weight:bold; color:#1b5e20;">F4</div>
+      <div class="fluor-bar" style="width:90%; background:#1b5e20;">sehr hoch!</div>
+      <span style="font-size:0.85em; color:#555;">EtOH→AA (ADH aktiv), ALDH blockiert → AA akkumuliert stark</span>
+    </div>
+  </div>
+</div>
+
+<div class="result">
+  <strong>Reihenfolge nach zunehmender Fluoreszenzintensität:</strong><br><br>
+  <span style="font-size:1.2em;">F3 &lt; F1 &lt; F2 &lt; F4</span><br><br>
+  • F3 (EtOH + ADH-Inhibitor): Minimalstes [AA] – ADH blockiert, kein EtOH → AA; ALDH räumt noch auf<br>
+  • F1 (Kontrolle): Baseline-[AA] – normales Gleichgewicht aus Produktion und ALDH-Abbau<br>
+  • F2 (EtOH): Erhöhtes [AA] – ADH produziert AA aus EtOH, ALDH kann nicht vollständig kompensieren<br>
+  • F4 (EtOH + ALDH-Inhibitor): Maximales [AA] – AA wird produziert (ADH aktiv) und akkumuliert (ALDH blockiert)
+</div>
+</div>
+
+<!-- ===== ZUSAMMENFASSUNG ===== -->
+<div class="aufgabe" style="background: #e8eaf6;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+  <tr>
+    <td><strong>1</strong></td>
+    <td>
+      A = Enamin (M=520); B = bicyclischer IEDDA-Addukt (M=520);
+      <strong>C = N₂</strong> (Distickstoff, M=28); P = Dihydropyridazin-Produkt (M=492, fluoreszent).
+      Massenbilanz: 494+44−18−28 = 492 ✓
+    </td>
+  </tr>
+  <tr>
+    <td><strong>2</strong></td>
+    <td>
+      Formaldehyd: kein α-H am Iminium-C → kein Enamin bildbar.<br>
+      Methylglyoxal: α-C des Aldehyd-Iminiums ist Carbonyl-C (kein H); Keton-Enamin ist elektronenarm (CHO) → keine IEDDA mit Tetrazin.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>3</strong></td>
+    <td>
+      ΔG(A→B) = <strong>−13,38 kJ·mol⁻¹</strong> (spontan) |
+      ΔG(A'→B') = <strong>−6,27 kJ·mol⁻¹</strong> (spontan, aber kleiner getrieben)
+    </td>
+  </tr>
+  <tr>
+    <td><strong>4</strong></td>
+    <td>
+      Ea₁ = 72,31 kJ/mol; Ea₂ = 81,09 kJ/mol; ΔEa = 8,78 kJ/mol<br>
+      k(A→B)/k(A'→B') = exp(8780/2577) = exp(3,41) ≈ <strong>30</strong>
+    </td>
+  </tr>
+  <tr>
+    <td><strong>5</strong></td>
+    <td><strong>X = Anregungsspektrum</strong> (kürzere Wellenlänge, Absorption); <strong>Y = Emissionsspektrum</strong> (längere Wellenlänge, Stokes-verschoben)</td>
+  </tr>
+  <tr>
+    <td><strong>6</strong></td>
+    <td><strong>F₀ = 87,50 arb.u.</strong>; <strong>k = 0,50 arb.u.·μM⁻¹</strong></td>
+  </tr>
+  <tr>
+    <td><strong>7</strong></td>
+    <td>
+      [AA]₀ = 100 μM; [AA]f = 6,30 μM; t = (1/4100)·{93,70 + 0,2·ln(15,87)} = 0,02299 min = <strong>≈ 1,38 s</strong>
+    </td>
+  </tr>
+  <tr>
+    <td><strong>8</strong></td>
+    <td>Zunehmende Fluoreszenz: <strong>F3 &lt; F1 &lt; F2 &lt; F4</strong></td>
+  </tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #c5cae9; margin-top:30px;">
+  IChO 2026 Vorbereitungsaufgaben – Problem 26 | Vollständige Lösung auf Deutsch
+</div>
+
+</body>
+</html>
