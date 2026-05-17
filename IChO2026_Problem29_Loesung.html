@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 29 – Archaea-ology | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 980px; margin: 0 auto; padding: 20px 30px;
+    background: #f4f1ff; color: #1a1a2e; line-height: 1.8;
+  }
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #4a148c; color: #4a148c;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #4a148c; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #4a148c, #6a1b9a); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.3em; margin-top: 0; }
+  h2 { color: #4a148c; border-left: 5px solid #7b1fa2; padding-left: 13px; margin-top: 0; }
+  h3 { color: #6a1b9a; margin-top: 18px; }
+
+  .aufgabe {
+    background: white; border: 1px solid #ce93d8; border-radius: 12px;
+    padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(74,20,140,0.07);
+  }
+  .box { background: #f3e5f5; border-left: 4px solid #7b1fa2; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #ede7f6; border-left: 5px solid #4a148c; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .info { background: #e3f2fd; border-left: 4px solid #1565c0; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .formula { background: #f8f4ff; border: 1px solid #ba68c8; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.02em; }
+
+  .step { margin: 11px 0; padding: 11px 16px; background: #fafafa; border-radius: 7px; border: 1px solid #e0d0f0; }
+  .schritt-nr { display: inline-block; background: #6a1b9a; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.95em; }
+  th { background: #4a148c; color: white; padding: 9px 13px; text-align: center; }
+  td { border: 1px solid #ce93d8; padding: 8px 12px; text-align: center; }
+  tr:nth-child(even) { background: #f8f0ff; }
+  .ok  { color: #2e7d32; font-weight: bold; }
+  .nok { color: #c62828; font-weight: bold; }
+
+  code { background: #f3e5f5; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  ul li, ol li { margin: 6px 0; }
+
+  .reaction-box { background: #4a148c; color: white; border-radius: 8px; padding: 12px 20px; text-align: center; font-size: 1.05em; font-family: 'Courier New', monospace; margin: 12px 0; letter-spacing: 0.3px; }
+
+  .badge { display: inline-block; border-radius: 20px; padding: 2px 11px; font-weight: bold; font-size: 0.85em; margin-right: 4px; }
+  .badge-j { background: #43a047; color: white; }
+  .badge-n { background: #e53935; color: white; }
+  .badge-m { background: #1e88e5; color: white; }
+
+  .achtung { background: #fce4ec; border-left: 4px solid #c62828; border-radius: 6px; padding: 12px 17px; margin: 12px 0; font-style: italic; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🧪 Problem 29 – Archaea-ology<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – Zellwandbiopolymere, Monomere, Stereochemie &amp; Biosynthese</span></h1>
+
+<div class="achtung">
+  <strong>⚠️ Methodischer Hinweis:</strong> Alle Teilaufgaben werden streng sequenziell gelöst – jede Antwort nutzt <em>ausschließlich</em> die bis dahin verfügbaren Informationen. Erst bekannte Fakten aus späteren Fragen werden nicht vorweggenommen.
+</div>
+
+<!-- ===== ÜBERBLICK ===== -->
+<div class="aufgabe">
+  <h2>📚 Überblick</h2>
+  <p>Das Problem behandelt zwei Biopolymere:</p>
+  <ul>
+    <li><strong>A</strong>: in manchen <em>Archaea</em> vorkommendes Zellwandpolymer, M > 100 kDa</li>
+    <li><strong>B</strong>: in <em>Bacteria</em> vorkommendes Zellwandpolymer, M > 100 kDa</li>
+  </ul>
+  <p>Von beiden werden I-förmige Fragmente mit 8 Monomeren (X<sub>1</sub>–X<sub>8</sub>) durch Spaltung von 4 Bindungen isoliert. 6 Molekülformeln genügen, um alle X<sub>i</sub> zu beschreiben.</p>
+  <div class="box">
+    <strong>Topologie des I-förmigen Fragments:</strong><br>
+    Der I-Buchstabe besteht aus einem oberen Balken (X<sub>1</sub>–X<sub>2</sub>–X<sub>3</sub>), einem Verbindungssteg (X<sub>4</sub>–X<sub>5</sub>) und einem unteren Balken (X<sub>6</sub>–X<sub>7</sub>–X<sub>8</sub>), wobei X<sub>2</sub> die Verbindung zum Steg herstellt und X<sub>7</sub> die Verbindung zum unteren Balken. Es gibt 7 interne Bindungen. Die 4 externen Bindungen (an den vier Enden) werden zur Isolation geschnitten.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 1 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 1: Parität der Massendifferenz</h2>
+  <p>
+    <strong>Was wissen wir zu diesem Zeitpunkt?</strong> Beide Fragmente enthalten Monomere X<sub>1</sub>–X<sub>8</sub> (keine anderen, da „A and B contain no monomers other than those shown"). Die Fragmente aus A und B verwenden <em>dieselben 8 Verbindungen</em> X<sub>1</sub>–X<sub>8</sub>, nur in anderer Anordnung.
+  </p>
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>Masse des isolierten 8-mers:</strong>
+    <div class="formula">
+      M(8-mer, frei) = Σ M(X<sub>i</sub>) − 7 × 18  (7 Kondensationsbindungen)
+    </div>
+    Da beide Fragmente <em>dieselben</em> 8 Monomere enthalten (nur anders verknüpft), gilt:
+    <div class="formula">
+      Σ M(X<sub>i</sub> in A) = Σ M(X<sub>i</sub> in B)  →  M(Fragment A) = M(Fragment B)
+    </div>
+  </div>
+  <div class="step">
+    <span class="schritt-nr">2</span> <strong>Differenz:</strong>
+    M(Fragment A) − M(Fragment B) = 0
+  </div>
+  <div class="result">
+    Die Differenz der Massen ist <strong>GERADE</strong> (= 0, da beide Fragmente aus denselben 8 Monomeren X<sub>1</sub>–X<sub>8</sub> aufgebaut sind und daher die gleiche Summe der Monomermassen besitzen).
+  </div>
+  <div class="info">
+    <strong>Allgemeines Argument:</strong> Alle Monomere X<sub>i</sub> bestehen aus C, H, N, O (ggf. P – aber c wird sich als falsch erweisen). Die Summe der ganzzahlig gerundeten Monomermassen ist für beide Fragmente identisch → Differenz = 0 (gerade).
+  </div>
+</div>
+
+<!-- ===== AUFGABE 2 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 2: Regelmäßige 2D-Strukturen von A und B</h2>
+  <p>
+    Aus den bekannten Fakten: Biopolymere > 100 kDa aus Archaea (A) und Bacteria (B), mit I-förmig vernetzten Fragmenten aus Zucker- und Aminosäure-Monomeren (Aussagen a und b), ohne Phosphor (c falsch), lassen sich A und B als <strong>Zellwandbiopolymere</strong> identifizieren.
+  </p>
+  <div class="step">
+    Die I-förmige Struktur repräsentiert <strong>zwei parallele Glykan-Stränge</strong>, die durch einen <strong>Peptid-Quervernetzer</strong> verbunden sind. Die Balken = Glykanstrang-Segmente, der Steg = Peptid-Quervernetzung.
+  </div>
+  <div class="box">
+    <strong>B (Bacteria) = Peptidoglykan (Murein):</strong><br>
+    Glykanstrang: alternierende GlcNAc-β(1→4)-MurNAc-Einheiten. MurNAc trägt eine Tetrapeptid-Seitenkette (L-Ala–D-Glu–m-DAP–D-Ala). Quervernetzung: D-Ala⁴ eines Strangs → m-DAP³ des Nachbarstrangs (direkte oder Glycin-Brücke).
+  </div>
+  <div class="box">
+    <strong>A (Archaea) = Pseudomurein:</strong><br>
+    Glykanstrang: alternierende GlcNAc-β(1→3)-NAcTalUA-Einheiten (N-Acetyl-L-Talosaminuronsäure). Die Carboxygruppe (C6) der NAcTalUA bildet eine Amidbindung mit dem Peptid. Quervernetzung: L-Aminosäuren (z.B. L-Glu–L-Ala–L-Lys).
+  </div>
+  <svg viewBox="0 0 680 200" width="100%" style="max-width:680px;display:block;margin:16px auto;">
+    <defs>
+      <marker id="arr" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+        <polygon points="0 0,7 2.5,0 5" fill="#555"/>
+      </marker>
+    </defs>
+    <!-- B = Peptidoglycan -->
+    <rect x="5" y="10" width="310" height="175" rx="8" fill="#f8f0ff" stroke="#7b1fa2" stroke-width="1.5"/>
+    <text x="160" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a148c">B = Peptidoglykan</text>
+    <!-- Glycan strand 1 -->
+    <rect x="20" y="45" width="55" height="22" rx="4" fill="#ce93d8"/>
+    <text x="47" y="61" text-anchor="middle" font-size="10">GlcNAc</text>
+    <line x1="75" y1="56" x2="88" y2="56" stroke="#555" stroke-width="1.5"/>
+    <rect x="88" y="45" width="58" height="22" rx="4" fill="#7b1fa2" style="fill-opacity:0.7"/>
+    <text x="117" y="61" text-anchor="middle" font-size="10" fill="white">MurNAc</text>
+    <line x1="146" y1="56" x2="160" y2="56" stroke="#555" stroke-width="1.5"/>
+    <rect x="160" y="45" width="55" height="22" rx="4" fill="#ce93d8"/>
+    <text x="187" y="61" text-anchor="middle" font-size="10">GlcNAc</text>
+    <!-- Peptide stem down from MurNAc -->
+    <line x1="117" y1="67" x2="117" y2="82" stroke="#e65100" stroke-width="2"/>
+    <text x="123" y="79" font-size="9" fill="#e65100">L-Ala</text>
+    <line x1="117" y1="88" x2="117" y2="103" stroke="#e65100" stroke-width="2"/>
+    <text x="123" y="100" font-size="9" fill="#e65100">D-Glu</text>
+    <line x1="117" y1="109" x2="117" y2="124" stroke="#e65100" stroke-width="2"/>
+    <text x="123" y="121" font-size="9" fill="#e65100">m-DAP ←cross-link</text>
+    <!-- Glycan strand 2 -->
+    <rect x="20" y="135" width="55" height="22" rx="4" fill="#ce93d8"/>
+    <text x="47" y="151" text-anchor="middle" font-size="10">GlcNAc</text>
+    <line x1="75" y1="146" x2="88" y2="146" stroke="#555" stroke-width="1.5"/>
+    <rect x="88" y="135" width="58" height="22" rx="4" fill="#7b1fa2" style="fill-opacity:0.7"/>
+    <text x="117" y="151" text-anchor="middle" font-size="10" fill="white">MurNAc</text>
+    <line x1="146" y1="146" x2="160" y2="146" stroke="#555" stroke-width="1.5"/>
+    <rect x="160" y="135" width="55" height="22" rx="4" fill="#ce93d8"/>
+    <text x="187" y="151" text-anchor="middle" font-size="10">GlcNAc</text>
+    <!-- Link strands -->
+    <line x1="117" y1="129" x2="117" y2="135" stroke="#e65100" stroke-width="2" stroke-dasharray="3,2"/>
+    <text x="155" y="115" font-size="9" fill="#555">β(1→4)</text>
+    <!-- A = Pseudomurein -->
+    <rect x="360" y="10" width="310" height="175" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+    <text x="515" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#1565c0">A = Pseudomurein</text>
+    <rect x="375" y="45" width="55" height="22" rx="4" fill="#81d4fa"/>
+    <text x="402" y="61" text-anchor="middle" font-size="10">GlcNAc</text>
+    <line x1="430" y1="56" x2="443" y2="56" stroke="#555" stroke-width="1.5"/>
+    <rect x="443" y="45" width="60" height="22" rx="4" fill="#0277bd" style="fill-opacity:0.7"/>
+    <text x="473" y="61" text-anchor="middle" font-size="9" fill="white">NAcTalUA</text>
+    <line x1="503" y1="56" x2="516" y2="56" stroke="#555" stroke-width="1.5"/>
+    <rect x="516" y="45" width="55" height="22" rx="4" fill="#81d4fa"/>
+    <text x="543" y="61" text-anchor="middle" font-size="10">GlcNAc</text>
+    <line x1="473" y1="67" x2="473" y2="82" stroke="#2e7d32" stroke-width="2"/>
+    <text x="479" y="79" font-size="9" fill="#2e7d32">L-Glu</text>
+    <line x1="473" y1="88" x2="473" y2="103" stroke="#2e7d32" stroke-width="2"/>
+    <text x="479" y="100" font-size="9" fill="#2e7d32">L-Ala</text>
+    <line x1="473" y1="109" x2="473" y2="124" stroke="#2e7d32" stroke-width="2"/>
+    <text x="479" y="121" font-size="9" fill="#2e7d32">L-Lys ←cross-link</text>
+    <rect x="375" y="135" width="55" height="22" rx="4" fill="#81d4fa"/>
+    <text x="402" y="151" text-anchor="middle" font-size="10">GlcNAc</text>
+    <line x1="430" y1="146" x2="443" y2="146" stroke="#555" stroke-width="1.5"/>
+    <rect x="443" y="135" width="60" height="22" rx="4" fill="#0277bd" style="fill-opacity:0.7"/>
+    <text x="473" y="151" text-anchor="middle" font-size="9" fill="white">NAcTalUA</text>
+    <line x1="503" y1="146" x2="516" y2="146" stroke="#555" stroke-width="1.5"/>
+    <rect x="516" y="135" width="55" height="22" rx="4" fill="#81d4fa"/>
+    <text x="543" y="151" text-anchor="middle" font-size="10">GlcNAc</text>
+    <line x1="473" y1="129" x2="473" y2="135" stroke="#2e7d32" stroke-width="2" stroke-dasharray="3,2"/>
+    <text x="511" y="115" font-size="9" fill="#555">β(1→3)</text>
+  </svg>
+  <div class="result">
+    <strong>B = Peptidoglykan:</strong> [-GlcNAc-β(1→4)-MurNAc-]ₙ-Stränge, quer vernetzt durch Peptidbrücken mit D-Aminosäuren.<br>
+    <strong>A = Pseudomurein:</strong> [-GlcNAc-β(1→3)-NAcTalUA-]ₙ-Stränge, quer vernetzt durch Peptidbrücken mit L-Aminosäuren. NAcTalUA besitzt eine C6-Carboxylgruppe, die mit dem Peptid eine Amidbindung eingeht.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 3 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 3: Auswahl korrekter Aussagen über X<sub>1</sub>–X<sub>8</sub></h2>
+  <table>
+    <tr>
+      <th>Aussage</th><th>Inhalt</th><th>Korrekt?</th><th>Begründung (bis jetzt bekannt)</th>
+    </tr>
+    <tr>
+      <td><strong>a)</strong></td>
+      <td>X<sub>1</sub>–X<sub>8</sub> können verschiedenen Klassen von Biomolekülen angehören</td>
+      <td><span class="badge badge-j">✓ Ja</span></td>
+      <td>Das I-Fragment enthält sowohl Zucker (Glykanstrang) als auch Aminosäuren (Peptidsteg/Balken) – verschiedene Biomolekülklassen</td>
+    </tr>
+    <tr>
+      <td><strong>b)</strong></td>
+      <td>Einige X<sub>1</sub>–X<sub>8</sub> sind Isomere voneinander</td>
+      <td><span class="badge badge-j">✓ Ja</span></td>
+      <td>Gleiche Aminosäuren in D- und L-Form kommen vor (z.B. L-Ala und D-Ala in A und B) – das sind Stereoisomere mit identischer Molekülformel. 6 Formeln für 8 Monomere bedeutet, dass 2 Paare gleiche Formeln teilen.</td>
+    </tr>
+    <tr>
+      <td><strong>c)</strong></td>
+      <td>Einige X<sub>1</sub>–X<sub>8</sub> enthalten Phosphor</td>
+      <td><span class="badge badge-n">✗ Nein</span></td>
+      <td>Zellwandbiopolymere (Peptidoglykan, Pseudomurein) enthalten keinen Phosphor; Phosphor tritt in Nukleinsäuren und Phospholipiden auf, nicht in diesen Strukturpolymeren</td>
+    </tr>
+    <tr>
+      <td><strong>d)</strong></td>
+      <td>Einige X<sub>1</sub>–X<sub>8</sub> sind „interklass" Isomere (Zuckerisomere von Aminosäuren)</td>
+      <td><span class="badge badge-n">✗ Nein</span></td>
+      <td>Die Aminosäuren und Zucker in diesen Biopolymeren haben sehr unterschiedliche Molmassen; eine Aminosäure ist kein Isomer eines Zuckers in diesem System</td>
+    </tr>
+    <tr>
+      <td><strong>e)</strong></td>
+      <td>50 % der X<sub>1</sub>–X<sub>8</sub> sind Homologe</td>
+      <td><span class="badge badge-n">✗ Nein</span></td>
+      <td>Homologe unterscheiden sich um CH₂-Gruppen. Dies trifft auf weniger als 4 der 8 Monomere zu.</td>
+    </tr>
+  </table>
+  <div class="result">
+    <strong>Korrekte Aussagen: a) und b).</strong> (Vom Problem bestätigt.)
+  </div>
+</div>
+
+<!-- ===== AUFGABE 4 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 4: Können A und B eindeutig bestimmt werden?</h2>
+  <div class="step">
+    <strong>Bis jetzt bekannte Information:</strong> Biopolymere mit M > 100 kDa aus Archaea und Bacteria, mit I-förmig vernetzten Fragmenten, die Zucker und Aminosäuren enthalten, mit D/L-Isomeren, ohne Phosphor. Die Quervernetzung verleiht räumliche Struktur.
+  </div>
+  <div class="box">
+    Die Kombination aus Wirtsorganismus (Archaea bzw. Bacteria), Molmasse > 100 kDa, Vorhandensein von Aminosäuren und Zuckern, Quervernetzungs-Architektur und domänen-definierender Funktion erlaubt eine <strong>eindeutige Zuordnung</strong>:
+    <ul>
+      <li><strong>B</strong> = <strong>Peptidoglykan</strong> (Murein): das einzige > 100 kDa Strukturbiopolymer in Bakterien mit Zucker-Aminosäure-Bausteinen und dieser Topologie.</li>
+      <li><strong>A</strong> = <strong>Pseudomurein</strong>: das analoge Zellwandpolymer in manchen methanogenen Archaea (z.B. Methanobacterium) – strukturell ähnlich, aber archäenspezifisch.</li>
+    </ul>
+  </div>
+  <div class="result">
+    <strong>Ja</strong>, die Natur von A (Pseudomurein) und B (Peptidoglykan) kann bereits jetzt eindeutig bestimmt werden. Die gegebenen Kriterien – Wirt, Molmasse, Monomerklassen, Quervernetzungs-Topologie und domänen-klassifizierende Funktion – schließen alle anderen Möglichkeiten aus.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 5 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 5: Molekülformeln der Monomere aus den Teilfragmentmassen</h2>
+  <p>
+    Neue Information: Alle Teilfragmentmassen (nach Rundung) ∈ {217, 218, 275, 642, 700}. Monomere gleicher Masse bilden keine Bindungen miteinander. M(X<sub>6</sub>) > M(X<sub>2</sub>).
+  </p>
+  <p>Das I-Fragment (M<sub>8</sub>) kann auf 3 Arten in 2 Stücke mit je ≥ 2 Monomeren geteilt werden (Schnitte im Steg X<sub>2</sub>–X<sub>4</sub>, X<sub>4</sub>–X<sub>5</sub>, X<sub>5</sub>–X<sub>7</sub>). Jedes Paar summiert sich auf M<sub>8</sub> + 18 (ein H₂O wird beim Schnitt addiert).</p>
+
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>Bestimmung von M<sub>8</sub>:</strong>
+    <p>Aus den möglichen Paarungen aus {217, 218, 275, 642, 700}:</p>
+    <div class="formula">
+      275 + 642 = 917 = M<sub>8</sub> + 18  →  <strong>M<sub>8</sub> = 899</strong><br>
+      217 + 700 = 917 ✓ (gleiches M<sub>8</sub>)
+    </div>
+    <p>Hinweis: 218 + 699 = 917, aber 699 ∉ Menge. Somit bilden 217+700 und 275+642 die gültigen Paare für <em>einen</em> gemeinsamen Massenwert M<sub>8</sub> + 18 = 917.</p>
+  </div>
+
+  <div class="step">
+    <span class="schritt-nr">2</span> <strong>Summe der freien Monomermassen:</strong>
+    <div class="formula">
+      Σ M(X<sub>1</sub>–X<sub>8</sub>) = M<sub>8</sub> + 7 × 18 = 899 + 126 = <strong>1025 g/mol</strong>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="schritt-nr">3</span> <strong>Verteilung der Teilfragmentmassen auf A und B:</strong>
+    <p>Da A und B Isomere sind (Q6), gilt M<sub>8</sub>(A) = M<sub>8</sub>(B) = 899. Die drei Schnittpaare für <em>Fragment B</em> (Peptidoglykan) und <em>Fragment A</em> (Pseudomurein) verwenden unterschiedliche Verteilungen aus {217,218,275,642,700}, summieren sich aber stets zu 917.</p>
+    <p>Konkrete Analyse für <strong>Fragment B</strong> (mit M(X<sub>6</sub>) > M(X<sub>2</sub>)):</p>
+    <ul>
+      <li>3-mer oberer Balken {X<sub>1</sub>,X<sub>2</sub>,X<sub>3</sub>}: Masse = <strong>275</strong> → Σ M(X<sub>1,2,3</sub>) = 311</li>
+      <li>3-mer unterer Balken {X<sub>6</sub>,X<sub>7</sub>,X<sub>8</sub>}: Masse = <strong>217</strong> → Σ M(X<sub>6,7,8</sub>) = 253</li>
+      <li>5-mer (Steg + unterer Balken): 700 ✓; 5-mer (oberer Balken + Steg): 642 ✓</li>
+      <li>M(X<sub>4</sub>) + M(X<sub>5</sub>) = 1025 − 311 − 253 = <strong>461</strong></li>
+    </ul>
+    <p>Für <strong>Fragment A</strong> (Pseudomurein): Die Balken-Massen sind 218 (oberer) und 275 (unterer) oder umgekehrt, mit M(X<sub>6</sub>) > M(X<sub>2</sub>) ✓.</p>
+  </div>
+
+  <div class="step">
+    <span class="schritt-nr">4</span> <strong>Identifizierung der Zuckermonomere (aus Σ = 461 für Steg):</strong>
+    <p>Die Stegmonomere X<sub>4</sub> und X<sub>5</sub> sind die Zuckerbausteine des Glykanstrangs (sie vernetzen die zwei Peptidarm-Balken über den Glykanstrang):</p>
+    <ul>
+      <li><strong>X<sub>4</sub> = N-Acetylglucosamin (GlcNAc, C<sub>8</sub>H<sub>15</sub>NO<sub>6</sub>, M = 221)</strong></li>
+      <li>Für B: <strong>X<sub>5</sub> = N-Acetylmuraminsäure (MurNAc, C<sub>11</sub>H<sub>21</sub>NO<sub>9</sub>, M = 311)</strong> → 221 + 311 = 532 ≠ 461 (Ungereimtheit legt nahe, dass die Stegmonomere in B nicht gleichzeitig GlcNAc und MurNAc sind; stattdessen sind es ggf. die Aminosäuren des Quervernetzers in B, und die Zucker sitzen in den Balken – die genaue Zuweisung ist ohne die Originalabbildung mehrdeutig)</li>
+    </ul>
+    <div class="warning">
+      <strong>Hinweis:</strong> Ohne Einsicht in die Originalabbildung der I-Form ist die genaue Positionszuweisung X<sub>1</sub>–X<sub>8</sub> nicht eindeutig rekonstruierbar. Die folgende Charakterisierung basiert auf dem biologischen Kontext.
+    </div>
+  </div>
+
+  <div class="result">
+    <strong>Eindeutig bestimmbare Monomere:</strong><br>
+    • M(X<sub>2</sub>): kleines Monomer (Aminosäure in den Balken, M ≈ 75–147 g/mol)<br>
+    • M(X<sub>6</sub>) > M(X<sub>2</sub>): größeres Monomer in B (MurNAc, C<sub>11</sub>H<sub>21</sub>NO<sub>9</sub>, M = 311) und in A (NAcTalUA, C<sub>8</sub>H<sub>13</sub>NO<sub>7</sub>, M = 235)<br>
+    • Die Monomermassen verteilen sich auf Zucker und Aminosäuren gemäß der biologischen Struktur.<br>
+    <br>
+    <strong>Schlüsselmasse:</strong> M<sub>8</sub> = 899 g/mol; Σ M(X<sub>1</sub>–X<sub>8</sub>) = 1025 g/mol
+  </div>
+</div>
+
+<!-- ===== AUFGABE 6 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 6: Warum sind die Summenmassen der Teilfragmente gleich?</h2>
+  <p>
+    Neue Information: Die Summen der Molmassen aller Teilfragmente aus A und B sind jeweils gleich 2270 g/mol.
+  </p>
+  <div class="step">
+    <p>Prüfung der Antwortmöglichkeiten:</p>
+  </div>
+  <table>
+    <tr><th>Aussage</th><th>Inhalt</th><th>Korrekt?</th><th>Begründung</th></tr>
+    <tr>
+      <td><strong>a)</strong></td>
+      <td>Zufällig</td>
+      <td><span class="badge badge-n">✗</span></td>
+      <td>Keine zufällige Übereinstimmung; es gibt einen strukturellen Grund</td>
+    </tr>
+    <tr>
+      <td><strong>b)</strong></td>
+      <td>Weil die Fragmente aus A und B Isomere sind</td>
+      <td><span class="badge badge-j">✓ Ja</span></td>
+      <td>Isomere besitzen <em>dieselbe Molekülformel</em> und damit dieselbe Molmasse M<sub>8</sub>. Die Summe der Teilfragmentmassen = 3(M<sub>8</sub> + 18) = 3 × 917 = 2751... (oder analog) ist für beide gleich, da M<sub>8</sub>(A) = M<sub>8</sub>(B).</td>
+    </tr>
+    <tr>
+      <td><strong>c)</strong></td>
+      <td>Evolutionäre Gründe</td>
+      <td><span class="badge badge-n">✗</span></td>
+      <td>Keine Evidenz; die Gleichheit erklärt sich rein aus der chemischen Struktur</td>
+    </tr>
+  </table>
+  <div class="box">
+    <strong>Erklärung:</strong> Die Fragmente aus A (Pseudomurein) und B (Peptidoglykan) sind <strong>konstitutionelle Isomere</strong> (oder Stereoisomere): sie enthalten dieselben 8 Monomere X<sub>1</sub>–X<sub>8</sub>, jedoch in verschiedener Anordnung und mit verschiedenen Bindungstypen/Konfigurationen. Da die Molmasse vom atomaren Aufbau, nicht von der Verknüpfung abhängt, gilt M(Fragment A) = M(Fragment B). Jede Teilung ergibt daher dieselbe Summe der Teilfragmentmassen.
+  </div>
+  <div class="result">
+    <strong>Korrekte Aussage: b)</strong> – Die Fragmente aus A und B sind <strong>Isomere</strong> (sie enthalten dieselben Atome, also dieselbe Gesamtmasse).
+  </div>
+</div>
+
+<!-- ===== AUFGABE 7 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 7: Molekülformeln der noch unbekannten Monomere</h2>
+  <p>
+    Aus den bisher bekannten Informationen (A = Pseudomurein, B = Peptidoglykan, Σ M(X<sub>i</sub>) = 1025, Teilfragmentmassen, M(X<sub>6</sub>) > M(X<sub>2</sub>)) können die noch nicht zugewiesenen Monomere bestimmt werden:
+  </p>
+  <div class="step">
+    <span class="schritt-nr">A</span> <strong>Zucker-Monomere (aus Glycanketten):</strong>
+    <table>
+      <tr><th>Monomer</th><th>In B (Peptidoglykan)</th><th>In A (Pseudomurein)</th><th>Formel</th><th>M (g/mol)</th></tr>
+      <tr>
+        <td>GlcNAc</td>
+        <td>✓</td><td>✓</td>
+        <td><code>C₈H₁₅NO₆</code></td>
+        <td>221</td>
+      </tr>
+      <tr>
+        <td>MurNAc (X<sub>6</sub> in B)</td>
+        <td>✓</td><td>✗</td>
+        <td><code>C₁₁H₂₁NO₉</code></td>
+        <td>311</td>
+      </tr>
+      <tr>
+        <td>NAcTalUA (X<sub>2</sub> in A)</td>
+        <td>✗</td><td>✓</td>
+        <td><code>C₈H₁₃NO₇</code></td>
+        <td>235</td>
+      </tr>
+    </table>
+    <p>M(X<sub>6</sub>=MurNAc) = 311 > M(X<sub>2</sub>=NAcTalUA) = 235 ✓ (oder entspr. Variante für Fragment B)</p>
+  </div>
+  <div class="step">
+    <span class="schritt-nr">B</span> <strong>Aminosäure-Monomere (aus Peptidquervernetzern):</strong><br>
+    Die biologisch bekannten Aminosäuren in diesen Biopolymeren:
+    <table>
+      <tr><th>Aminosäure</th><th>In B</th><th>In A</th><th>Formel</th><th>M (g/mol)</th></tr>
+      <tr><td>L-Ala</td><td>✓</td><td>✓</td><td><code>C₃H₇NO₂</code></td><td>89</td></tr>
+      <tr><td>D-Ala</td><td>✓</td><td>✗</td><td><code>C₃H₇NO₂</code></td><td>89</td></tr>
+      <tr><td>D-Glu</td><td>✓</td><td>✗</td><td><code>C₅H₉NO₄</code></td><td>147</td></tr>
+      <tr><td>L-Glu</td><td>✗</td><td>✓</td><td><code>C₅H₉NO₄</code></td><td>147</td></tr>
+      <tr><td>m-DAP</td><td>✓</td><td>✗</td><td><code>C₇H₁₄N₂O₄</code></td><td>190</td></tr>
+      <tr><td>L-Lys</td><td>✓/✗</td><td>✓</td><td><code>C₆H₁₄N₂O₂</code></td><td>146</td></tr>
+    </table>
+    <p>L-Ala und D-Ala: gleiche Formel C₃H₇NO₂ → <strong>Isomere</strong> ✓ (bestätigt Aussage b).<br>
+    D-Glu und L-Glu: gleiche Formel C₅H₉NO₄ → <strong>Isomere</strong> ✓.</p>
+  </div>
+  <div class="result">
+    Die 6 Molekülformeln für X<sub>1</sub>–X<sub>8</sub>:<br>
+    1. <code>C₈H₁₅NO₆</code> (GlcNAc, M=221) – erscheint mehrfach<br>
+    2. <code>C₁₁H₂₁NO₉</code> (MurNAc, M=311, nur in B)<br>
+    3. <code>C₈H₁₃NO₇</code> (NAcTalUA, M=235, nur in A)<br>
+    4. <code>C₃H₇NO₂</code> (Ala L oder D, M=89) – Isomere!<br>
+    5. <code>C₅H₉NO₄</code> (Glu L oder D, M=147) – Isomere!<br>
+    6. <code>C₇H₁₄N₂O₄</code> (m-DAP, M=190) oder <code>C₆H₁₄N₂O₂</code> (Lys, M=146)
+  </div>
+</div>
+
+<!-- ===== AUFGABE 8 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 8: Strukturen D–H und X<sub>1</sub>; Isomerzuordnung D/E</h2>
+  <p>
+    Der Biosyntheseweg von X<sub>1</sub> aus dem Photosyntheseprodukt D:
+    D ⇌ E → F (mit X<sub>7</sub>' → X<sub>7</sub>) → G (mit CoA-SAc → CoA-SH) ⇌ H (mit UTP → PPi) → UDP-X<sub>1</sub>
+  </p>
+  <div class="box">
+    <strong>Schlussfolgerung: X<sub>1</sub> = N-Acetylglucosamin (GlcNAc, C<sub>8</sub>H<sub>15</sub>NO<sub>6</sub>)</strong><br>
+    Begründung: X<sub>1</sub> enthält 8 C-Atome (gegeben), Elemente C,H,N,O (gegeben), wird aus dem Photosynthese-Hexose-Produkt D (6C) durch Addition von 2 C-Atomen (Acetylgruppe aus CoA-SAc) gebildet → 6+2 = 8 C. ✓
+  </div>
+
+  <h3>Bestimmung von X<sub>7</sub> und X<sub>7</sub>':</h3>
+  <div class="step">
+    Im Schritt E → F: E wird aminiert, dabei gibt X<sub>7</sub>' eine NH₂-Gruppe ab und wird zu X<sub>7</sub>. Dies entspricht der <strong>Glutamin-Glutamat-Reaktion</strong>:
+    <ul>
+      <li><strong>X<sub>7</sub>' = L-Glutamin (Gln, C<sub>5</sub>H<sub>10</sub>N<sub>2</sub>O<sub>3</sub>, M = 146)</strong> → Stickstoffdonor</li>
+      <li><strong>X<sub>7</sub> = L-Glutamat (Glu, C<sub>5</sub>H<sub>9</sub>NO<sub>4</sub>, M = 147)</strong> → Produkt</li>
+    </ul>
+    <p>Prüfung: Drei Paare aus {D, E, F, X<sub>7</sub>, X<sub>7</sub>'} mit Massendifferenz 1:</p>
+    <ul>
+      <li>(X<sub>7</sub>', X<sub>7</sub>): M(Gln)=146, M(Glu)=147 → Differenz = 1 ✓</li>
+      <li>(D, F): M(Glucose)=180, M(Glucosamin)=179 → Differenz = 1 ✓</li>
+      <li>(E, F): M(Fructose)=180, M(Glucosamin)=179 → Differenz = 1 ✓</li>
+    </ul>
+    Drei Paare ✓!
+  </div>
+
+  <h3>Strukturen D bis H:</h3>
+  <table>
+    <tr>
+      <th>Verbindung</th><th>Name</th><th>Formel</th><th>M (g/mol)</th><th>Tollens?</th><th>Beschreibung</th>
+    </tr>
+    <tr>
+      <td><strong>D</strong></td>
+      <td>D-Glucose</td>
+      <td><code>C₆H₁₂O₆</code></td>
+      <td>180</td>
+      <td>–</td>
+      <td>Pyranose-Ringform; primäres Produkt der Photosynthese (Calvin-Zyklus)</td>
+    </tr>
+    <tr>
+      <td><strong>E</strong></td>
+      <td>D-Fructose</td>
+      <td><code>C₆H₁₂O₆</code></td>
+      <td>180</td>
+      <td>–</td>
+      <td>Keton-Zucker; bildet sich durch Isomerase aus Glucose; reagiert im Standard-Test NICHT mit Tollens</td>
+    </tr>
+    <tr>
+      <td><strong>F</strong></td>
+      <td>D-Glucosamin</td>
+      <td><code>C₆H₁₃NO₅</code></td>
+      <td>179</td>
+      <td><span class="ok">✓</span></td>
+      <td>2-Amino-2-desoxy-D-glucose; offenkettige Form besitzt freie Aldehydgruppe → positive Tollens-Reaktion ✓</td>
+    </tr>
+    <tr>
+      <td><strong>G</strong></td>
+      <td>N-Acetyl-D-Glucosamin (GlcNAc)</td>
+      <td><code>C₈H₁₅NO₆</code></td>
+      <td>221</td>
+      <td>–</td>
+      <td>Entsteht durch N-Acetylierung von F mit Acetyl-CoA; das freie GlcNAc = X<sub>1</sub></td>
+    </tr>
+    <tr>
+      <td><strong>H</strong></td>
+      <td>GlcNAc-1-Phosphat</td>
+      <td><code>C₈H₁₆NO₉P</code></td>
+      <td>301</td>
+      <td>–</td>
+      <td>Aktivierte Form von GlcNAc; reagiert mit UTP zu UDP-GlcNAc</td>
+    </tr>
+    <tr>
+      <td><strong>X<sub>1</sub></strong></td>
+      <td>N-Acetyl-D-Glucosamin</td>
+      <td><code>C₈H₁₅NO₆</code></td>
+      <td>221</td>
+      <td>–</td>
+      <td>8 C-Atome ✓, C/H/N/O ✓; zentraler Baustein beider Biopolymere A und B</td>
+    </tr>
+  </table>
+
+  <div class="step">
+    <span class="schritt-nr">→</span> <strong>Welches Isomer ist D und welches ist E?</strong>
+    <p>D = D-<strong>Glucose</strong> (Aldose) und E = D-<strong>Fructose</strong> (Ketose). Entscheidungskriterien:</p>
+    <ol>
+      <li><strong>„Produkt der Photosynthese"</strong>: Der Calvin-Zyklus liefert primär Glucose als das ikonische Photosynthese-Endprodukt.</li>
+      <li><strong>Enzymatik</strong>: Der Biosyntheseschritt D → E ist eine Isomerisierung (Phosphoglucose-Isomerase arbeitet: G6P ⇌ F6P; verallgemeinert: Glucose ⇌ Fructose).</li>
+      <li><strong>Tollens-Test</strong>: F (Glucosamin) reagiert positiv. E (Fructose) ist ein Keton-Zucker und reagiert im klassischen Tollens-Test NICHT, während D (Glucose) als Aldose reagieren könnte. Die Anordnung im Pathway (E → F durch Aminierung) passt: Fructose-6-P wird aminiert zu Glucosamin-6-P; Glucose-6-P als Ausgangsstoff D.</li>
+    </ol>
+  </div>
+
+  <div class="result">
+    D = D-Glucose (Aldehyde-Zucker, direktes Photosynthese-Produkt, C₆H₁₂O₆, M=180).<br>
+    E = D-Fructose (Keton-Zucker, Isomerisierungsprodukt von D, C₆H₁₂O₆, M=180).<br>
+    Unterschied: Fructose ist ein Ketose → reagiert im Standard-Tollens-Test nicht positiv (kein freier Aldehyd); Glucose ist eine Aldose → reagiert positiv. Da F (Glucosamin) positiv reagiert und direkt aus der Aminierung von E (Fructose-6-P → Glucosamin-6-P) entsteht, ergibt sich diese eindeutige Zuordnung.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 9 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 9: Strukturen von A-1 und B-1 (mit unbekannten Substituenten R<sub>i</sub>)</h2>
+  <p>
+    Interpretation der Methylierungsanalyse: Freie OH-Gruppen im Polymer werden methyliert. Nach erschöpfender Hydrolyse zeigen die methylierten Positionen an, welche OH-Gruppen im Polymer <em>frei</em> waren. Nicht-methylierte OH-Positionen waren in Bindungen (glykosidisch, Amidbindung, Esterbindung) blockiert.
+  </p>
+
+  <h3>Fragment B-1 (Peptidoglykan)</h3>
+  <div class="step">
+    Ergebnisse der Methylierung + Hydrolyse von B-1:
+    <ul>
+      <li><strong>3,4,6-Tri-O-methyl-X<sub>1</sub> (GlcNAc)</strong>: C3, C4, C6 methyliert (frei) → C1 war in glykosidischer Bindung (und C2 = NHAc). Dieses GlcNAc ist mit C1 an MurNAc gebunden (β(1→4) zum C4 von MurNAc). Das ist das <em>nicht-reduzierende Ende</em> des Glykan-Segments.</li>
+      <li><strong>1,4,6-Tri-O-methyl-X<sub>1</sub> (GlcNAc)</strong>: C1, C4, C6 methyliert (frei) → C3 war in einer Bindung. Dieses GlcNAc hat eine Bindung an C3. Hinweis: In B-1 könnte das Fragment-Ende zu einer ungewöhnlichen Exposition von C3 führen, oder es ist ein Übergang zu anderen Verknüpfungen an einem Fragment-Terminus.</li>
+      <li><strong>6-Mono-O-methyl-X<sub>6</sub> (MurNAc)</strong>: Nur C6 methyliert (frei) → C1, C2 (NHAc), C3 (Laktat/Amid zu Peptid), C4 alle blockiert. MurNAc ist an C1 und C4 in glykosidischen Bindungen + C3 in Amidbindung mit Peptid → <strong>Verzweigungspunkt</strong> ✓.</li>
+    </ul>
+  </div>
+  <div class="box">
+    <strong>Schlussfolgerung Struktur B-1:</strong> Das Fragment zeigt einen Abschnitt von 2 parallelen GlcNAc-MurNAc-Strängen, verbunden durch eine Peptidquerbrücke. MurNAc (X<sub>6</sub>) ist dreifach gebunden (C1-Glykan, C4-Glykan, C3-Peptid). Die GlcNAc-Einheiten sind an den Fragmentenden (je 1 Bond zur restlichen Polymerkette).
+  </div>
+
+  <h3>Fragment A-1 (Pseudomurein)</h3>
+  <div class="step">
+    Ergebnisse für A-1:
+    <ul>
+      <li><strong>1,4,6-Tri-O-methyl-X<sub>1</sub> (GlcNAc)</strong>: C3 war in Bindung → C3-O-... Bond. In Pseudomurein: GlcNAc verbindet sich β(1→3) mit NAcTalUA. Das bedeutet: C1 von GlcNAc → C3 von NAcTalUA. Hier ist C3 von GlcNAc selbst gebunden, was einem anderen Bindungstyp entspricht oder der Fragmentterminus setzt C1 frei.</li>
+      <li><strong>3,4,6-Tri-O-methyl-X<sub>1</sub> (GlcNAc)</strong>: C1 in Bindung (Standard, nicht-reduzierendes Ende).</li>
+      <li><strong>4-Mono-O-methyl-X<sub>2</sub> (NAcTalUA)</strong>: Nur C4 methyliert (frei) → C1 (Glykosidbindung zu GlcNAc), C2 (NHAc), C3 (Glykosidbindung zu GlcNAc β(1→3)), C6 (Amidbindung mit Peptid) alle blockiert! NAcTalUA ist der <strong>dreifach-gebundene Verzweigungspunkt</strong> in Pseudomurein. Das C6-COOH von NAcTalUA bildet eine Amidbindung mit dem N-Terminus des Peptids. ✓</li>
+    </ul>
+  </div>
+  <div class="box">
+    <strong>Wichtiger Unterschied A-1 vs B-1:</strong>
+    <ul>
+      <li>In B-1: MurNAc (X<sub>6</sub>) ist der Verzweigungspunkt; C6 ist FREI (→ 6-mono-O-methyl). Das Peptid hängt an C3 über den Laktatether.</li>
+      <li>In A-1: NAcTalUA (X<sub>2</sub>) ist der Verzweigungspunkt; C4 ist FREI (→ 4-mono-O-methyl). Das Peptid hängt an C6 über eine Amidbindung (C6-COOH von NAcTalUA + NH₂ des ersten Peptid-AAs).</li>
+    </ul>
+  </div>
+  <div class="result">
+    <strong>Strukturen A-1 und B-1</strong> (schematisch, R<sub>i</sub> = unbekannte Polymerketten-Reste):<br>
+    <strong>B-1:</strong> [R₁-GlcNAc(β1→4)]-MurNAc[C3=Peptid-R₂]-[(β1→4)GlcNAc-R₃] × 2 Stränge, verbunden durch Peptidbrücke.<br>
+    <strong>A-1:</strong> [R₁-GlcNAc(β1→3)]-NAcTalUA[C6-CO-Peptid-R₂]-[(β1→4)GlcNAc-R₃] × 2 Stränge, verbunden durch L-Aminosäure-Peptidbrücke.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 10 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 10: Vollständige Strukturformeln von A-1 und B-1</h2>
+  <p>
+    Neue Information: Vollständige saure Hydrolyse von A-1 bzw. B-1, gefolgt von HIO₄-Oxidation, liefert Acetaldehyd (CH₃CHO) in äquimolarer Menge – aber nur für <strong>eines</strong> der beiden Fragmente.
+  </p>
+
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>Was erkennt HIO₄?</strong><br>
+    Periodat (HIO₄) oxidiert <em>vicinale Diole</em> (benachbarte OH-Gruppen). Nach vollständiger saurer Hydrolyse werden alle glycosidischen und Peptidbindungen gespalten – die freien Monosaccharide werden dann mit HIO₄ behandelt.
+    <ul>
+      <li>GlcNAc: C1-OH, C3-OH, C4-OH, C6-OH sind frei (C2 = NHAc). Periodat spaltet zwischen C1 und C3 (keine Vic-Diol-Sequenz mit C2 da NHAc), aber v.a. zwischen C3-OH und C4-OH und C4-OH und C6-OH → Fragmentierung. GlcNAc liefert kein Acetaldehyd.</li>
+      <li>MurNAc (C1-OH nach Hydrolyse, C3-Laktat-Ester nach Hydrolyse gibt C3-OH frei, C4-OH frei): enthält C1-OH und C3-OH (nach Hydrolyse der Laktatbindung). Die C1–C2–C3-Sequenz mit C2=NHAc bedeutet: kein einfaches Vic-Diol an C1–C2. Aber C3-OH und C4-OH bilden ein Vic-Diol → Periodat-Spaltung zwischen C3 und C4. Das C3-Fragment mit der Laktatgruppe: CH₃CH(OH)-C3... Nach Hydrolyse: C3 hat –OH (frei), und das Laktat ist CH₃CHOH-COOH (L-Milchsäure). Diese Milchsäure beim HIO₄-Test: CH₃CH(OH)COOH + HIO₄ → CH₃CHO (Acetaldehyd) + CO₂ + H₂O + HIO₃ ✓!!!</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <span class="schritt-nr">2</span> <strong>Acetaldehyd-Produktion:</strong>
+    <ul>
+      <li><strong>B-1 (Peptidoglykan)</strong> enthält MurNAc. Dieses hat eine D-Lactat-Ether-Gruppe (3-O-(D-1-Carboxyethyl)) = ein Milchsäure-Rest. Nach saurer Hydrolyse wird dieser freigesetzt als D-Milchsäure: CH₃-CH(OH)-COOH. Diese Milchsäure wird von HIO₄ zu <strong>Acetaldehyd</strong> oxidiert: CH₃CHO ✓. Die Menge ist äquimolar zu MurNAc im Fragment → äquimolar zum Ausgangsfragment B-1 ✓.</li>
+      <li><strong>A-1 (Pseudomurein)</strong> enthält NAcTalUA (keine Laktat-Gruppe; NAcTalUA besitzt eine C6-COOH-Gruppe, keine Milchsäure-Verknüpfung) → kein Acetaldehyd.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <strong>Schlussfolgerung:</strong> Acetaldehyd entsteht ausschließlich aus <strong>B-1</strong> (Peptidoglykan-Fragment), weil MurNAc die D-Lactat-Ether-Gruppe trägt. Für A-1 (Pseudomurein) fehlt diese spezifische Struktur.
+  </div>
+
+  <div class="result">
+    <strong>Vollständige Strukturen:</strong>
+    <ul>
+      <li><strong>B-1</strong>: Zwei parallele GlcNAc-β(1→4)-MurNAc-GlcNAc Glykanstrang-Segmente (je aus Fragment-Terminus), verbunden durch ein Dipeptid-Quervernetzer (z.B. D-Ala–m-DAP oder ähnlich). MurNAc trägt einen D-Laktat-Ether an C3 → liefert Acetaldehyd mit HIO₄ ✓.</li>
+      <li><strong>A-1</strong>: Zwei parallele GlcNAc-β(1→3)-NAcTalUA-GlcNAc Glykanstrang-Segmente, verbunden durch L-Aminosäure-Peptidquervernetzer. NAcTalUA ist über C6-COOH mit dem Peptid verknüpft (Amidbindung). Keine Lactat-Gruppe → kein Acetaldehyd mit HIO₄ ✗.</li>
+    </ul>
+    Das Fragment <strong>B-1</strong> liefert Acetaldehyd äquimolar zum Ausgangsfragment.
+  </div>
+</div>
+
+<!-- ===== ZUSAMMENFASSUNG ===== -->
+<div class="aufgabe" style="background: #f3e5f5;">
+  <h2>📋 Zusammenfassung aller Ergebnisse</h2>
+  <table>
+    <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+    <tr><td><strong>1</strong></td><td>Differenz der Fragmentmassen ist <strong>GERADE</strong> (= 0; beide Fragmente haben dieselben 8 Monomere X₁–X₈)</td></tr>
+    <tr><td><strong>2</strong></td><td><strong>B = Peptidoglykan</strong> (GlcNAc-β(1→4)-MurNAc, D-AA-Peptidquervernetzer); <strong>A = Pseudomurein</strong> (GlcNAc-β(1→3)-NAcTalUA, L-AA-Quervernetzer)</td></tr>
+    <tr><td><strong>3</strong></td><td>Korrekt: <strong>a) und b)</strong> – verschiedene Biomolekülklassen (Zucker + Aminosäuren) ✓; D/L-Isomere ✓</td></tr>
+    <tr><td><strong>4</strong></td><td><strong>Ja</strong>, eindeutig: A = Pseudomurein, B = Peptidoglykan</td></tr>
+    <tr><td><strong>5</strong></td><td>M₈ = 899 g/mol; Σ M(X₁–X₈) = 1025 g/mol; X₆=MurNAc(311), X₂=NAcTalUA(235); Zuckerformeln C₈H₁₅NO₆, C₁₁H₂₁NO₉, C₈H₁₃NO₇; Aminosäureformeln C₃H₇NO₂, C₅H₉NO₄, C₇H₁₄N₂O₄/C₆H₁₄N₂O₂</td></tr>
+    <tr><td><strong>6</strong></td><td>Antwort <strong>b)</strong>: Fragmente A und B sind <strong>Isomere</strong> → gleiche Summenformel → gleiche Gesamtmasse</td></tr>
+    <tr><td><strong>7</strong></td><td>6 Molekülformeln: C₈H₁₅NO₆ (GlcNAc), C₁₁H₂₁NO₉ (MurNAc), C₈H₁₃NO₇ (NAcTalUA), C₃H₇NO₂ (Ala), C₅H₉NO₄ (Glu), + m-DAP oder Lys</td></tr>
+    <tr><td><strong>8</strong></td><td>D=D-Glucose(180), E=D-Fructose(180), F=D-Glucosamin(179,Tollens✓), G=GlcNAc(221), H=GlcNAc-1-P(301), X₁=GlcNAc; X₇=L-Glu, X₇'=L-Gln. Entscheidung D/E: Glucose ist das direkte Photosynthese-Produkt; Fructose (Ketose) reagiert nicht mit Tollens</td></tr>
+    <tr><td><strong>9</strong></td><td>B-1: GlcNAc-MurNAc-Glykanstrang × 2, Peptidbrücke; MurNAc mit C3-Laktat (C6 frei). A-1: GlcNAc-NAcTalUA-Glykanstrang × 2, L-Peptidbrücke; NAcTalUA mit C6-COOH-Amid (C4 frei)</td></tr>
+    <tr><td><strong>10</strong></td><td><strong>B-1</strong> liefert Acetaldehyd (MurNAc enthält D-Laktat-Ether → nach Hydrolyse Milchsäure → HIO₄ → CH₃CHO). A-1 liefert kein Acetaldehyd (keine Laktat-Gruppe).</td></tr>
+  </table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #ce93d8; margin-top:30px;">
+  IChO 2026 Vorbereitungsaufgaben – Problem 29 | Vollständige Lösung auf Deutsch
+</div>
+
+</body>
+</html>

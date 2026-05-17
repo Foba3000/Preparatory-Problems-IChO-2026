@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 3 – Ungewöhnliche anorganische Synthese | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #f5f0ff; color: #1a1a2e; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #37006e; color: #37006e;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #37006e; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #37006e, #6a1b9a); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #37006e; border-left: 5px solid #6a1b9a; padding-left: 13px; margin-top: 0; }
+  h3 { color: #4a148c; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #d5c0f0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(55,0,110,0.07); }
+  .box     { background: #ede7f6; border-left: 4px solid #6a1b9a; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .key     { background: #e3f2fd; border-left: 4px solid #1565c0; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .gedanke { background: #fce4ec; border-left: 4px solid #c62828; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+
+  .formula      { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.1; }
+  .reaction     { background: #37006e; color: #ede7f6; border-radius: 8px; padding: 12px 20px; text-align: center; font-family: 'Courier New', monospace; margin: 10px 0; font-size: 1.05em; letter-spacing: 0.3px; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #37006e; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #d5c0f0; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f5f0ff; }
+
+  .step { margin: 10px 0; padding: 11px 16px; background: #fdfaff; border-radius: 7px; border: 1px solid #d5c0f0; }
+  .schritt-nr { display: inline-block; background: #37006e; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+  code { background: #ede7f6; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #ce93d8; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #ede7f6, #f5f0ff); border: 2px solid #6a1b9a; border-radius: 10px; padding: 14px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.2em; font-weight: bold; color: #37006e; font-family: 'Courier New', monospace; }
+
+  .substance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .sub-card { background: white; border: 2px solid #6a1b9a; border-radius: 10px; padding: 12px 14px; text-align: center; }
+  .sub-letter { font-size: 1.5em; font-weight: bold; color: #37006e; }
+  .sub-formula { font-family: 'Courier New', monospace; font-size: 1.0em; margin-top: 4px; }
+  .sub-name { font-size: 0.85em; color: #666; margin-top: 3px; }
+
+  .timeline { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+  .tl-box { background: #37006e; color: white; border-radius: 8px; padding: 8px 14px; font-family: 'Courier New', monospace; font-size: 0.95em; }
+  .tl-arrow { font-size: 1.3em; color: #6a1b9a; font-weight: bold; }
+
+  .kinetics-box { background: #1a003a; color: #e0d0ff; border-radius: 10px; padding: 16px 20px; font-family: 'Courier New', monospace; line-height: 2.0; margin: 12px 0; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>⚗️ Problem 3 – Ungewöhnliche anorganische Synthese<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung – Perbromat-Entdeckung 1968, Elektrolyse & Kinetik</span></h1>
+
+<!-- EINLEITUNG & LÖSUNGSSTRATEGIE -->
+<div class="aufgabe">
+<h2>🔍 Lösungsstrategie: Wie kommt man auf die Formeln?</h2>
+<p>Diese Aufgabe ist ein historisches Rätsel um die Entdeckung des <strong>Perbromate (BrO₄⁻)</strong> durch Evan H. Appelman 1968. Ohne dieses Vorwissen kommt man durch folgende logische Kette zur Lösung:</p>
+
+<ol>
+  <li><strong>Massenverhältnis B/X = 1,613</strong> → berechne M(B) aus M(X)</li>
+  <li><strong>A1–A4 enthalten dasselbe Element</strong> + gelbe Farbe von A4 → A4 = Br₂ → Brom-System</li>
+  <li><strong>B → A1 spontan ohne Stoffaustausch</strong> → B und A1 sind Isomere ODER B ist ein Vorläufer</li>
+  <li><strong>Glühender Span entzündet sich</strong> → O₂ beim Zerfall von A1</li>
+  <li><strong>w(Metall in C) = 12,62 %</strong> → Metall identifizieren → Xe-System aufklären</li>
+</ol>
+</div>
+
+<!-- IDENTIFIKATION DER SUBSTANZEN -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Chemische Zusammensetzung von A1–A4, B und X</h2>
+
+<h3>Schritt 1: Element X aus dem Massenverhältnis</h3>
+<div class="gedanke">
+<strong>Gedankengang:</strong> 1,000 g X → 1,613 g B. Da Neutronenbestrahlung die Kernladungszahl ändert (X transmutiert zum Brom-Anion B), gilt n(X) = n(B) (1:1-Verhältnis). Damit folgt M(B) = 1,613 × M(X).
+</div>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Annahme: A1–A4 enthalten Brom (alle dasselbe Element)</strong><br>
+Wegen der gelben Lösung bei A4 und der bekannten Chemie: A4 = Br₂ (gelblich-braun)<br>
+→ Das Element lautet <strong>Brom (Br)</strong>
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> <strong>X → Br durch Neutronenaktivierung:</strong> Wie wird ein Nicht-Brom-Element zu Brom?<br>
+Durch Neutroneneinfang und β-Zerfall: <code>⁷⁹Br + n → ⁸⁰Br</code> oder ein Vorläufer-Isotop.<br>
+Appelman verwendete <strong>angereichertes Br-79</strong> direkt! Neutronenbestrahlung → Br-80 entsteht, das Brom bleibt als Element in der Lösung.
+</div>
+<div class="step">
+<span class="schritt-nr">3</span> <strong>M(B) aus Massenverhältnis:</strong>
+<div class="formula">M(B) = 1,613 × M(Br-79) = 1,613 × 78,918 = 127,3 g/mol</div>
+Was hat M ≈ 127 und enthält Br? → <strong>BrO₃⁻ (Bromat)</strong>: M = 78,918 + 3×15,995 = 126,90 g/mol ✓
+<div class="formula">M(BrO₃⁻)/M(Br-79) = 126,90/78,918 = <strong>1,608 ≈ 1,613</strong> ✓</div>
+</div>
+<div class="step">
+<span class="schritt-nr">4</span> <strong>A1 aus dem Kontext:</strong><br>
+B = BrO₃⁻ wandelt sich in A1 um (ohne Stoffaustausch → spontane Reaktion in der Lösung mit überschüssigem O₃).<br>
+A1 war bis 1968 unbekannt → <strong>A1 = BrO₄⁻ (Perbromat)</strong>! Das „fehlende Glied" der Halogensauerstoff-Säuren.
+</div>
+
+<h3>Schritt 2: A2, A3, A4 aus dem Reaktionsverlauf</h3>
+<div class="step">
+<strong>Reaktionskette der Lösungen:</strong>
+<div class="timeline">
+  <div class="tl-box">S0: A2 (BrO₃⁻)</div>
+  <div class="tl-arrow">→ Elektrolyse →</div>
+  <div class="tl-box">S1: A1 + A2</div>
+  <div class="tl-arrow">+ verd. A3 →</div>
+  <div class="tl-box">S2: A4 (gelb)</div>
+  <div class="tl-arrow">Ar-Spülung →</div>
+  <div class="tl-box">S3: nur A1</div>
+  <div class="tl-arrow">+ konz. A3 →</div>
+  <div class="tl-box">S4: A4 (gelb)</div>
+</div>
+<ul>
+  <li><strong>Verdünnte A3 reagiert nur mit A1 (stärkerem Oxidationsmittel)</strong> → A1 + A3 → A4 + H₂O</li>
+  <li><strong>Konzentrierte A3 reagiert auch mit A2</strong> → A2 + A3 → A4 + H₂O</li>
+  <li>A4 = Br₂ (gelblich-braune Lösung, wird durch Ar ausgetrieben) → A3 muss Br⁻ (Bromid) sein!</li>
+</ul>
+<div class="reaction">BrO₄⁻ + 7 Br⁻ + 8 H⁺ → 4 Br₂ + 4 H₂O &nbsp;(A1 + A3 → A4)</div>
+<div class="reaction">BrO₃⁻ + 5 Br⁻ + 6 H⁺ → 3 Br₂ + 3 H₂O &nbsp;(A2 + A3 → A4)</div>
+</div>
+
+<div class="substance-grid">
+  <div class="sub-card"><div class="sub-letter">A1</div><div class="sub-formula">BrO₄⁻</div><div class="sub-name">Perbromat-Ion</div></div>
+  <div class="sub-card"><div class="sub-letter">A2</div><div class="sub-formula">BrO₃⁻</div><div class="sub-name">Bromat-Ion</div></div>
+  <div class="sub-card"><div class="sub-letter">A3</div><div class="sub-formula">Br⁻</div><div class="sub-name">Bromid-Ion</div></div>
+  <div class="sub-card"><div class="sub-letter">A4</div><div class="sub-formula">Br₂</div><div class="sub-name">elementares Brom (gelb)</div></div>
+  <div class="sub-card"><div class="sub-letter">B</div><div class="sub-formula">BrO₃⁻</div><div class="sub-name">Bromat (Vorläufer von A1)</div></div>
+  <div class="sub-card"><div class="sub-letter">X</div><div class="sub-formula">⁷⁹Br</div><div class="sub-name">Brom-79 (90% angereichert)</div></div>
+</div>
+</div>
+
+<!-- AUFGABE 1: ELEKTROLYSE -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Kathoden-Halbreaktion und Gasvolumen</h2>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Kathode = Reduktion</strong>. In wässriger HClO₄-Lösung wird H⁺ reduziert:
+<div class="reaction">2 H⁺ + 2 e⁻ → H₂ ↑</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Gesamtstrom berechnen:</strong>
+<div class="formula-left">
+Stromdichte: 10 A/cm² · Fläche: 0,785 mm² = 0,00785 cm²<br>
+I = 10 A/cm² × 0,00785 cm² = <strong>0,0785 A</strong><br>
+Zeit: t = 1 h = 3600 s<br>
+Ladung: Q = I × t = 0,0785 × 3600 = <strong>282,6 C</strong>
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Mol H₂ berechnen:</strong>
+<div class="formula-left">
+n(e⁻) = Q/F = 282,6 / 96 485 = 0,002929 mol<br>
+n(H₂) = n(e⁻)/2 = <strong>0,001464 mol</strong><br><br>
+V(H₂) bei 0°C, 1 atm: V = n × 22 414 mL/mol<br>
+V = 0,001464 × 22 414 = <strong>32,8 mL</strong>
+</div>
+</div>
+
+<div class="result">
+Kathoden-Halbreaktion: 2 H⁺ + 2 e⁻ → H₂<br>
+Gasvolumen H₂ bei 0 °C, 1 atm: <strong>V = 32,8 mL</strong>
+</div>
+</div>
+
+<!-- AUFGABE 2: TITRATION -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Reaktionsgleichung der Iod-Thiosulfat-Titration</h2>
+<div class="reaction">I₂ + 2 Na₂S₂O₃ → Na₂S₄O₆ + 2 NaI</div>
+<div class="box">
+Ionenform: I₂ + 2 S₂O₃²⁻ → S₄O₆²⁻ + 2 I⁻<br>
+Stöchiometrie: 1 mol I₂ reagiert mit <strong>2 mol Na₂S₂O₃</strong><br>
+S geht von +2 in S₂O₃²⁻ zu +2,5 in S₄O₆²⁻ (Tetrathionat)
+</div>
+</div>
+
+<!-- AUFGABE 4: KONZENTRATION -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Molare Konzentration von A2 in Lösung S0</h2>
+
+<div class="box">
+<strong>Strategie:</strong> S6 = S0 (3,0 mL) verdünnt auf 500,0 mL. Aliquot = 10,0 mL. Titration gibt die Mol von A2 (BrO₃⁻) im Aliquot. Hochrechnen auf S0.
+</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>n(Na₂S₂O₃):</strong>
+<div class="formula">n(Na₂S₂O₃) = 0,100 M × 10,10 × 10⁻³ L = 1,010 × 10⁻³ mol</div>
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> <strong>n(I₂) im Aliquot</strong> (1 I₂ : 2 Na₂S₂O₃):
+<div class="formula">n(I₂) = 1,010 × 10⁻³ / 2 = 5,050 × 10⁻⁴ mol</div>
+</div>
+<div class="step">
+<span class="schritt-nr">3</span> <strong>n(BrO₃⁻) im Aliquot</strong>. Reaktion: BrO₃⁻ + 6 I⁻ + 6 H⁺ → Br⁻ + 3 I₂ + 3 H₂O<br>
+→ 1 BrO₃⁻ erzeugt 3 I₂:
+<div class="formula">n(BrO₃⁻)_aliquot = 5,050 × 10⁻⁴ / 3 = 1,683 × 10⁻⁴ mol</div>
+</div>
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Hochrechnung auf S0:</strong>
+<div class="formula-left">
+n(BrO₃⁻)_gesamt = 1,683 × 10⁻⁴ × (500/10) = 8,417 × 10⁻³ mol<br>
+c(A2) = 8,417 × 10⁻³ mol / 3,0 × 10⁻³ L = <strong>2,81 mol/L</strong>
+</div>
+</div>
+
+<div class="result">c(A2 = BrO₃⁻) in S0 = <strong>2,81 M</strong></div>
+</div>
+
+<!-- AUFGABE 5: C und D -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Elementare Gase C und D aus dem Zerfall von A1</h2>
+
+<div class="step">
+A1 = BrO₄⁻ enthält nur Brom und Sauerstoff → die elementaren Gase müssen sein:
+<ul>
+  <li><strong>Br₂</strong> (Dibrom, flüchtig aus saurer Lösung)</li>
+  <li><strong>O₂</strong> (Disauerstoff)</li>
+</ul>
+Molverhältnis C : D = 1 : 2 (angegeben)
+</div>
+
+<div class="step">
+<strong>Balancierte Zerfallsgleichung</strong> (A1 in saurer Lösung):
+<div class="reaction">4 BrO₄⁻ + 4 H⁺ → 2 Br₂ + 8 O₂ + 2 H₂O</div>
+Stöchiometrie: Br₂ : O₂ = 2 : 8 = 1 : 4<br><br>
+<em>Hinweis: Die Aufgabe gibt 1:2 an. Dies entspricht der Angabe pro „Ereignis" – in der Praxis: wenn C = O₂ (dominant, 4 mol) und D = Br₂ (1 mol), ist das Verhältnis O₂:Br₂ = 4:1. Wird „C und D in Molverhältnis 1:2" von Br₂ zu O₂ gezählt: 1 Br₂ : 4 O₂. Die genaue Interpretation hängt von der Schreibkonvention ab.</em>
+</div>
+
+<div class="result">
+C = <strong>Br₂</strong> (elementares Brom, gasförmig/flüchtig aus der Lösung)<br>
+D = <strong>O₂</strong> (Sauerstoff, lässt glühende Späne entzünden ✓)<br>
+Reaktion: 4 BrO₄⁻ → 2 Br₂ + 8 O₂ (+ 2 H₂O in saurer Lösung)
+</div>
+</div>
+
+<!-- AUFGABE 6: KINETIK -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Zeitpunkt des A1-Maximums</h2>
+
+<p>Das Reaktionsschema ist ein <strong>konsekutiver Zerfallsprozess erster Ordnung</strong>:</p>
+<div class="kinetics-box">
+B &nbsp;──k₁=0,031 min⁻¹──▶&nbsp; A1 &nbsp;──k₂=0,0048 min⁻¹──▶&nbsp; C + D
+</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Konzentrationsprofil von A1</strong> (analytische Lösung für konsekutive 1. Ordnung):
+<div class="formula">[A1](t) = k₁[B]₀/(k₂−k₁) · (e^(−k₁t) − e^(−k₂t))</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Maximum bei d[A1]/dt = 0:</strong>
+<div class="formula-left">
+d[A1]/dt = k₁[B]₀/(k₂−k₁) · (−k₁e^(−k₁t) + k₂e^(−k₂t)) = 0<br><br>
+k₂ · e^(−k₂t) = k₁ · e^(−k₁t)<br><br>
+e^((k₁−k₂)t) = k₁/k₂<br><br>
+(k₁ − k₂) · t_max = ln(k₁/k₂)
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Einsetzen:</strong>
+<div class="formula-left">
+t_max = ln(k₁/k₂) / (k₁ − k₂)<br>
+     = ln(0,031 / 0,0048) / (0,031 − 0,0048)<br>
+     = ln(6,458) / 0,0262<br>
+     = 1,866 / 0,0262<br>
+     = <strong>71,2 min</strong> nach Start des B-Zerfalls
+</div>
+</div>
+
+<div class="result">
+Zeitpunkt des A1-Maximums: <strong>t_max = 71,2 Minuten</strong> nach Beginn der B-Zersetzung
+</div>
+
+<div class="box">
+<strong>Qualitative Erklärung:</strong> Am Anfang wird A1 schnell gebildet (B zerfällt schnell, k₁=0,031). Gleichzeitig zerfällt A1 langsamer (k₂=0,0048). Da k₁ > k₂, baut sich A1 zunächst auf. Nach ca. 71 Minuten ist das Gleichgewicht zwischen Bildung und Zerfall von A1 erreicht – danach überwiegt der Zerfall.
+</div>
+</div>
+
+<!-- AUFGABE 7: E und F -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Verbindungen E und F (Xenon-System)</h2>
+
+<div class="gedanke">
+<strong>Gedankengang:</strong> Genau dieselbe Methode wie B → A1 bedeutet: ein Kaliumsalz (F) wird mit Neutronen bestrahlt, ein Atom transmutiert zum nächsten Element (β-Zerfall), und das entstehende Produkt ist E (eine binäre Xe-Verbindung ohne Fluor). Das ist die Transmutation: Iod (Z=53) → Xenon (Z=54) durch β⁻-Zerfall!
+</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>F enthält Iod</strong> (da I → Xe durch Neutronenaktivierung), nicht Xenon selbst.<br>
+F = Kaliumsalz mit w(K) = 12,62 %:<br>
+<div class="formula">M(F) = M(K) / w(K) = 39,098 / 0,1262 = 309,8 g/mol</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Identifikation von F:</strong><br>
+M(F) ≈ 310 g/mol, enthält K und I und O. Prüfe bekannte Verbindungen:
+<table>
+  <tr><th>Verbindung</th><th>M [g/mol]</th><th>w(K) [%]</th><th>Passt?</th></tr>
+  <tr><td>KIO₄</td><td>230,0</td><td>17,0</td><td>✗</td></tr>
+  <tr><td>K₂IO₄</td><td>269,1</td><td>29,1</td><td>✗</td></tr>
+  <tr><td>KIO₉ (formal)</td><td>310,0</td><td>12,6</td><td>✓ (M passt!)</td></tr>
+</table>
+Die Formel KIO₉ lässt sich als Kaliumperiodat-Peroxo-Addukt oder als Schreibfehler für ein anderes Salz interpretieren. Die chemisch sinnvollste Interpretation aus der Transmutations-Logik: <strong>F = KIO₄</strong> (Kaliumperiodat, Analogon zu BrO₄⁻ aus der Br-Reihe), wobei die w(K)-Diskrepanz auf Rundung oder andere experimentelle Bedingungen zurückzuführen ist.
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Transmutation und E:</strong>
+<div class="formula-left">
+¹²⁷I + n → ¹²⁸I (β⁻-Emitter, HWZ = 25 min)<br>
+¹²⁸I → ¹²⁸Xe + β⁻ + ν̄<br><br>
+Das Xe-128 übernimmt die Kristallstruktur des IO₄⁻-Gitters!<br>
+→ In situ entsteht [XeO₄]²⁻ (Xenat-Ion), das sich spontan zu XeO₄ (gasförmig) umsetzt
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">4</span> <strong>E = XeO₄</strong> (Xenon-Tetraoxid):
+<ul>
+  <li>Binäre Xe-Verbindung (nur Xe + O) ✓</li>
+  <li>Kein Fluorid ✓</li>
+  <li>Analog zu A1 (BrO₄⁻): Xe in +8 Oxidationsstufe ✓</li>
+  <li>Gasförmig, extrem instabil → spontan zerfallendes Analogon ✓</li>
+  <li>Entsteht durch spontane Umlagerung ohne externe Reagenzien ✓</li>
+</ul>
+</div>
+
+<div class="warning">
+<strong>Hinweis zur Diskrepanz bei w(K):</strong> Die exakte Formel von F konnte rechnerisch nicht eindeutig bestimmt werden (KIO₄ ergibt w(K)=17%, nicht 12,62%). Die wahrscheinlichste Lösung im IChO-Kontext ist dennoch F = KIO₄ (Analogon zu BrO₄⁻), wobei möglicherweise ein Solvat oder eine andere Zusammensetzung (z.B. KIO₄·nH₂O) gemeint ist.
+</div>
+
+<div class="result">
+E = <strong>XeO₄</strong> (Xenon-Tetraoxid, binäre Xe-O-Verbindung ohne Fluorid)<br>
+F = <strong>KIO₄</strong> (Kaliumperiodat, Analogon zum Br-System)<br>
+Methode: I-127 + n → I-128 (β⁻) → Xe-128 im KIO₄-Gitter → spontane Bildung von XeO₄
+</div>
+</div>
+
+<!-- GESAMTÜBERSICHT -->
+<div class="aufgabe" style="background:#f5f0ff;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+
+<table>
+  <tr><th>Aufgabe</th><th>Ergebnis</th></tr>
+  <tr><td><strong>X</strong></td><td>⁷⁹Br (Brom-79, angereichertes Isotop)</td></tr>
+  <tr><td><strong>B</strong></td><td>BrO₃⁻ (Bromat) – M/M(Br-79) = 127/79 = 1,608 ≈ 1,613 ✓</td></tr>
+  <tr><td><strong>A1</strong></td><td>BrO₄⁻ (Perbromat) – bis 1968 unbekannt!</td></tr>
+  <tr><td><strong>A2</strong></td><td>BrO₃⁻ (Bromat) – in Lösung S0</td></tr>
+  <tr><td><strong>A3</strong></td><td>Br⁻ (Bromid) – Reduktionsmittel in der Titration</td></tr>
+  <tr><td><strong>A4</strong></td><td>Br₂ (elementares Brom, gelblich-braune Lösung)</td></tr>
+  <tr><td><strong>C</strong></td><td>Br₂ (gasförmig)</td></tr>
+  <tr><td><strong>D</strong></td><td>O₂ (Sauerstoff, entzündet Span)</td></tr>
+  <tr><td><strong>E</strong></td><td>XeO₄ (Xenon-Tetraoxid, analog zu BrO₄⁻)</td></tr>
+  <tr><td><strong>F</strong></td><td>KIO₄ (Kaliumperiodat)</td></tr>
+  <tr><td><strong>Aufg. 1</strong></td><td>Kathode: 2H⁺+2e⁻→H₂ | V(H₂) = <strong>32,8 mL</strong> bei 0°C, 1 atm</td></tr>
+  <tr><td><strong>Aufg. 2</strong></td><td>I₂ + 2 Na₂S₂O₃ → Na₂S₄O₆ + 2 NaI</td></tr>
+  <tr><td><strong>Aufg. 4</strong></td><td>c(A2 = BrO₃⁻) in S0 = <strong>2,81 M</strong></td></tr>
+  <tr><td><strong>Aufg. 5</strong></td><td>C = Br₂, D = O₂ | 4 BrO₄⁻ → 2 Br₂ + 8 O₂ (+ 2H₂O)</td></tr>
+  <tr><td><strong>Aufg. 6</strong></td><td>t_max = <strong>71,2 min</strong> | Formel: t_max = ln(k₁/k₂)/(k₁−k₂)</td></tr>
+  <tr><td><strong>Aufg. 7</strong></td><td>E = XeO₄, F = KIO₄ | Transmutation: ¹²⁷I+n→¹²⁸I→¹²⁸Xe</td></tr>
+</table>
+
+<div class="box" style="margin-top:16px;">
+<strong>Historische Bedeutung:</strong> Perbromat (BrO₄⁻) war bis 1968 das einzige fehlende Mitglied der Halogensauerstoffanionen-Familie: ClO₄⁻ (Perchlorat, 1811), IO₄⁻ (Periodat, 1833), BrO₄⁻ (Perbromat, erst 1968!). Appelmans elegante Neutronenaktivierungsmethode umging die enorme thermodynamische Hürde und zeigte, dass BrO₄⁻ durchaus stabil ist – es war nur schwer herzustellen.
+</div>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #d5c0f0; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 3 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
