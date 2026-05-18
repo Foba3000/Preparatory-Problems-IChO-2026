@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 21 – Katalysator C | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #fff8f0; color: #1a1a1a; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #7a3b00; color: #7a3b00;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #7a3b00; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #7a3b00, #b35a00); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #7a3b00; border-left: 5px solid #b35a00; padding-left: 13px; margin-top: 0; }
+  h3 { color: #5a2d00; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #f0d9c0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(122,59,0,0.07); }
+  .box     { background: #fff3e0; border-left: 4px solid #b35a00; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .key     { background: #e3f2fd; border-left: 4px solid #1565c0; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+
+  .formula      { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.1; }
+  .reaction { background: #3a1a00; color: #fff3e0; border-radius: 8px; padding: 12px 20px; text-align: center; font-family: 'Courier New', monospace; margin: 10px 0; font-size: 1.05em; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #7a3b00; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #f0d9c0; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #fff8f4; }
+
+  .step { margin: 10px 0; padding: 11px 16px; background: #fffaf5; border-radius: 7px; border: 1px solid #f0d9c0; }
+  .schritt-nr { display: inline-block; background: #7a3b00; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #fff3e0; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #f0d9c0; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #fff3e0, #fff8f4); border: 2px solid #b35a00; border-radius: 10px; padding: 14px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.2em; font-weight: bold; color: #7a3b00; font-family: 'Courier New', monospace; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .mol-card { background: white; border: 2px solid #b35a00; border-radius: 10px; padding: 14px 18px; }
+  .mol-title { font-weight: bold; color: #7a3b00; font-size: 1.05em; border-bottom: 1px solid #f0d9c0; padding-bottom: 6px; margin-bottom: 10px; }
+
+  .struct { font-family: 'Courier New', monospace; background: #1a0d00; color: #ffe0b2; border-radius: 8px; padding: 14px 20px; margin: 12px 0; line-height: 1.9; font-size: 0.95em; }
+
+  .ms-peak { display: inline-block; background: #7a3b00; color: white; border-radius: 20px; padding: 3px 12px; font-weight: bold; margin: 3px; font-family: 'Courier New', monospace; }
+
+  .verify { color: #2e7d32; font-weight: bold; }
+  .no { color: #c62828; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🔴 Problem 21 – Katalysator C: Wilkinson-Katalysator<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung – RhCl(PPh₃)₃, Massenspektrometrie & [2+2+2]-Cycloaddition</span></h1>
+
+<!-- EINLEITUNG -->
+<div class="aufgabe">
+<h2>📚 Grundwissen: Wilkinson-Katalysator</h2>
+<div class="box">
+<strong>RhCl(PPh₃)₃</strong> (Wilkinson-Katalysator, C) ist einer der wichtigsten homogenen Katalysatoren in der organischen Chemie. Er katalysiert die <strong>Hydrierung von Alkenen</strong> unter milden Bedingungen (Raumtemperatur, 1 atm H₂). Der Mechanismus verläuft über oxidative Addition von H₂ an Rh(I) → Rh(III), Koordination des Alkens, Insertion und reduktive Eliminierung.
+</div>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Identifikation von A, B, C und M</h2>
+
+<h3>Schritt 1: Ligand B identifizieren</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Bedingungen für B:</strong> Enthält nur C, H, P · w(P) = 11,81 % · dreizählige Symmetrieachse (C₃)
+</div>
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Dreizählige Symmetrie + P + C + H:</strong><br>
+→ <strong>PPh₃ (Triphenylphosphin)</strong>! Die 3 Phenylringe erzeugen die C₃-Achse.
+<div class="formula-left">
+M(PPh₃) = M(P) + 3 × M(C₆H₅) = 30,974 + 3 × (72,066 + 5,040)<br>
+= 30,974 + 3 × 77,106 = 30,974 + 231,318 = <strong>262,29 g/mol</strong><br><br>
+w(P) = 30,974 / 262,29 = <strong>11,81% ✓</strong>
+</div>
+</div>
+<div class="result">B = PPh₃ (Triphenylphosphin): C₁₈H₁₅P, M = 262,29 g/mol</div>
+
+<h3>Schritt 2: Metall M und Verbindung A</h3>
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Bekannter PPh₃-Katalysator für Alken-Hydrierung:</strong> Wilkinson-Katalysator RhCl(PPh₃)₃!<br>
+→ <strong>M = Rh (Rhodium)</strong>, 5. Periode ✓ (Z=45, M=102,906 g/mol)<br><br>
+A ist das Rh-Trihydrat-Salz: <strong>RhCl₃·3H₂O</strong>
+<div class="formula">w(Rh in RhCl₃·3H₂O) = 102,906 / (102,906 + 3×35,453 + 3×18,015) = 102,906 / 263,31 = <strong>39,08% ≈ 39,09% ✓</strong></div>
+</div>
+
+<h3>Schritt 3: Stöchiometrie bestätigen</h3>
+<div class="step">
+<span class="schritt-nr">4</span> <strong>Aus den eingesetzten Mengen:</strong>
+<div class="formula-left">
+n(A) = 2,00 g / 263,31 g·mol⁻¹ = 0,00760 mol<br>
+n(B) = 7,96 g / 262,29 g·mol⁻¹ = 0,03035 mol<br>
+n(B)/n(A) = 0,03035/0,00760 = <strong>4,00</strong> → 4 mol PPh₃ pro mol RhCl₃!
+</div>
+</div>
+<div class="step">
+<span class="schritt-nr">5</span> <strong>Ausbeute-Überprüfung:</strong>
+<div class="formula-left">
+M(C = RhCl(PPh₃)₃) = 102,906 + 35,453 + 3×262,29 = <strong>925,24 g/mol</strong><br>
+m(C) theoretisch = 0,00760 mol × 925,24 g/mol = 7,03 g<br>
+m(C) bei 88% = 7,03 × 0,88 = <strong>6,18 g ✓</strong> (gemessen!)
+</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">A = RhCl₃·3H₂O &nbsp;|&nbsp; B = PPh₃ &nbsp;|&nbsp; C = RhCl(PPh₃)₃ &nbsp;|&nbsp; M = Rh</div>
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Synthesegleichung von C</h2>
+
+<div class="step">
+<strong>Reaktion:</strong> RhCl₃·3H₂O + 4 PPh₃ → RhCl(PPh₃)₃ + OPPh₃ + 2 HCl + 3 H₂O
+</div>
+
+<div class="box">
+<strong>Mechanismus erklärt:</strong><br>
+• Rh(III) wird zu Rh(I) <em>reduziert</em> (Oxidationszustandsänderung +3 → +1)<br>
+• <em>Ein</em> PPh₃ fungiert als Reduktionsmittel und wird dabei zu OPPh₃ (Triphenylphosphinoxid) <em>oxidiert</em><br>
+• Die restlichen 3 PPh₃ koordinieren als Liganden am Rh(I)<br>
+• 2 HCl und 3 H₂O werden als Nebenprodukte freigesetzt
+</div>
+
+<div class="reaction">RhCl₃·3H₂O + 4 PPh₃ → RhCl(PPh₃)₃ + OPPh₃ + 2 HCl + 3 H₂O</div>
+
+<div class="result">
+Koeffizienten: 1, 4, 1, 1, 2, 3 → <strong>alle &lt; 5 ✓</strong><br>
+Bilanz: Rh(III)→Rh(I) (Reduktion) · 1 PPh₃→OPPh₃ (Oxidation) · Redoxreaktion intern!
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Kationen bei m/z 41, 91 und 119</h2>
+
+<div class="box">
+<strong>Kontext:</strong> Das Produkt entsteht durch Hydrierung (H₂/Cat. C) des Alken-Edukts R–CH=CH₂. Das Produkt (R–CH₂–CH₃) hat maximal 1 Symmetrieebene und zwei verschiedene aromatische Ringe (zwei der drei intensiven Peaks = aromatische Fragmente).
+</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <span class="ms-peak">m/z = 41</span> <strong>C₃H₅⁺ (Allyl-Kation)</strong><br>
+CH₂=CH–CH₂⁺ (Allyl-Kation) oder C₃H₅⁺ (Cyclopropyl-Kation)<br>
+3×12 + 5×1 = 36 + 5 = 41 ✓<br>
+<em>Aliphatisches Fragment – KEIN aromatischer Ring</em>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <span class="ms-peak">m/z = 91</span> <strong>C₇H₇⁺ (Tropylium-Kation)</strong><br>
+Das Tropylium-Kation ist das cyclische Heptatrienyl-Kation (7-gliedriger, aromatischer Ring).<br>
+Es entsteht bevorzugt aus Benzyl-Gruppen (PhCH₂⁻) durch Umlagerung:<br>
+<code>Ph–CH₂⁺ → [C₇H₇]⁺ (Tropylium)</code><br>
+7×12 + 7×1 = 84 + 7 = 91 ✓<br>
+<em>Aromatisches Fragment: Ring 1 (Benzol/Tropylium)</em>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <span class="ms-peak">m/z = 119</span> <strong>C₉H₁₁⁺</strong><br>
+9×12 + 11×1 = 108 + 11 = 119 ✓<br>
+Mögliche Strukturen: Phenylpropyl-Kation (C₆H₅–CH₂–CH₂–CH₂⁺) oder Dimethylbenzyl-Kation (4-Me-C₆H₄–CH₂–CH₂⁺).<br>
+<em>Aromatisches Fragment: Ring 2 (substituiertes Benzol)</em>
+</div>
+
+<div class="result">
+m/z 41 = C₃H₅⁺ (Allyl, aliphatisch) &nbsp;|&nbsp; m/z 91 = C₇H₇⁺ (Tropylium, aromatisch, Ring 1) &nbsp;|&nbsp; m/z 119 = C₉H₁₁⁺ (Phenylpropyl, aromatisch, Ring 2)
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Struktur des Produkts</h2>
+
+<div class="step">
+<strong>Ableitungslogik aus den MS-Daten:</strong>
+<ul>
+  <li>m/z 91 (Tropylium C₇H₇⁺) → eine <strong>Benzyl-Gruppe</strong> (Ph–CH₂–) im Produkt</li>
+  <li>m/z 119 (C₉H₁₁⁺) → eine <strong>Phenylpropyl-Gruppe</strong> (Ph–CH₂–CH₂–) oder substituiertes Benzyl</li>
+  <li>m/z 41 (C₃H₅⁺) → eine <strong>Allyl/Propyl-Kette</strong></li>
+  <li>Max. 1 Symmetrieebene → asymmetrisches Zentrum oder spezifische Geometrie</li>
+</ul>
+</div>
+
+<div class="step">
+<strong>Plausibelstes Produkt:</strong><br>
+Das Edukt R–CH=CH₂ hat R = Ph–CH₂– (Benzyl) und eine weitere Aryl-Gruppe.<br>
+Nach Hydrierung: <strong>Ph–CH₂–CH₂–CH₂–C₆H₄–CH₃</strong> (1-Phenyl-3-(4-methylphenyl)propan)
+<div class="struct">
+Produkt: Ph–CH₂–CH₂–CH₂–Tol (Tol = 4-Methylphenyl)<br><br>
+&nbsp;&nbsp;&nbsp;C₆H₅–CH₂–CH₂–CH₂–C₆H₄–CH₃<br><br>
+Fragmentierung:<br>
+→ C₆H₅–CH₂⁺ = Benzyl → Tropylium C₇H₇⁺ (m/z 91) ✓<br>
+→ CH₃–C₆H₄–CH₂–CH₂⁺ = C₉H₁₁⁺ (m/z 119) ✓<br>
+→ CH₂=CH–CH₂⁺ = Allyl C₃H₅⁺ (m/z 41) ✓<br>
+→ Symmetrieebene: σ durch die CH₂–CH₂–CH₂-Kette (1 Ebene max.) ✓
+</div>
+</div>
+
+<div class="result">
+Produkt = <strong>1-Phenyl-3-(4-methylphenyl)propan</strong> (Ph–CH₂–CH₂–CH₂–C₆H₄–CH₃)<br>
+Formel: C₁₆H₁₈ · M = 210 g/mol · max. 1 Symmetrieebene ✓
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Intensitätsverhältnis [M]⁺:[M+1]⁺</h2>
+
+<h3>Herleitung aus Isotopenverteilung</h3>
+<div class="step">
+<span class="schritt-nr">1</span> <strong>¹³C-Häufigkeit aus der Atommasse berechnen:</strong><br>
+¹²C hat exakt M = 12,000 u. Die relative Atommasse 12,011 kommt vom ¹³C-Anteil:
+<div class="formula">12,000 × (1−p) + 13,003 × p = 12,011 → p(¹³C) = 0,011 / 1,003 ≈ <strong>1,10 %</strong></div>
+(vereinfacht: Δ = 12,011 − 12,000 = 0,011 → p ≈ 1,10%)
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Wahrscheinlichkeiten für ein Molekül mit n Kohlenstoffatomen:</strong>
+<div class="formula-left">
+[M]⁺ (alle ¹²C): P = (0,9890)ⁿ<br>
+[M+1]⁺ (genau ein ¹³C): P = n × 0,0110 × (0,9890)ⁿ⁻¹<br><br>
+Verhältnis: [M+1]⁺/[M]⁺ = n × 0,0110/0,9890 = n × 0,01112
+</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Für das Produkt C₁₆H₁₈ (n = 16 Kohlenstoffatome):</strong>
+<div class="formula">[M+1]⁺/[M]⁺ = 16 × 0,0110/0,9890 = 16 × 0,01112 = <strong>0,1779</strong></div>
+<div class="formula">[M]⁺ : [M+1]⁺ = 100 : 17,8</div>
+</div>
+
+<table>
+  <tr><th>Anzahl C-Atome (n)</th><th>[M+1]⁺/[M]⁺</th><th>[M]⁺:[M+1]⁺</th></tr>
+  <tr><td>9 (C₉H₁₂, n-Propylbenzol)</td><td>0,1001</td><td>100 : 10,0</td></tr>
+  <tr><td>12</td><td>0,1334</td><td>100 : 13,3</td></tr>
+  <tr><td>14</td><td>0,1557</td><td>100 : 15,6</td></tr>
+  <tr style="background:#fff3e0; font-weight:bold;"><td>16 (C₁₆H₁₈)</td><td>0,1779</td><td>100 : 17,8</td></tr>
+</table>
+
+<div class="highlight-box">
+<div class="big-formula">[M]⁺ : [M+1]⁺ = 100 : 17,8 &nbsp;&nbsp; (für C₁₆H₁₈)</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">Allgemeine Formel: [M+1]⁺/[M]⁺ = n × p(¹³C) / p(¹²C) = n × 1,107/100</div>
+</div>
+</div>
+
+<!-- AUFGABE 6 -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Nebenprodukt D</h2>
+
+<div class="step">
+Das Schema zeigt: R–CH=CH₂ → D (ohne H₂, nur mit Cat. C).<br>
+Das bedeutet: Wilkinson-Katalysator katalysiert eine <strong>Isomerisierung</strong> (nicht Hydrierung)!<br><br>
+<strong>Alken-Isomerisierung durch Rh-Katalysator:</strong><br>
+R–CH=CH₂ (terminales Alken) → R–CH₂–CH=... (internes Alken)<br>
+Der Rh-Komplex insertiert in die C–H-Bindung und verschiebt die Doppelbindung.
+</div>
+
+<div class="step">
+Wenn das Edukt = Allyl-Aryl-Verbindung (z.B. Ph–CH₂–CH=CH₂):
+<div class="struct">
+Ph–CH₂–CH=CH₂ &nbsp;→(Cat. C, keine H₂)→&nbsp; Ph–CH=CH–CH₃<br><br>
+D = Ph–CH=CH–CH₃ (1-Phenylpropen, internes Alken)<br>
+= Allylbenzol → β-Methylstyrol (Isomerisierung der Doppelbindung)
+</div>
+</div>
+
+<div class="result">
+D = internes Alken (isomerisiertes Edukt), z.B. Ph–CH=CH–CH₃<br>
+Mechanismus: Rh-katalysierte 1,3-H-Verschiebung (Alken-Isomerisierung)
+</div>
+</div>
+
+<!-- AUFGABE 7 -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Zersetzung von C – Verbindung F und Oxidationsreaktion</h2>
+
+<div class="step">
+Nach mehreren katalytischen Zyklen zerfällt C in <strong>M (= Rh, metallisches Rhodium)</strong> und <strong>F</strong>.<br>
+F entsteht durch Oxidation von B (= PPh₃) mit Luftsauerstoff O₂.
+</div>
+
+<div class="step">
+<strong>Reaktion:</strong><br>
+PPh₃ reagiert sehr leicht mit O₂ (Luftsauerstoff):
+<div class="reaction">2 PPh₃ + O₂ → 2 OPPh₃</div>
+oder: &nbsp; PPh₃ + ½ O₂ → OPPh₃
+</div>
+
+<div class="step">
+<strong>Produkt F = OPPh₃ (Triphenylphosphinoxid)</strong><br>
+Struktur: Ph₃P=O (P in +5 Oxidationsstufe, O doppelt gebunden)<br>
+M(OPPh₃) = 262,29 + 16,00 = <strong>278,29 g/mol</strong><br><br>
+OPPh₃ ist ein stabiles Nebenprodukt und ein schlechter Ligand (koordiniert kaum an Rh)<br>
+→ der Katalysator verliert seinen Liganden und zerfällt!
+</div>
+
+<div class="result">
+F = <strong>OPPh₃ (Triphenylphosphinoxid)</strong><br>
+Oxidationsreaktion: 2 PPh₃ + O₂ → 2 OPPh₃<br>
+Gesamtzerfall: RhCl(PPh₃)₃ → Rh(0) + RhClₓ + OPPh₃ + ... (katalytische Desaktivierung)
+</div>
+</div>
+
+<!-- AUFGABE 8 -->
+<div class="aufgabe">
+<h2>Aufgabe 8: [2+2+2]-Cycloaddition in der Heilonine-Synthese – Strukturen H, I, J</h2>
+
+<div class="box">
+<strong>[2+2+2]-Cycloaddition:</strong> Drei π-Systeme (2+2+2 Elektronen) reagieren zu einem 6-gliedrigen Ring. Bei 2 Alkinen + 1 Alkin/Alken entsteht ein Benzol- oder Cyclohexadien-Ring. Der Wilkinson-Katalysator C aktiviert die Alkine durch Koordination an Rh.
+</div>
+
+<h3>Verbindung H</h3>
+<div class="step">
+<strong>Edukte:</strong> (a) Lactam mit Diyin-Seitenkette (NH-Lactam + 2 C≡C) + (b) Bromid mit Diyin-Kette + Acetal<br>
+<strong>Reagenz:</strong> NaH (starke Base, deprotoniert NH des Lactams → N⁻ Anion)<br>
+<strong>Reaktion:</strong> N-Alkylierung: Das Lactam-N⁻ greift den Alkylbromid an (SN2) → N–C-Bindung wird geknüpft<br><br>
+<strong>H</strong> = N-alkyliertes Lactam-Diyin: Das Lactam-Fragment mit dem Brombaustein verbunden.<br>
+Enthält: Lactam-Ring (C=O, NH→N-R), zwei endständige Alkin-Gruppen, Acetal-Schutzgruppe (1,3-Dioxolan).
+</div>
+
+<h3>Verbindung I</h3>
+<div class="step">
+<strong>Reagenz:</strong> Cat. C (Wilkinson-Katalysator, [2+2+2]-Cycloaddition)<br>
+<strong>Reaktion:</strong> Die <strong>zwei Alkin-Gruppen</strong> in H reagieren intramolekular mit dem <strong>dritten π-System</strong> (weitere Alkin-Einheit oder Alken) in einer [2+2+2]-Cycloaddition:
+<ul>
+  <li>Rh(I) koordiniert an die zwei Alkine → Rhodacyclopentadien-Intermediat</li>
+  <li>Das dritte π-System insertiert → 6-gliedriger Ring entsteht</li>
+  <li>Nach reduktiver Eliminierung: <strong>Benzolring</strong> entsteht!</li>
+</ul>
+<strong>I</strong> = Polycyclisches Produkt mit neuem Benzolring (aus den zwei Alkin-Einheiten). Das Steroidal-Grundgerüst (aus dem Diyin-Baustein) ist jetzt mit dem Lactam-Fragment über den neuen aromatischen Ring verbunden. Das Acetal bleibt intakt.
+</div>
+
+<h3>Verbindung J</h3>
+<div class="step">
+<strong>Schritt:</strong> I + (1) LiTMP (2) MeI<br>
+<strong>Reaktion:</strong>
+<ol>
+  <li>LiTMP (Lithium-2,2,6,6-tetramethylpiperidid): sehr starke, sterisch gehinderte Base. Deprotoniert α zur Carbonyl-Gruppe des Lactams → Enolat-Anion</li>
+  <li>MeI (Methyliodid): Alkyliert das Enolat → Methyl-Gruppe wird α zum Carbonyl eingeführt</li>
+</ol>
+<strong>J</strong> = α-methyliertes Derivat von I. Die Methyl-Gruppe ist an der α-Position zum Lactam-C=O eingeführt worden. Die Acetal-Schutzgruppe bleibt noch erhalten.
+</div>
+
+<div class="step">
+<strong>Folgeschritte (Heilonine):</strong><br>
+J + p-TsOH, H₂O, Aceton → Acetal-Hydrolyse → Keton freigesetzt → Lactamöffnung und weitere Schritte → Heilonine<br><br>
+Heilonine ist ein pentacyclischer Naturstoff mit Steroidal-Grundgerüst und einem zentralen aromatischen Ring (aus der [2+2+2]-Cycloaddition), Lactam-Ring und einem Cyclohexandiol-Abschnitt.
+</div>
+
+<div class="result">
+H = N-alkyliertes Lactam-Diyin (NaH-Kupplung der beiden Bausteine)<br>
+I = Polycyclisches Aromat-enthaltentes Produkt (nach [2+2+2]-intramolekularer Cycloaddition → neuer Benzolring)<br>
+J = α-methyliertes Derivat von I (LiTMP-Deprotonierung + MeI-Alkylierung am Lactam)
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background:#fff8f0;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+<table>
+  <tr><th>Aufgabe</th><th>Ergebnis</th></tr>
+  <tr><td><strong>A</strong></td><td>RhCl₃·3H₂O (Rhodium(III)-chlorid-Trihydrat), M = 263,31 g/mol, w(Rh) = 39,08% ✓</td></tr>
+  <tr><td><strong>B</strong></td><td>PPh₃ (Triphenylphosphin), M = 262,29 g/mol, w(P) = 11,81% ✓, C₃-Achse ✓</td></tr>
+  <tr><td><strong>C</strong></td><td>RhCl(PPh₃)₃ (Wilkinson-Katalysator), M = 925,24 g/mol, dunkelrot ✓</td></tr>
+  <tr><td><strong>M</strong></td><td>Rh (Rhodium), 5. Periode, Z=45</td></tr>
+  <tr><td><strong>2 (Gleichung)</strong></td><td>RhCl₃·3H₂O + 4 PPh₃ → RhCl(PPh₃)₃ + OPPh₃ + 2 HCl + 3 H₂O</td></tr>
+  <tr><td><strong>3 (Peaks)</strong></td><td>m/z 41 = C₃H₅⁺ (Allyl) · m/z 91 = C₇H₇⁺ (Tropylium) · m/z 119 = C₉H₁₁⁺ (Phenylpropyl)</td></tr>
+  <tr><td><strong>4 (Produkt)</strong></td><td>Ph–CH₂–CH₂–CH₂–C₆H₄–CH₃ (1-Phenyl-3-tolylpropan, C₁₆H₁₈)</td></tr>
+  <tr><td><strong>5 (Isotopen)</strong></td><td>[M]⁺:[M+1]⁺ = 100:17,8 (für C₁₆H₁₈); allg.: [M+1]⁺/[M]⁺ = n×1,107%</td></tr>
+  <tr><td><strong>6 (D)</strong></td><td>D = internes Alken (Isomerisierungsprodukt, z.B. Ph–CH=CH–CH₃)</td></tr>
+  <tr><td><strong>7 (F)</strong></td><td>F = OPPh₃ (Triphenylphosphinoxid); 2 PPh₃ + O₂ → 2 OPPh₃</td></tr>
+  <tr><td><strong>8 (H-J)</strong></td><td>H = N-alkyliertes Diyin-Lactam · I = Polycyclischer Aromat ([2+2+2]) · J = α-Methyl-I</td></tr>
+</table>
+
+<div class="box" style="margin-top:16px;">
+<strong>Historische Bedeutung des Wilkinson-Katalysators:</strong><br>
+RhCl(PPh₃)₃ wurde 1964 von Geoffrey Wilkinson entwickelt (Nobelpreis 1973 zusammen mit Ernst Otto Fischer für metallorganische Chemie). Es war der erste praktische homogene Katalysator für die selektive Alken-Hydrierung unter milden Bedingungen (1 atm H₂, Raumtemperatur) und revolutionierte die asymmetrische Synthese.
+</div>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #f0d9c0; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 21 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>

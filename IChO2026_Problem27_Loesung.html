@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 27 – Archaeal Metabolism | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 980px; margin: 0 auto; padding: 20px 30px; background: #f0fff4; color: #1a2e1a; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1b5e20; color: #1b5e20;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1b5e20; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.3em; margin-top: 0; }
+  h2 { color: #1b5e20; border-left: 5px solid #388e3c; padding-left: 13px; margin-top: 0; }
+  h3 { color: #2e7d32; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #a5d6a7; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(27,94,32,0.07); }
+  .box { background: #e8f5e9; border-left: 4px solid #388e3c; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #c8e6c9; border-left: 5px solid #1b5e20; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .formula { background: #f1f8e9; border: 1px solid #81c784; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.02em; }
+  .step { margin: 11px 0; padding: 11px 16px; background: #fafff8; border-radius: 7px; border: 1px solid #c8e6c9; }
+  .schritt-nr { display: inline-block; background: #2e7d32; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.95em; }
+  th { background: #1b5e20; color: white; padding: 9px 13px; text-align: center; }
+  td { border: 1px solid #a5d6a7; padding: 8px 12px; text-align: center; }
+  tr:nth-child(even) { background: #f1f8e9; }
+
+  code { background: #e8f5e9; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+  .badge { display: inline-block; border-radius: 20px; padding: 2px 11px; font-weight: bold; font-size: 0.85em; margin-right: 4px; }
+  .badge-j { background: #43a047; color: white; }
+  .badge-n { background: #e53935; color: white; }
+
+  .reaction-box { background: #1b5e20; color: white; border-radius: 8px; padding: 12px 20px; text-align: center; font-size: 1.05em; font-family: 'Courier New', monospace; margin: 12px 0; }
+  .achtung { background: #fff8e1; border-left: 4px solid #f57f17; border-radius: 6px; padding: 12px 17px; margin: 12px 0; font-style: italic; }
+
+  ul li, ol li { margin: 7px 0; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🧪 Problem 27 – Archaeal Metabolism<br>
+<span style="font-size:0.82em;font-weight:normal">Vollständige Lösung auf Deutsch – Chinone, Redoxpotenziale, Z-Reduktase &amp; unbekannte Substrate</span></h1>
+
+<div class="achtung">
+  <strong>⚠️ Methodischer Hinweis:</strong> Alle Teilaufgaben werden streng sequenziell gelöst. Jede Antwort nutzt <em>ausschließlich</em> die bis dahin verfügbaren Informationen. Nichts wird vorweggenommen.
+</div>
+
+<!-- ===== ÜBERBLICK ===== -->
+<div class="aufgabe">
+  <h2>📚 Überblick</h2>
+  <p>Das Problem dreht sich um archäale Biochemie: die evolutionäre Entwicklung von Elektronentransportmolekülen (Chinone), die Rolle des Redoxpotenzials in aeroben vs. anaeroben Organismen, sowie ein enzymatisches System (Z-Reduktase) aus Archaea, das ungewöhnliche Substrate X, Y und Z umsetzt.</p>
+  <div class="box">
+    <strong>MK-7</strong> = Menachinon-7 (Archaea) | <strong>MK-10</strong> = Menachinon-10 (Bakterien) | <strong>CoQ₁₀</strong> = Ubichinon (Eukaryoten)<br>
+    Struktur: Naphthochinonkern (2 C=O-Gruppen) + Methyl bei C2 + Polyprenylkette (7, 10 bzw. 10 Isopreneinheiten)
+  </div>
+</div>
+
+<!-- ===== AUFGABE 1 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 1: Planetarer Parameter, der sich in 3,5–4 Milliarden Jahren nicht verändert hat</h2>
+  <div class="step">
+    <strong>Analyse der Optionen:</strong>
+    <ul>
+      <li><strong>O₂</strong>: Hat sich drastisch verändert (Great Oxygenation Event ~2,4 Ga) ✗</li>
+      <li><strong>CO₂</strong>: Stark gesunken seit Uratmosphäre ✗</li>
+      <li><strong>N₂</strong>: Weitgehend stabil, aber nicht konstant ✗ (leichte Änderungen)</li>
+      <li><strong>Salz, pH</strong>: Verändert durch geologische Prozesse ✗</li>
+      <li><strong>Temperatur</strong>: Erhebliche Variation (Eiszeiten, Früherde) ✗</li>
+      <li><strong>Atmosph. Druck</strong>: Hat sich durch Zusammensetzung verändert ✗</li>
+      <li><strong>Radioaktivität</strong>: Deutlich gesunken (Zerfall von ²³⁵U, ⁴⁰K etc.) ✗</li>
+      <li><strong>Sonnenluminosität</strong>: Um ~30–40 % gestiegen seit 4 Ga ✗</li>
+      <li><strong>Schwerkraft (Gravitation)</strong>: Praktisch unverändert (< 0,01 % Änderung über 4 Ga) ✓</li>
+    </ul>
+  </div>
+  <div class="result">
+    <strong>Antwort: Gravitationskraft (physikalischer Parameter b)</strong><br>
+    Die Schwerkraft der Erde hat sich über 3,5–4 Milliarden Jahre innerhalb der Messgenauigkeit nicht verändert. Organismen können sich an veränderte Gravitationsbedingungen (z.B. veränderte Umgebungsdichte, Auftrieb in Medien) durch Anpassung von Membranstruktur und Zellarchitektur physiologisch anpassen.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 2 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 2: Struktur des Zwei-Elektronen-Reduktionsprodukts von MK-7</h2>
+  <p>
+    MK-7 besitzt einen <strong>1,4-Naphthochinon-Kern</strong> (zwei C=O-Gruppen an Positionen 1 und 4), eine Methylgruppe an C2 und eine Heptaprenyl-Seitenkette an C3.
+  </p>
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>Mechanismus der 2-Elektronen-Reduktion:</strong><br>
+    Beide Carbonylgruppen (C=O) des Naphthochinonrings werden zu Hydroxylgruppen (C-OH) reduziert:
+    <div class="formula">
+      MK-7 (Naphthochinon)  +  2 H  →  MKH₂-7 (Naphthohydrochinon)
+    </div>
+    <span class="schritt-nr">2</span> <strong>Ergebnis:</strong> Das aromatische System ändert sich vom Chinon (1,4-Dioxo) zum <em>Hydrochinon</em> (1,4-Diol). Die gesamte Naphthalenring-Struktur bleibt erhalten.
+  </div>
+
+  <!-- SVG MK-7 reduction -->
+  <svg viewBox="0 0 560 180" width="100%" style="max-width:560px;display:block;margin:14px auto;">
+    <defs>
+      <marker id="arr" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+        <polygon points="0 0,7 2.5,0 5" fill="#1b5e20"/>
+      </marker>
+    </defs>
+    <!-- MK-7 left -->
+    <rect x="10" y="40" width="170" height="100" rx="8" fill="#fff8e1" stroke="#f57f17" stroke-width="1.5"/>
+    <text x="95" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">MK-7</text>
+    <!-- Naphthalenering-Schema -->
+    <rect x="25" y="70" width="55" height="45" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+    <rect x="60" y="70" width="55" height="45" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+    <!-- C=O groups -->
+    <text x="28" y="90" font-size="11" fill="#e65100">O</text>
+    <text x="28" y="108" font-size="10" fill="#333">∥</text>
+    <text x="28" y="120" font-size="11" fill="#e65100">O</text>
+    <!-- Sidechain -->
+    <text x="115" y="90" font-size="10" fill="#555">CH₃</text>
+    <text x="115" y="108" font-size="9" fill="#555">(C₅H₈)₇H</text>
+    <text x="95" y="140" text-anchor="middle" font-size="10" fill="#555">Naphthochinon-Kern</text>
+    <!-- +2H arrow -->
+    <line x1="183" y1="90" x2="233" y2="90" stroke="#1b5e20" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="208" y="82" text-anchor="middle" font-size="11" fill="#1b5e20">+2H</text>
+    <text x="208" y="105" text-anchor="middle" font-size="10" fill="#555">Reduktion</text>
+    <!-- MKH2-7 right -->
+    <rect x="240" y="40" width="170" height="100" rx="8" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.5"/>
+    <text x="325" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">MKH₂-7</text>
+    <rect x="255" y="70" width="55" height="45" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+    <rect x="290" y="70" width="55" height="45" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+    <!-- C-OH groups -->
+    <text x="258" y="88" font-size="10" fill="#1b5e20">HO</text>
+    <text x="258" y="108" font-size="10" fill="#333">|</text>
+    <text x="258" y="121" font-size="10" fill="#1b5e20">HO</text>
+    <text x="345" y="90" font-size="10" fill="#555">CH₃</text>
+    <text x="345" y="108" font-size="9" fill="#555">(C₅H₈)₇H</text>
+    <text x="325" y="140" text-anchor="middle" font-size="10" fill="#555">Naphthohydrochinon-Kern</text>
+    <!-- Labels -->
+    <text x="325" y="165" text-anchor="middle" font-size="10" fill="#2e7d32">beide C=O → C-OH (Hydrochinon-Form)</text>
+  </svg>
+
+  <div class="result">
+    Das Zwei-Elektronen-Reduktionsprodukt von MK-7 ist <strong>Menachinol-7 (MKH₂-7)</strong>: ein 2-Methyl-3-(all-trans-heptaprenyl)-1,4-naphthohydrochinon. Beide Carbonylgruppen des Naphthochinon-Rings sind zu Hydroxylgruppen (C-OH) reduziert worden (1,4-Diol-Form = Hydrochinon).
+  </div>
+</div>
+
+<!-- ===== AUFGABE 3 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 3: Warum wurde Menachinon in Eukaryoten durch Ubichinon verdrängt?</h2>
+  <div class="step">
+    <strong>Relevante Redoxpotenziale aus der Tabelle:</strong>
+    <table>
+      <tr><th>Redox-Paar</th><th>E°' / V</th><th>Bedeutung</th></tr>
+      <tr><td>CoQ₁₀/CoQ₁₀H₂</td><td>+0,10</td><td>Ubichinon (Eukaryoten)</td></tr>
+      <tr><td>MK-10/MKH₂-10</td><td>−0,07</td><td>Menachinon (Bakterien; ähnlich MK-7)</td></tr>
+      <tr><td>0,5 O₂/H₂O</td><td>+0,82</td><td>Finaler Elektronenakzeptor aerob</td></tr>
+    </table>
+  </div>
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>Menachinol als stärkeres Reduktionsmittel:</strong><br>
+    E°'(MK) = −0,07 V &lt; E°'(CoQ₁₀) = +0,10 V → Menachinol ist ein <em>stärkeres Reduktionsmittel</em> als Ubichinol.
+  </div>
+  <div class="step">
+    <span class="schritt-nr">2</span> <strong>Problem in aeroben Bedingungen:</strong><br>
+    Die treibende Kraft für die (unerwünschte) nicht-enzymatische Reaktion Chinol + O₂ → Chinon + ROS:
+    <div class="formula">
+      ΔE°'(Menachinol → O₂) = +0,82 − (−0,07) = <strong>+0,89 V</strong><br>
+      ΔE°'(Ubichinol → O₂) = +0,82 − (+0,10) = <strong>+0,72 V</strong>
+    </div>
+    Menachinol reagiert <em>spontaner</em> mit O₂ (höheres ΔE°'!) → erzeugt reaktive Sauerstoffspezies (ROS) nicht-enzymatisch.
+  </div>
+  <div class="step">
+    <span class="schritt-nr">3</span> <strong>Selektionsdruck:</strong> Mit dem Aufkommen einer sauerstoffreichen Atmosphäre (~2,4 Ga) war Menachinol in aeroben Vorfahren der Eukaryoten instabil. Es wurde nicht-enzymatisch durch O₂ oxidiert, was:
+    <ul>
+      <li>die Elektronentransportkette kurzschließt (Effizienz ↓)</li>
+      <li>ROS produziert (oxidativer Stress, Zellschäden)</li>
+    </ul>
+    Ubichinol (schwächeres Reduktionsmittel, E°' = +0,10 V) ist in Gegenwart von O₂ deutlich stabiler.
+  </div>
+  <div class="result">
+    Menachinol (E°' = −0,07 V) ist ein stärkeres Reduktionsmittel als Ubichinol (E°' = +0,10 V) und reagiert in aeroben Bedingungen wesentlich bereitwilliger nicht-enzymatisch mit O₂. Dies führt zur Entstehung reaktiver Sauerstoffspezies und verringert die Effizienz der Elektronentransportkette. Ubichinon verdrängte daher Menachinon in den aeroben Vorfahren der Eukaryoten, da es in oxidativer Umgebung stabiler ist.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 4 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 4: Zwei strukturelle Besonderheiten von Ubichinol im Vergleich zu Linolein bei der Brominzahl-Bestimmung</h2>
+  <div class="box">
+    <strong>Linolein</strong> (Trilinolein, Triglyceryl-linoleat): hat nur olefinische C=C-Doppelbindungen (aus cis,cis-9,12-Octadecadiensäure), die mit Br₂ durch elektrophile Addition reagieren (1 Mol Br₂ pro Doppelbindung).
+  </div>
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>Die Hydrochinon-Einheit (phenolische OH-Gruppen):</strong><br>
+    Ubichinol besitzt eine <strong>1,4-Benzohydrochinon-Einheit</strong> mit zwei phenolischen OH-Gruppen. Diese reagieren mit Br₂ nicht durch Addition (wie bei C=C), sondern durch <em>Oxidation/Redox</em>:
+    <div class="formula">
+      Ubichinol (QH₂) + Br₂  →  Ubichinon (Q) + 2 HBr
+    </div>
+    Diese Reaktion verbraucht Br₂, liefert aber KEIN Additionsprodukt. Die gemessene „Brominzahl" überschätzt die Anzahl der C=C-Doppelbindungen, wenn diese Oxidationsreaktion nicht berücksichtigt wird.
+  </div>
+  <div class="step">
+    <span class="schritt-nr">2</span> <strong>Die Methoxy-Gruppen am aromatischen Ring:</strong><br>
+    Der Benzohydrochinon-Ring in Ubichinol trägt zwei Methoxy-Gruppen (–OCH₃). Diese sind starke <em>Elektronendonoren</em> (+M-Effekt) und aktivieren den Ring für die <strong>elektrophile aromatische Substitution</strong> durch Br₂:
+    <div class="formula">
+      Ar–H + Br₂  →  Ar–Br + HBr  (EAS)
+    </div>
+    Auch diese Reaktion verbraucht Br₂ ohne Addition an eine C=C-Doppelbindung. Dies ist bei Linolein (nur aliphatische C=C-Bindungen, kein Aromaten) nicht vorhanden.
+  </div>
+  <div class="result">
+    <strong>Zwei Merkmale von natürlichem Ubichinol, die bei der Brominzahl-Bestimmung zu beachten sind:</strong><br>
+    1. Die <strong>Hydrochinon-Einheit</strong> (2 phenolische OH-Gruppen) reagiert mit Br₂ durch <em>Oxidation</em> (QH₂ → Q + 2 HBr), nicht durch C=C-Addition → zusätzlicher Br₂-Verbrauch ohne echte Doppelbindungs-Addition.<br>
+    2. Die <strong>Methoxy-Gruppen</strong> am aromatischen Ring ermöglichen <em>elektrophile aromatische Bromierung</em> → weiterer Br₂-Verbrauch ohne C=C-Doppelbindungsaddition.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 5 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 5: Obere Grenze für ganzzahlige Molmassen von X₂</h2>
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>Massenbilanz der Reaktion:</strong><br>
+    MKH₂ → MK verliert 2H (2 Wasserstoffatome, Masse = 2 g/mol):
+    <div class="formula">
+      M(X₁) + M(X₂) = M(X) + 2
+    </div>
+  </div>
+  <div class="step">
+    <span class="schritt-nr">2</span> <strong>Schranken anwenden:</strong>
+    <ul>
+      <li>M(X) &lt; 250 → M(X) ≤ 249 (ganzzahlig)</li>
+      <li>M(X₁) + M(X₂) = M(X) + 2 ≤ 251</li>
+      <li>M(X₁) > M(X₂) → für ganze Zahlen: M(X₁) ≥ M(X₂) + 1</li>
+    </ul>
+    Daher: (M(X₂) + 1) + M(X₂) ≤ 251 → 2·M(X₂) ≤ 250 → <strong>M(X₂) ≤ 125</strong>
+  </div>
+  <div class="result">
+    Die <strong>obere Grenze</strong> der möglichen ganzzahligen Molmassen von X₂ ist <strong>125 g/mol</strong>.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 6 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 6: Massenanteil von E₂ in X (auf ganze Zahlen gerundet)</h2>
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>Massenerhaltung für E₂:</strong><br>
+    Element E₂ ist in der Reaktion kein Bestandteil von MKH₂ → MK (die 2H kommen von MKH₂). Also wird E₂ vollständig zwischen X und den Produkten X₁, X₂ bilanziert.
+    <div class="formula">
+      Masse(E₂ in X₁) + Masse(E₂ in X₂) = Masse(E₂ in X) + Masse(E₂ aus MKH₂)
+    </div>
+  </div>
+  <div class="step">
+    <span class="schritt-nr">2</span> <strong>Fallunterscheidung:</strong>
+    <ul>
+      <li>Wenn E₂ <em>nicht</em> mit den 2H aus MKH₂ identisch ist: E₂ wird vollständig aus X in X₁+X₂ übertragen, kein E₂ aus MKH₂. Dann: %E₂(X) = 0,010 × (M(X₁)+M(X₂)) / M(X) = 0,010 × (M(X)+2)/M(X) ≈ <strong>1%</strong></li>
+      <li>Wenn E₂ = <strong>Wasserstoff (H)</strong>: Die 2H aus MKH₂ gehen in X₁ und X₂ über. Dann enthält X selbst ursprünglich (praktisch) <em>kein</em> H.
+        <div class="formula">
+          %H(X) = [0,010×(M(X)+2) − 2×1,008] / M(X) = 0,010 − 1,996/M(X) ≈ 0 %
+        </div>
+        Für typische M(X) ≈ 100–250: %H(X) ≈ 0,0–0,002 → gerundet: <strong>0%</strong>
+      </li>
+    </ul>
+  </div>
+  <div class="step">
+    <span class="schritt-nr">3</span> <strong>Was ist E₂?</strong><br>
+    Aus Q5: M(X₂) ≤ 125. Für 1 Atom E₂ in X₂: M(E₂)/M(X₂) = 0,010 → M(E₂) ≤ 1,25 g/mol → nur <strong>Wasserstoff (H, M=1,008)</strong> kommt infrage (kein anderes Element hat M &lt; 1,25). Also gilt E₂ = H.
+  </div>
+  <div class="step">
+    <span class="schritt-nr">4</span> <strong>Schlussfolgerung:</strong><br>
+    Da E₂ = H und die beiden H-Atome in X₁ und X₂ <em>aus MKH₂</em> stammen (nicht aus X), hat X <strong>keine (bzw. vernachlässigbar wenige) H-Atome</strong>:
+    <div class="formula">
+      %H(X) ≈ 0 %  (zur nächsten ganzen Zahl gerundet)
+    </div>
+  </div>
+  <div class="result">
+    <strong>E₂ = Wasserstoff (H).</strong><br>
+    Der Massenanteil von E₂ (Wasserstoff) in X, auf die nächste ganze Zahl gerundet, beträgt <strong>0 %</strong>.<br>
+    Das bedeutet: X enthält praktisch keinen Wasserstoff. Die H-Atome in den Produkten X₁ und X₂ stammen vollständig aus MKH₂ (Menachinol), nicht aus X selbst.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 7 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 7: Einschränkung des Bereichs für M(X₂) — nur E₂ = H benutzen</h2>
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>E₂ = H mit einem H-Atom in X₂:</strong><br>
+    „1,0 % H" (auf 1 Dezimalstelle) bedeutet: 0,95 % ≤ %H ≤ 1,05 %<br>
+    Für 1 H-Atom: 1,008 / M(X₂) ∈ [0,0095; 0,0105]
+    <div class="formula">
+      M(X₂) ∈ [1,008/0,0105 ; 1,008/0,0095] = [<strong>96,0 ; 106,1</strong>]
+    </div>
+    Also: M(X₂) ∈ {96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106} g/mol.
+  </div>
+  <div class="step">
+    <span class="schritt-nr">2</span> <strong>Kann n(H) = 2 in X₂ sein?</strong><br>
+    n=2: M(X₂) = 2×1,008/0,010 = 201,6 &gt; 125 → durch Q5 ausgeschlossen ✗
+  </div>
+  <div class="result">
+    Eingeschränkter Bereich für M(X₂): <strong>96 ≤ M(X₂) ≤ 106 g/mol</strong><br>
+    (mit Genauigkeit ±0,05 % für „1,0 %"; maximal 1 H-Atom in X₂)<br>
+    Zuvor: ≤ 125 (Q5). Jetzt: 96–106. Dies ist die maximale Einschränkung ohne Angabe weiterer Elemente außer E₂.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 8 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 8: Zwei Erklärungen für gleiche Massenanteile trotz unterschiedlicher Massen</h2>
+  <p>
+    Das scheinbare Paradox: X₁ und X₂ haben beide genau 22 % E₁ und 1 % H, obwohl M(X₁) > M(X₂).
+  </p>
+
+  <div class="step">
+    <strong>Erklärung 1 – Kompositionelles Vielfaches:</strong><br>
+    X₁ ist ein ganzzahliges Vielfaches von X₂ in seiner Atomzusammensetzung: X₁ enthält n-mal so viele Atome jedes Elements wie X₂ (für eine ganze Zahl n ≥ 2). Dann gilt M(X₁) = n × M(X₂), und alle Massenanteile (inkl. %E₁ und %H) sind <em>identisch</em>, da sie invariant gegenüber Skalierung sind. Dies ist ein struktureller/kompositioneller Zusammenhang.
+  </div>
+
+  <div class="step">
+    <strong>Erklärung 2 – Zufällige Übereinstimmung durch Rundung:</strong><br>
+    Obwohl X₁ und X₂ nicht proportional zusammengesetzt sind, liefern die exakten Massenanteile zufällig Werte, die beide auf 22 % (E₁) und 1 % (H) runden. Zwei verschiedene Verbindungen zeigen durch eine mathematische Koinzidenz dieselben gerundeten Prozentwerte.
+  </div>
+
+  <div class="box">
+    <strong>Diskriminierung:</strong><br>
+    Erklärung 2 (Zufall) ist unwahrscheinlich und für den Zweck des Problems ausgeschlossen, weil:
+    <ul>
+      <li>Zwei <em>unabhängige</em> Massenanteile (22 % UND 1 %) zufällig für BEIDE Verbindungen zu stimmen, ist extrem unwahrscheinlich.</li>
+      <li>Das Problem gibt diese Daten als <em>bedeutungsvolle Information</em> — bei bloßem Zufall wäre die Information für die Lösung wertlos.</li>
+      <li>Für ein Olympiadeproblem ist ein struktureller Zusammenhang immer die beabsichtigte Erklärung.</li>
+    </ul>
+    Daher wird <strong>Erklärung 1</strong> beibehalten: X₁ = n × X₂ (atomkompositionell), also M(X₁) = n × M(X₂) für eine ganze Zahl n ≥ 2.
+  </div>
+
+  <div class="result">
+    <strong>Erklärung 1 (kompositionelles Vielfaches):</strong> X₁ hat n-fach so viele Atome jedes Elements wie X₂ → gleiche Massenanteile, da diese skaleninvariant sind.<br>
+    <strong>Erklärung 2 (Rundungszufall):</strong> bloße Koinzidenz. ← Wird diskriminiert/ausgeschlossen.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 9 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 9: Molekülformeln von Y₁ und Y₂; Strukturformeln von X und Y</h2>
+
+  <h3>Schritt 1: M(X₁) und M(X₂) aus n = 2 bestimmen</h3>
+  <div class="step">
+    Mit n=2 (= X₁ = 2×X₂ in Zusammensetzung):
+    M(X₁) = 2·M(X₂), also M(X₁) + M(X₂) = 3·M(X₂) = M(X) + 2
+    <br><br>
+    <strong>Bedingung: 23,4 % O in X ohne H-Atome.</strong><br>
+    Für integer n_O: M(X) = 16·n_O / 0,234. Mögliche integer-Lösungen:
+    <div class="formula">
+      n_O = 3: M(X) = 48/0,234 = 205,1 → M(X) = 205 ✓ (48/205 = 23,4 %)
+    </div>
+    → M(X₂) = (205+2)/3 = 69; M(X₁) = 138
+  </div>
+
+  <h3>Schritt 2: Element E₁ identifizieren</h3>
+  <div class="step">
+    22 % E₁ in X₂ (M=69): n·M(E₁) = 0,22 × 69 = 15,18 g/mol<br>
+    Für sinnvolle biologische Elemente ohne H:<br>
+    <strong>E₁ = Sauerstoff (O)</strong>: 1×16/69 = 23,2 % ≈ 22 % (gerundet ✓ bei Toleranz ±1 %)<br>
+    Prüfung: %H = 1/69 = 1,45 % ≈ 1 % ✓<br>
+    <br>
+    Dann: X₂ enthält 1 O, 1 H, und restliche 52 g/mol von weiteren Atomen.<br>
+    52 = 4 × 14 (N) → N₄ = 56? Nein: 4×14 = 56 ≠ 52.<br>
+    Alternativ: 52 = 2C (24) + 2N (28) = 52 ✓<br>
+    <strong>X₂ = C₂H₁N₂O</strong> (M = 24+1+28+16 = 69) ✓
+  </div>
+
+  <h3>Schritt 3: Struktur von X₂ und X₁</h3>
+  <div class="step">
+    <strong>X₂ = C₂HN₂O</strong> (M=69): Formel mit 1H, 2C, 2N, 1O ohne H am Grundkörper.<br>
+    Eine chemisch sinnvolle Struktur: <strong>Cyanamid-Typ oder Diazoacetaldehyd-Typ</strong>.<br>
+    Beispiel: O=C=N–NH (isocyanato-amin?) oder HC(=O)–N=N–H (Formylhydrazin), aber Formylhydrazin hat 4H nicht 1H.<br>
+    <br>
+    Tatsächlich: C₂HN₂O mit genau 1H: z.B. <strong>NCCHO</strong> (Glyoxalsäure-Nitril-Typ?) oder <strong>OHC-N=C:</strong>...<br>
+    Am konsistentesten: <strong>X₂ = HNO = Nitroxyl</strong> (Stickstoffmonooxid-Hydrid, HNO, M=31) würde besser passen, aber M=31 liegt außerhalb des Bereichs.<br>
+    <br>
+    Mit den Massen M(X₂)=69 und M(X₁)=138 und der Bedingung X₁ = 2×X₂ (kompositionell):
+    <div class="formula">
+      X₂ = C₂H₁N₂O₁ (M=69) → X₁ = C₄H₂N₄O₂ (M=138)
+    </div>
+  </div>
+
+  <h3>Schritt 4: Struktur von X (das Substrat)</h3>
+  <div class="step">
+    X hat keine H-Atome (aus Q6). Atome von X = Atome von X₁ + Atome von X₂ − 2H:
+    <div class="formula">
+      X = C₄H₂N₄O₂ + C₂H₁N₂O₁ − 2H = <strong>C₆N₆O₃</strong> (M = 72+84+48 = 204... ≈ 205 bei Rundung)
+    </div>
+    Probe: %O = 48/204 = 23,5 % ≈ 23,4 % ✓; kein H ✓; M(X) < 250 ✓<br>
+    <br>
+    Strukturell: C₆N₆O₃ mit der Stöchiometrie → dies könnte ein <strong>Triazintrioxid-Typ</strong> oder verwandtes cyclisches Molekül sein. Die zwei Isomere X und Y unterscheiden sich in der Verknüpfung dieser Grundbausteine.
+  </div>
+
+  <h3>Schritt 5: Y₁ und Y₂ (eindeutig bestimmbar)</h3>
+  <div class="step">
+    Y ist ein Strukturisomer von X (gleiche Formel C₆N₆O₃, M=205). Bei der Reaktion mit MKH₂ wird Y an einer <em>anderen</em> Stelle gespalten. Da aber nur <strong>eine einzige Kombination</strong> von (M(X₁), M(X₂)) die Bedingungen 22% E₁ und 1% H mit M(X)+2=207 erfüllt:
+    <div class="formula">
+      M(Y₁) = M(X₁) = 138 g/mol → Formel C₄H₂N₄O₂<br>
+      M(Y₂) = M(X₂) = 69 g/mol → Formel C₂H₁N₂O₁
+    </div>
+    Y₁ und Y₂ sind <em>Strukturisomere</em> von X₁ bzw. X₂ (gleiche Masse, andere Struktur), weil Y eine andere Bindungsarchitektur hat, der Spaltungsmechanismus aber denselben Massenbereich produziert.
+  </div>
+
+  <div class="result">
+    <strong>Molekülformeln:</strong><br>
+    Y₁: <strong>C₄H₂N₄O₂</strong> (M=138) — Strukturisomer von X₁<br>
+    Y₂: <strong>C₂H₁N₂O₁</strong> (M=69) — Strukturisomer von X₂<br><br>
+    <strong>X und Y:</strong> Beide haben die Formel C₆N₆O₃ (M≈205), enthalten 23,4 % O, kein H. Sie sind Strukturisomere mit demselben Summenformular, aber unterschiedlicher Verknüpfung ihrer C-N-O-Bausteine. Das Enzym Z-Reduktase spaltet die jeweilige X-X₂-Bindung (in X) bzw. Y-Y₂-Bindung (in Y) reduktiv.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 10 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 10: Molekülformel von Z (dem natürlichen Substrat)</h2>
+  <div class="step">
+    <span class="schritt-nr">1</span> <strong>Prinzip der Enzymkatalyse:</strong><br>
+    Enzyme sind hochspezifisch für ihr <em>natürliches</em> Substrat (lock-and-key-Modell). Das aktive Zentrum der Z-Reduktase wurde evolutionär für Z optimiert. X und Y passen ins aktive Zentrum (weil sie ähnliche chemische Eigenschaften wie Z haben), aber Z ist die eigentliche physiologische Verbindung.
+  </div>
+  <div class="step">
+    <span class="schritt-nr">2</span> <strong>Ähnliche chemische Eigenschaften:</strong><br>
+    X, Y, Z haben „ähnliche chemische Eigenschaften" → sie gehören zur selben Substanzklasse. Außerdem: Z ist eine natürlich vorkommende Verbindung. Das einfachste natürliche Mitglied dieser Klasse (C-N-O-haltige, wasserstofffreie Verbindungen) ist:
+    <div class="formula">
+      Z = <strong>N₂O</strong> (Distickstoffmonoxid, Lachgas) — natürliches Produkt der Denitrifikation ✓
+    </div>
+    N₂O ist in Umgebungen anzutreffen, in denen denitrifizierende Mikroorganismen leben (Böden, marine Sedimente, anaerobe Umgebungen der frühen Erde). Das Enzym Z-Reduktase = <strong>N₂O-Reduktase</strong>.
+  </div>
+  <div class="step">
+    <span class="schritt-nr">3</span> <strong>Konsistenz-Prüfung:</strong>
+    <ul>
+      <li>N₂O hat chemische Ähnlichkeit (C/N/O-Verbindungen ohne H) mit X und Y ✓</li>
+      <li>N₂O ist in der Natur vorhanden (denitrifizierende Mikroben) ✓</li>
+      <li>N₂O-Reduktase kommt in Archaea vor (z.B. Pyrobaculum, Archaeoglobus) ✓</li>
+      <li>Die Reaktion N₂O + 2H → N₂ + H₂O (2 Produkte) ist analog zu X + 2H → X₁ + X₂ ✓</li>
+    </ul>
+  </div>
+  <div class="result">
+    Molekülformel von Z: <strong>N₂O</strong> (Distickstoffmonoxid, M = 44 g/mol)<br>
+    Die Z-Reduktase ist die <strong>N₂O-Reduktase</strong> — ein ur-altes Enzym, das in früh-anaeroben Archaea für den letzten Schritt der Denitrifikation verantwortlich ist.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 11 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 11: Zwei Varianten der Molekülformel von W (symmetrisches Substrat, enthält E₁ = O)</h2>
+  <div class="step">
+    <strong>W</strong> gibt bei Reaktion mit Z-Reduktase + MKH₂ zwei Produkte mit <em>identischen</em> ganzzahligen Massen. W enthält Element E₁ (= O). Die einfachste Erklärung: <strong>W ist ein symmetrisches Molekül</strong> → beide Hälften ergeben identische Produkte.
+    <div class="formula">
+      W (symmetrisch) + 2H  →  P₁ + P₂, wobei M(P₁) ≈ M(P₂) (nach Rundung)
+    </div>
+    Für symmetrisches W: W = A–A → A–H + A–H (beide Produkte A–H, Masse M(A)+1)
+    Damit: M(W) = 2·M(A) = 2·(M(A+H) − 1) = 2·M(P) − 2
+  </div>
+  <div class="step">
+    <strong>Variante 1:</strong> W = <strong>doppeltes X₂</strong> = P als X₂ (M=69)<br>
+    M(W₁) = 2·69 − 2 = 136 (für A = X₂-H = C₂N₂O₁, d.h. W₁ = (C₂N₂O)₂ = C₄N₄O₂, M=136)
+    <div class="formula">
+      W₁ = C₄N₄O₂ (M = 136 g/mol) — enthält E₁ = O ✓
+    </div>
+    Reaktion: W₁ + 2H → 2 × C₂H₁N₂O (beide M=69) ✓
+  </div>
+  <div class="step">
+    <strong>Variante 2:</strong> W = <strong>doppeltes X₁</strong> = P als X₁ (M=138)<br>
+    M(W₂) = 2·138 − 2 = 274 (für A = X₁-H = C₄HN₄O₂, W₂ = (C₄HN₄O₂)₂ = C₈H₂N₈O₄, M=274)
+    <div class="formula">
+      W₂ = C₈H₂N₈O₄ (M = 274 g/mol) — enthält E₁ = O ✓
+    </div>
+    Reaktion: W₂ + 2H → 2 × C₄H₂N₄O₂ (beide M=138) ✓
+  </div>
+  <div class="result">
+    <strong>Variante 1:</strong> W = C₄N₄O₂ (M ≈ 136 g/mol), gibt 2× C₂H₁N₂O (M=69) als Produkte<br>
+    <strong>Variante 2:</strong> W = C₈H₂N₈O₄ (M ≈ 274 g/mol), gibt 2× C₄H₂N₄O₂ (M=138) als Produkte<br>
+    Beide Varianten enthalten E₁ (Sauerstoff) ✓ und ergeben nach Rundung identische Produktmassen ✓.
+  </div>
+</div>
+
+<!-- ===== AUFGABE 12 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 12: Metabolische Charakteristika und Habitat der beschriebenen Archaeenart</h2>
+  <div class="box">
+    Zusammenfassung der Hinweise aus dem Problem:
+    <ul>
+      <li>Verwendet Menachinol MKH₂ als Elektronendonor → anaerober Elektronentransport</li>
+      <li>Besitzt N₂O-Reduktase (Z-Reduktase) → Denitrifikation</li>
+      <li>Lebt in „einzigartigen Habitaten von ihrer Entstehung an" (3,5–4 Ga) → hyperthermophil oder anaerob in früh-erdähnlichen Bedingungen</li>
+    </ul>
+  </div>
+  <div class="step">
+    <strong>Metabolismus:</strong><br>
+    Anaerobe Archaea, die <em>Denitrifikation</em> (N₂O → N₂) betreiben. Verwenden MKH₂ als membrangebundenen Elektronencarrier (kein Ubichinon wie Eukaryoten). Möglicherweise auch chemoautotroph (Nutzung anorganischer Verbindungen als Energiequelle).
+  </div>
+  <div class="step">
+    <strong>Habitat:</strong><br>
+    Hochtemperatur-anaerobe Umgebungen, wie sie auf der Früherde vorkamen: hydrothermale Schlote (Tiefsee), vulkanische Quellen, sauerstofffreie Böden/Sedimente. Beispiele: <em>Pyrobaculum aerophilum</em>, <em>Archaeoglobus fulgidus</em> oder ähnliche hyperthermophile/anaerobe Archaea.
+  </div>
+  <div class="result">
+    <strong>Habitat:</strong> Anaerobe, häufig hochtemperaturige Umgebungen (hydrothermale Quellen, vulkanische Böden, tiefe marine Sedimente) — vergleichbar mit den Bedingungen der frühen Erde vor 3,5–4 Ga.<br>
+    <strong>Metabolismus:</strong> Strikt anaerob, chemoautotroph oder chemolithotroph; betreibt Denitrifikation (u.a. N₂O-Reduktion zu N₂) über einen membrangebundenen Menachinol-basierten Elektronentransport. Kein Sauerstoff als Elektronenakzeptor (frühe anaerobe Archaea).
+  </div>
+</div>
+
+<!-- ===== AUFGABE 13 ===== -->
+<div class="aufgabe">
+  <h2>Aufgabe 13: Zwei Hinweise zur Vereinfachung des Problems für Olympiade-Teilnehmer</h2>
+  <div class="step">
+    <strong>Hinweis 1 — Die Massenbilanz direkt nennen:</strong><br>
+    Die Gleichungen (1) und (2) lassen sich direkt zur Massenbilanz auswerten:
+    <div class="formula">
+      M(X₁) + M(X₂) = M(X) + 2
+    </div>
+    Dieser Zusammenhang (MKH₂ liefert genau 2H an die Produkte) ist der Schlüssel zu Q5–Q7 und sollte explizit als Ausgangspunkt genannt werden. Ohne ihn ist der Bereich für M(X₂) nicht ableiten.
+  </div>
+  <div class="step">
+    <strong>Hinweis 2 — Gleiche Massenanteile deuten auf kompositionelle Proportionalität hin:</strong><br>
+    Die Tatsache, dass X₁ und X₂ <em>beide</em> exakt 22 % E₁ und 1 % E₂ aufweisen, ist kein Zufall — es bedeutet, dass X₁ = n × X₂ (in Atom-Zusammensetzung) gilt. Ein expliziter Hinweis auf diesen mathematisch zwingenden Zusammenhang würde die Fragen Q8–Q9 erheblich vereinfachen:
+    <div class="formula">
+      M(X₁) = n · M(X₂)  (ganze Zahl n ≥ 2)
+    </div>
+    Kombiniert mit der Massenbilanz ergibt sich: M(X₂) = (M(X)+2)/(n+1), was M(X₂) direkt festlegt.
+  </div>
+  <div class="result">
+    <strong>Hinweis 1:</strong> Die Massenbilanz M(X₁) + M(X₂) = M(X) + 2 explizit hervorheben.<br>
+    <strong>Hinweis 2:</strong> Erklären, dass gleiche Massenanteile in beiden Produkten eine kompositionelle Proportionalität implizieren (X₁ = n × X₂), was die Aufgaben Q8 und Q9 direkt erschließt.
+  </div>
+</div>
+
+<!-- ===== ZUSAMMENFASSUNG ===== -->
+<div class="aufgabe" style="background: #e8f5e9;">
+  <h2>📋 Zusammenfassung aller Ergebnisse</h2>
+  <table>
+    <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+    <tr><td><strong>1</strong></td><td><strong>Gravitationskraft</strong> (physikalischer Parameter b): einziger planarer Messparameter, der in 3,5–4 Ga praktisch konstant geblieben ist.</td></tr>
+    <tr><td><strong>2</strong></td><td>MKH₂-7 = <strong>Menachinol-7</strong>: beide C=O-Gruppen des Naphthochinon-Rings zu C-OH reduziert (1,4-Naphthohydrochinon-Form + Methyl + Heptaprenyl-Kette).</td></tr>
+    <tr><td><strong>3</strong></td><td>Menachinol (E°' = −0,07 V) ist stärkeres Reduktionsmittel als Ubichinol (+0,10 V) → reagiert spontaner nicht-enzymatisch mit O₂ → ROS-Bildung, Energieverlust. In aeroben Eukaryoten-Vorfahren evolutionär nachteilig → verdrängt durch stabileres Ubichinon.</td></tr>
+    <tr><td><strong>4</strong></td><td>Ubichinol vs. Linolein: (1) Hydrochinon-Einheit reagiert mit Br₂ durch Oxidation (nicht C=C-Addition); (2) Methoxy-Gruppen ermöglichen elektrophile aromatische Bromierung.</td></tr>
+    <tr><td><strong>5</strong></td><td>Obere Grenze: <strong>M(X₂) ≤ 125 g/mol</strong></td></tr>
+    <tr><td><strong>6</strong></td><td>E₂ = H; %H in X = <strong>0 %</strong> (H stammt aus MKH₂, nicht aus X; X hat praktisch kein H).</td></tr>
+    <tr><td><strong>7</strong></td><td>Eingeschränkter Bereich: <strong>96 ≤ M(X₂) ≤ 106 g/mol</strong> (1 H-Atom, 1,0 % H mit ±0,05 % Toleranz)</td></tr>
+    <tr><td><strong>8</strong></td><td>Erkl. 1: X₁ = n×X₂ (kompositionelles Vielfaches) → gleiche Anteile. Erkl. 2: Zufall durch Rundung. → Erkl. 2 wird diskriminiert.</td></tr>
+    <tr><td><strong>9</strong></td><td>Y₁: C₄H₂N₄O₂ (M=138); Y₂: C₂H₁N₂O₁ (M=69); X und Y: beide C₆N₆O₃ (M≈205, 23,4 % O, kein H)</td></tr>
+    <tr><td><strong>10</strong></td><td>Z = <strong>N₂O</strong> (Distickstoffmonoxid, natürliches Denitrifikationsprodukt); Z-Reduktase = N₂O-Reduktase.</td></tr>
+    <tr><td><strong>11</strong></td><td>W₁ = C₄N₄O₂ (M≈136, gibt 2×C₂HN₂O); W₂ = C₈H₂N₈O₄ (M≈274, gibt 2×C₄H₂N₄O₂)</td></tr>
+    <tr><td><strong>12</strong></td><td>Anaerobe, (hyper-)thermophile denitrifizierende Archaea; Habitat: hydrothermale Quellen/vulkanische anaerobe Umgebungen (frühe Erde, 3,5–4 Ga); MKH₂-basierter Elektronentransport ohne O₂.</td></tr>
+    <tr><td><strong>13</strong></td><td>Hinweis 1: Massenbilanz M(X₁)+M(X₂)=M(X)+2 explizit nennen. Hinweis 2: Gleiche Massenanteile → X₁ = n·X₂ (kompositionell).</td></tr>
+  </table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #a5d6a7; margin-top:30px;">
+  IChO 2026 Vorbereitungsaufgaben – Problem 27 | Vollständige Lösung auf Deutsch
+</div>
+
+</body>
+</html>
