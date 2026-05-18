@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 24 – Anticancer-Komplexe | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #f0f4ff; color: #1a1a2e; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1a237e; color: #1a237e;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1a237e; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #1a237e; border-left: 5px solid #3949ab; padding-left: 13px; margin-top: 0; }
+  h3 { color: #283593; margin-top: 18px; }
+  h4 { color: #3949ab; margin: 12px 0 6px; }
+
+  .aufgabe { background: white; border: 1px solid #c5cae9; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(26,35,126,0.07); }
+  .teil { background: #e8eaf6; border: 2px solid #3949ab; border-radius: 10px; padding: 14px 22px; margin: 20px 0 0; }
+  .box     { background: #e8eaf6; border-left: 4px solid #3949ab; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result  { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .warning { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .bio     { background: #fce4ec; border-left: 4px solid #c62828; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+
+  .formula      { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.0em; line-height: 2.0; }
+  .reaction { background: #1a237e; color: #e8eaf6; border-radius: 8px; padding: 10px 18px; text-align: center; font-family: 'Courier New', monospace; margin: 10px 0; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #1a237e; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c5cae9; padding: 9px 13px; text-align: center; }
+  tr:nth-child(even) { background: #f0f4ff; }
+
+  .step { margin: 10px 0; padding: 11px 16px; background: #fafbff; border-radius: 7px; border: 1px solid #c5cae9; }
+  .schritt-nr { display: inline-block; background: #1a237e; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #e8eaf6; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #c5cae9; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #e8eaf6, #f0f4ff); border: 2px solid #3949ab; border-radius: 10px; padding: 14px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.15em; font-weight: bold; color: #1a237e; font-family: 'Courier New', monospace; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .pt-card { background: white; border: 2px solid #3949ab; border-radius: 10px; padding: 14px 16px; }
+  .pt-title { font-weight: bold; color: #1a237e; border-bottom: 1px solid #c5cae9; padding-bottom: 6px; margin-bottom: 10px; }
+
+  .struct-box { font-family: 'Courier New', monospace; background: #0d1a4a; color: #c5cae9; border-radius: 8px; padding: 14px 20px; margin: 12px 0; font-size: 0.93em; line-height: 2.0; }
+
+  .rxn-step { display: flex; align-items: flex-start; gap: 12px; margin: 10px 0; padding: 10px 14px; background: #fafbff; border-radius: 8px; border: 1px solid #c5cae9; }
+  .rxn-label { background: #1a237e; color: white; border-radius: 6px; padding: 2px 10px; font-family: 'Courier New', monospace; font-weight: bold; white-space: nowrap; font-size: 0.9em; }
+  .rxn-arrow { color: #3949ab; font-size: 1.3em; margin: 0 8px; }
+
+  .check { color: #2e7d32; font-weight: bold; }
+  .cross { color: #c62828; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>💊 Problem 24 – Anticancer-Komplexe<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung – Platin-Komplexe, DNA-Quervernetzung & Camptothecin-Synthese</span></h1>
+
+<!-- TEIL 1: PLATINKOMPLEXE -->
+<div class="teil">
+<h2>Teil 1: Platinkomplexe</h2>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Intra- und Interstrang-Quervernetzungen durch Cisplatin/Transplatin</h2>
+
+<div class="box">
+<strong>Schlüsselbegriffe:</strong><br>
+• <strong>Intrastrang-Quervernetzung</strong>: Beide Guanin-N7-Atome gehören zur <em>gleichen</em> DNA-Kette<br>
+• <strong>Interstrang-Quervernetzung</strong>: Die Guanin-N7-Atome gehören zu <em>verschiedenen</em> (gegenüberliegenden) Strängen
+</div>
+
+<div class="grid2">
+  <div class="pt-card">
+    <div class="pt-title">a) Cisplatin → INTRASTRANG-Quervernetzung</div>
+    <p>Cisplatin hat die zwei Chloride in <em>cis</em>-Position (nebeneinander, 90° Winkel). Nach Hydrolyse der Cl-Liganden koordiniert Pt an zwei Guanin-N7 der <strong>gleichen DNA-Kette</strong> (benachbarte oder übernächste Guanine: 1,2-GG oder 1,3-GXG).</p>
+    <div class="struct-box">
+5'──G──C──C──3'<br>
+&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;Pt (Bogen im Strang)<br>
+&nbsp;&nbsp;&nbsp;│<br>
+&nbsp;&nbsp;&nbsp;G<br>
+3'──C──G──G──5'
+    </div>
+    <p>→ Intrastrang GG-Quervernetzung (häufigste Form, ~65% aller Pt-DNA-Addukte)</p>
+  </div>
+  <div class="pt-card">
+    <div class="pt-title">b) Transplatin → INTERSTRANG-Quervernetzung</div>
+    <p>Transplatin hat die Chloride in <em>trans</em>-Position (gegenüber, 180° Winkel). Die Geometrie erzwingt Bindung an Guanine auf <strong>verschiedenen, gegenüberliegenden Strängen</strong>.</p>
+    <div class="struct-box">
+5'──G──C──C──3'<br>
+&nbsp;&nbsp;&nbsp;│<br>
+&nbsp;&nbsp;&nbsp;Pt (brückt Stränge)<br>
+&nbsp;&nbsp;&nbsp;│<br>
+3'──C──G──G──5'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↑<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;G auf Gegenstrang
+    </div>
+    <p>→ Interstrang G-G-Quervernetzung (verbindet komplementäre Stränge)</p>
+  </div>
+</div>
+
+<div class="result">
+a) Cisplatin: <strong>Intrastrang-Quervernetzung</strong> (beide G auf dem gleichen Strang, cis-Geometrie ermöglicht die enge Brücke)<br>
+b) Transplatin: <strong>Interstrang-Quervernetzung</strong> (G auf gegenüberliegenden Strängen, trans-Geometrie erzwingt 180°-Brücke)
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Einfluss der Quervernetzung auf T<sub>m</sub></h2>
+
+<div class="step">
+<strong>Grundprinzip:</strong> T<sub>m</sub> steigt, wenn die DNA-Doppelhelix stabiler wird (mehr Energie zum Trennen nötig). T<sub>m</sub> sinkt, wenn die Helix destabilisiert wird.
+</div>
+
+<div class="grid2">
+  <div class="pt-card">
+    <div class="pt-title">Intrastrang-Quervernetzung (Cisplatin)</div>
+    <ul>
+      <li>Bindet zwei G im selben Strang → verbiegt die DNA (Knick ~35–40°)</li>
+      <li>Unterbricht die Watson-Crick-Basenpaarung am Knick-Ort</li>
+      <li><strong>Destabilisiert</strong> die Doppelhelix lokal</li>
+      <li>→ <strong>T<sub>m</sub> sinkt</strong> (bei niedrigem Besetzungsgrad, aber die Dissoziation der Stränge ist leichter)</li>
+    </ul>
+    <div style="text-align:center; font-size:1.3em; color:#c62828;">T<sub>m</sub> ↓</div>
+  </div>
+  <div class="pt-card">
+    <div class="pt-title">Interstrang-Quervernetzung (Transplatin)</div>
+    <ul>
+      <li>Verbindet die zwei komplementären Stränge kovalent</li>
+      <li>Selbst bei Schmelztemperatur können die Stränge nicht vollständig trennen</li>
+      <li><strong>Stabilisiert</strong> die Doppelhelix (kovalente Brücke hält Stränge zusammen)</li>
+      <li>→ <strong>T<sub>m</sub> steigt</strong> drastisch</li>
+    </ul>
+    <div style="text-align:center; font-size:1.3em; color:#2e7d32;">T<sub>m</sub> ↑</div>
+  </div>
+</div>
+
+<div class="result">
+Intrastrand-Quervernetzung: T<sub>m</sub> <strong>erniedrigt</strong> (lokale Destabilisierung, DNA-Knick)<br>
+Interstrand-Quervernetzung: T<sub>m</sub> <strong>erhöht</strong> (kovalente Brücke verhindert vollständige Strangtrennung)
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Strukturen Pt-1, Pt-2, Pt-3, Pt-4</h2>
+
+<div class="box">
+<strong>Lösungsstrategie:</strong> Die Massenanteile w(Pt) geben M(Komplex) = M(Pt)/w(Pt). Vergleich mit der Syntheseroute (welche Liganden ausgetauscht werden) bestätigt die Strukturen.
+</div>
+
+<table>
+  <tr><th>Verbindung</th><th>w(Pt)</th><th>M(komplex) = 195,08/w</th><th>Struktur</th><th>Verifikation</th></tr>
+  <tr><td>PtCl₄²⁻</td><td>57,9%</td><td>336,9</td><td>[PtCl₄]²⁻</td><td>195+4×35,45=336,9 ✓</td></tr>
+  <tr><td><strong>Pt-1</strong></td><td>27,7%</td><td>704,4</td><td>[PtI₄]²⁻</td><td>195+4×127,0=703,0 ✓</td></tr>
+  <tr><td><strong>Pt-2</strong></td><td>40,4%</td><td>482,9</td><td>cis-[Pt(NH₃)₂I₂]</td><td>195+2×17+2×127=483,0 ✓</td></tr>
+  <tr><td><strong>Pt-3</strong></td><td>73,6%</td><td>265,1</td><td>cis-[Pt(NH₃)₂(H₂O)₂]²⁺</td><td>195+2×17+2×18=265,0 ✓</td></tr>
+  <tr><td><strong>Pt-4</strong></td><td>52,6%</td><td>371,1</td><td>Carboplatin [Pt(NH₃)₂(CBDCA)]</td><td>195+34+144=373,1 ≈ ✓</td></tr>
+</table>
+
+<div class="step">
+<strong>Reaktionssequenz erklärt:</strong>
+<div class="rxn-step"><span class="rxn-label">PtCl₄²⁻ + 4I⁻</span><span class="rxn-arrow">→</span>Alle 4 Cl⁻ werden durch I⁻ ersetzt (I⁻ ist ein viel besserer Trans-Ligand). <strong>Pt-1 = [PtI₄]²⁻</strong></div>
+<div class="rxn-step"><span class="rxn-label">Pt-1 + 2NH₃, Hg(NO₃)₂/H₂O</span><span class="rxn-arrow">→</span>Hg²⁺ entfernt 2 I⁻ (HgI₂), NH₃ koordiniert. Trans-Einfluss der verbleibenden I⁻ steuert cis-Selektivität. <strong>Pt-2 = cis-[Pt(NH₃)₂I₂]</strong></div>
+<div class="rxn-step"><span class="rxn-label">Pt-2 + Hg(NO₃)₂/H₂O</span><span class="rxn-arrow">→</span>Restliche 2 I⁻ durch H₂O ersetzt (Aqua-Komplex). <strong>Pt-3 = cis-[Pt(NH₃)₂(H₂O)₂]²⁺</strong></div>
+<div class="rxn-step"><span class="rxn-label">Pt-3 + Na₂CBDCA</span><span class="rxn-arrow">→</span>CBDCA²⁻ (chelatisierendes Dicarboxylat) verdrängt beide H₂O. <strong>Pt-4 = Carboplatin</strong></div>
+</div>
+
+<h4>Strukturen (beschreibend):</h4>
+<div class="struct-box">
+Pt-1 = [PtI₄]²⁻: &nbsp;&nbsp;&nbsp;quadratisch-planar, Pt im Zentrum, 4× I⁻ an den Ecken<br>
+Pt-2 = cis-[Pt(NH₃)₂I₂]: &nbsp;quadratisch-planar, 2× NH₃ und 2× I⁻ in cis-Anordnung<br>
+Pt-3 = [Pt(NH₃)₂(H₂O)₂]²⁺: wie Pt-2, aber I⁻ durch H₂O ersetzt<br>
+Pt-4 = [Pt(NH₃)₂(CBDCA)]: &nbsp;Carboplatin, 2× NH₃ cis, CBDCA als 5-Ring-Chelat
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Dicycloplatin – Struktur mit Wasserstoffbrücken</h2>
+
+<div class="step">
+Dicycloplatin = Carboplatin (Pt-4) + H₂CBDCA (1,1-Cyclobutandikarbonsäure) im 1:1-Addukt.<br>
+<strong>4 Wasserstoffbrücken</strong> in einer Struktureinheit:
+<ul>
+  <li>2× N–H···O zwischen NH₃ (von Pt-4) und C=O (von H₂CBDCA)</li>
+  <li>2× O–H···O zwischen COOH (von H₂CBDCA) und COO⁻ (vom CBDCA-Liganden in Pt-4)</li>
+</ul>
+</div>
+
+<div class="struct-box">
+Dicycloplatin-Struktureinheit:<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H₂N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NH₂<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+HOOC─Cyclobutan─COOH ··· H₃N─Pt─NH₃ ··· ─OOC─Cyclobutan─COO─<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↑<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H₂CBDCA (freie Säure)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pt-4 (Carboplatin)<br><br>
+H-Brücken: N─H···O=C und O─H···O═C
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Hydrolysebeständigkeit – Pt-4 vs. Dicycloplatin</h2>
+
+<div class="step">
+<strong>Hydrolyse von Platinkomplexen:</strong><br>
+Der geschwindigkeitsbestimmende Schritt ist die Substitution eines Koordinationsliganden durch H₂O. Je schwieriger das Wassermolekül in die Koordinationssphäre eindringen kann, desto langsamer ist die Hydrolyse.
+</div>
+
+<div class="result">
+<strong>Dicycloplatin ist hydrolysebeständiger als Pt-4 (Carboplatin).</strong><br><br>
+<strong>Begründung:</strong>
+<ol>
+  <li><strong>Sterische Abschirmung:</strong> Das H₂CBDCA-Molekül lagert sich über 4 H-Brücken direkt am Pt-Zentrum an und blockiert den Zugang für Wassermoleküle zu den Koordinationsstellen.</li>
+  <li><strong>Elektrostatische Wirkung:</strong> Die H-Brücken zwischen NH₃-Liganden (am Pt) und C=O des H₂CBDCA erhöhen die Elektronendichte am Pt und machen es weniger elektrophil → schlechterer nucleophiler Angriff durch H₂O.</li>
+  <li><strong>Kinetische Stabilität:</strong> Die supramolekulare Assoziation erhöht die Aktivierungsenergie für die Substitution, d.h. die Wassersubstitution ist kinetisch gehemmt.</li>
+</ol>
+</div>
+</div>
+
+<!-- TEIL 2: CAMPTOTHECIN -->
+<div class="teil">
+<h2>Teil 2: Camptothecin und seine Derivate</h2>
+</div>
+
+<div class="aufgabe">
+<h2>📚 Überblick: Camptothecin und SN-38</h2>
+<div class="bio">
+<strong>Biologischer Hintergrund:</strong> Camptothecin hemmt Topoisomerase I, das Enzym das die DNA-Helix „entspannt". SN-38 (7-Ethyl-10-hydroxycamptothecin) ist der aktive Metabolit von Irinotecan und eines der wirksamsten Topoisomerase-I-Inhibitoren. Die Synthese kombiniert zwei Bausteine H (Lacton-Fragment) und N (Chinolin-Fragment).
+</div>
+</div>
+
+<!-- AUFGABE 6 -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Strukturen A–G (Chinolin-Syntheseweg)</h2>
+
+<p>Ausgangsmaterial: 2-Methoxy-3-pyridinoyl-Essigsäure (Pyridin-Carbonsäure mit OMe-Gruppe)</p>
+<p><strong>X</strong> = tert-Butyl-α-methylglykolat (cyclisches α-Hydroxysäureester-Lacton) | <strong>TMP</strong> = 2,2,6,6-Tetramethylpiperidin (sterisch gehinderte Base, nicht-nucleophil)</p>
+
+<div class="rxn-step">
+  <span class="rxn-label">Ausgangsmaterial + X, n-BuLi/TMP → A (C₁₅H₁₉NO₅)</span>
+</div>
+<div class="step">
+n-BuLi/TMP deprotoniert den Ausgangsstoff α zur COOH-Gruppe. Das Carbanion addiert an X (β-Lacton oder α-Keto-Ester). Nach Hydrolyse mit HCl/H₂O entsteht A.<br>
+<strong>A</strong> = 2-Methoxy-3-(1-hydroxy-2-tert-butoxy-1-carboxymethyl)pyridin-Derivat<br>
+A enthält: Pyridinring, OMe, COOH (ursprünglich), und die neue OH-tragende Kette von X.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">A + LiAlH₄ → B</span>
+</div>
+<div class="step">
+<strong>LiAlH₄</strong> reduziert alle Carbonyl-Gruppen (Ester und Carbonsäure) zu Alkoholen.<br>
+<strong>B</strong> = Diol-Pyridinderivat (alle C=O zu CH₂OH reduziert), enthält 2–3 freie OH-Gruppen.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">B + BnBr (Überschuss), NaH → C</span>
+</div>
+<div class="step">
+NaH deprotoniert alle OH-Gruppen. <strong>Überschuss BnBr</strong> = ALLE OH werden benzyliert (OBn).<br>
+<strong>C</strong> = vollständig O-benzyliertes Pyridin-Derivat. Das tert-Butyl-Ether bleibt evtl. auch benzyliert.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">C + HCl, H₂O → D</span>
+</div>
+<div class="step">
+Saure wässrige Bedingungen: Entfernung der <em>säurelabilen</em> tert-Butyl-Ether-Gruppe.<br>
+<strong>D</strong> = Wie C aber mit freiem sekundärem Alkohol statt OtBu. Das 1,2-Diol ist jetzt für die nächste Reaktion zugänglich.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">D + NaIO₄ → E</span>
+</div>
+<div class="step">
+<strong>NaIO₄</strong> (Periodat) spaltet vicinale Diole oxidativ: C(OH)–C(OH) → C=O + C=O (zwei Aldehyde/Ketone).<br>
+<strong>E</strong> = Chinolin-Aldehyd-Derivat mit BnO-Gruppen und OMe. Das Schema zeigt: BnO-Chinolin-CHO mit einer weiteren OBn-Seitenkette.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">E + NaClO₂ → F</span>
+</div>
+<div class="step">
+<strong>NaClO₂</strong> (Natriumchlorit) oxidiert Aldehyde selektiv zur Carbonsäure (Pinnick-Oxidation).<br>
+<strong>F</strong> = BnO-Chinolin-COOH (Carbonsäure statt Aldehyd), OBn-Gruppen bleiben erhalten.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">F + Pd/C, H₂ → G</span>
+</div>
+<div class="step">
+<strong>Pd/C, H₂</strong> = Hydrogenolyse: Entfernt alle Benzylschutzgruppen (OBn → OH) selektiv.<br>
+<strong>G (C₁₁H₁₃NO₄)</strong> = Hydroxy-Chinolin-Carbonsäure (alle OBn → OH, OMe bleibt).
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">G + HCl, H₂O, Hitze → H (C₁₁H₁₃NO₄)</span>
+</div>
+<div class="step">
+Saure Hydrolyse mit Erhitzen: Das benachbarte Diol und die Carbonsäure kondensieren intramolekular zu einem <strong>Lacton</strong> (cyclischer Ester).<br>
+<strong>H</strong> = Camptothecin-AB-Ring-Fragment (Bicyclisches Lacton-Chinolin-Derivat mit OH-Gruppe in S-Konfiguration aus der Synthese).
+</div>
+
+<div class="result">
+A–G: Stufenweise Umwandlung eines Pyridincarbonsäure-Derivats über Reduktion, Benzylschutz, Entschützung, Periodat-Spaltung, Oxidation und Hydrierung zum Hydroxy-Chinolin-Carbonsäure-Lacton H.
+</div>
+</div>
+
+<!-- AUFGABE 7 -->
+<div class="aufgabe">
+<h2>Aufgabe 7: Strukturen J–O und SN-38</h2>
+
+<p>Ausgangsstoff I = 2-Amino-4-methoxy-5-methylacetophenon (Aromat mit NH₂, OMe, CH₃, Ethyl-Keto)</p>
+
+<div class="rxn-step">
+  <span class="rxn-label">I + ClCOCOOMe → J</span>
+</div>
+<div class="step">
+Aminogruppe reagiert mit dem Säurechlorid des Methyloxalats:<br>
+Ar–NH₂ + Cl–CO–COOMe → Ar–NH–CO–COOMe + HCl<br>
+<strong>J</strong> = N-(2-Oxo-2-methoxycarbonyl)aminoacetophenon-Derivat (Oxamidsäureester am Anilin)
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">J + NaOMe → K</span>
+</div>
+<div class="step">
+NaOMe ist eine Base und Nukleophil. Intramolekulare Cyclisierung: Die α-Keto-Gruppe des Acetons und der Oxamid-Ester kondensieren → Bildung eines 6-gliedrigen Rings (Chinolin-Dion oder Isochinolin-Dion).<br>
+<strong>K</strong> = 6-Methoxy-7-methyl-1-hydroxy-3-oxo-1,2,3,4-tetrahydroisochinolin oder ähnliches Cyclisierungsprodukt (Diketoverbindung mit N im Ring).
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">K + POCl₃ → L</span>
+</div>
+<div class="step">
+POCl₃ chloriert die OH/C=O-Gruppen und bildet ein Vinyl-Chlorid oder Dichlor-Verbindung.<br>
+<strong>L</strong> = Chloro-isochinolin-Derivat (C=O → C-Cl), bereit für die nächste Reduktion.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">L + LiAlH₄ → M</span>
+</div>
+<div class="step">
+LiAlH₄ reduziert das Amid/Imid zu Amin und das C-Cl bzw. C=O zu CH₂ oder CH-OH.<br>
+<strong>M</strong> = Tetrahydroisochinolin-Derivat mit OMe, CH₃ und CH₂OH-Gruppe.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">M + PBr₃ → N (C₁₃H₁₃Br₂NO)</span>
+</div>
+<div class="step">
+PBr₃ konvertiert Alkohol-OH-Gruppen zu Alkyl-Bromiden.<br>
+<strong>N</strong> = Dibromid-Isochinolin: 2 OH-Gruppen → 2 Br-Atome. Das Dibromid ist der Alkylierungsbaustein für die abschließende Kupplung.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">N + H + K₂CO₃ → O</span>
+</div>
+<div class="step">
+K₂CO₃ = Mild Base. N (Dibromid) alkyliert das Lacton H (nucleophile Substitution, Br⁻ als Abgangsgruppe). Zwei C-C-Bindungen werden geknüpft → Camptothecin-Grundgerüst entsteht!<br>
+<strong>O</strong> = Vorstufe des vollständigen Camptothecin-Pentacyclus (mit OMe-Schutzgruppe).
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">O + Pd(OAc)₂/PPh₃ → (Intermediate)</span>
+</div>
+<div class="step">
+Palladium-katalysierte Reaktion: Möglicherweise eine C-H-Aktivierung oder Buchwald-Hartwig-Kupplung zur Vervollständigung des aromatischen Ringsystems.
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">Intermediate + HBr, H₂O → SN-38</span>
+</div>
+<div class="step">
+HBr/H₂O entfernt die Methoxy-Schutzgruppe (OMe → OH) → phenolische OH-Gruppe wird freigesetzt.<br>
+<strong>SN-38 = 7-Ethyl-10-hydroxycamptothecin</strong>: das vollständige Pentacyclus-System mit der charakteristischen E-Ring-Lacton-Gruppe und der 10-OH-Gruppe.
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">SN-38 = 7-Ethyl-10-hydroxycamptothecin</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">
+Fünfring-System: A (Pyridinon) + B (Pyridinring) + C (Doppelring) + D (Pyrrolo) + E (α-Hydroxylacton)<br>
+Stereozentrum an C-20 (S-Konfiguration): das chiral-bestimmende Merkmal für biologische Aktivität<br>
+Die Ethylgruppe (7-Position) und die OH-Gruppe (10-Position) sind die charakteristischen Substituenten
+</div>
+</div>
+
+<div class="result">
+SN-38 ist der aktive Metabolit von Irinotecan und hemmt Topoisomerase I durch Stabilisierung des Topoisomerase-I/DNA-Komplexes, was zu DNA-Strangbrüchen und Zelltod führt.
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background:#f0f4ff;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+
+<table>
+  <tr><th>Aufgabe</th><th>Kernaussage</th></tr>
+  <tr><td><strong>1a</strong></td><td>Cisplatin → <strong>Intrastrang</strong>-Quervernetzung (beide G im gleichen Strang, cis-90°-Geometrie)</td></tr>
+  <tr><td><strong>1b</strong></td><td>Transplatin → <strong>Interstrang</strong>-Quervernetzung (G auf gegenüberliegenden Strängen, trans-180°)</td></tr>
+  <tr><td><strong>2</strong></td><td>Intrastrang: T<sub>m</sub> ↓ (destabilisiert) | Interstrang: T<sub>m</sub> ↑ (kovalente Brücke stabilisiert)</td></tr>
+  <tr><td><strong>3</strong></td><td>Pt-1=[PtI₄]²⁻ (27,7%) | Pt-2=cis-[Pt(NH₃)₂I₂] (40,4%) | Pt-3=cis-[Pt(NH₃)₂(H₂O)₂]²⁺ (73,6%) | Pt-4=Carboplatin (52,6%)</td></tr>
+  <tr><td><strong>4</strong></td><td>Dicycloplatin = Carboplatin + H₂CBDCA, 4 H-Brücken (N–H···O=C und O–H···O=C)</td></tr>
+  <tr><td><strong>5</strong></td><td>Dicycloplatin hydrolysebeständiger: H-Brücken schirmen das Pt-Zentrum sterisch ab</td></tr>
+  <tr><td><strong>6</strong></td><td>A=Addukt, B=Diol, C=OBn-geschützt, D=tBu entfernt, E=Aldehyd (NaIO₄), F=Carbonsäure (NaClO₂), G=Diol-Chinolin-COOH, H=Lacton-Baustein</td></tr>
+  <tr><td><strong>7</strong></td><td>J=Oxamid-Anilin, K=cyclisches Diketonderivat, L=Chlor-Verbindung, M=Alkohol, N=Dibromid (C₁₃H₁₃Br₂NO), O=Camptothecin-Vorstufe, SN-38=7-Ethyl-10-hydroxycamptothecin</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #c5cae9; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 24 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
