@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 19 – Kohlenhydrate als chirale Ausgangsstoffe | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #f5fff8; color: #1a2e1a; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #1b5e20; color: #1b5e20;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #1b5e20; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #1b5e20; border-left: 5px solid #43a047; padding-left: 13px; margin-top: 0; }
+  h3 { color: #2e4a2e; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #c8e6c9; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(27,94,32,0.07); }
+  .teil { background: #e8f5e9; border: 2px solid #43a047; border-radius: 10px; padding: 14px 22px; margin: 20px 0 0; }
+  .box  { background: #e8f5e9; border-left: 4px solid #43a047; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #e3f2fd; border-left: 5px solid #1565c0; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .key    { background: #fff3e0; border-left: 4px solid #e65100; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .stereo { background: #fce4ec; border-left: 4px solid #c62828; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+
+  .formula      { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #f3e5f5; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.0; }
+  .reaction { background: #1b5e20; color: #e8f5e9; border-radius: 8px; padding: 10px 18px; text-align: center; font-family: 'Courier New', monospace; margin: 10px 0; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #1b5e20; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #c8e6c9; padding: 9px 13px; }
+  tr:nth-child(even) { background: #f5fff8; }
+
+  .step { margin: 10px 0; padding: 11px 16px; background: #fafffe; border-radius: 7px; border: 1px solid #c8e6c9; }
+  .schritt-nr { display: inline-block; background: #1b5e20; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #e8f5e9; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #c8e6c9; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #e8f5e9, #f5fff8); border: 2px solid #43a047; border-radius: 10px; padding: 14px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.15em; font-weight: bold; color: #1b5e20; font-family: 'Courier New', monospace; }
+
+  .rxn-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0; }
+  .rxn-box { background: #1b5e20; color: white; border-radius: 8px; padding: 6px 14px; font-family: 'Courier New', monospace; font-size: 0.9em; }
+  .rxn-reagent { background: #fff3e0; border: 1px solid #e65100; border-radius: 6px; padding: 4px 10px; font-size: 0.85em; color: #e65100; }
+  .rxn-arrow { color: #43a047; font-size: 1.3em; font-weight: bold; }
+
+  .struct { font-family: 'Courier New', monospace; background: #0d2010; color: #a5d6a7; border-radius: 8px; padding: 14px 18px; margin: 10px 0; line-height: 1.9; font-size: 0.93em; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .mol-card { background: white; border: 2px solid #43a047; border-radius: 10px; padding: 14px 16px; }
+  .mol-title { font-weight: bold; color: #1b5e20; border-bottom: 1px solid #c8e6c9; padding-bottom: 6px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🍬 Problem 19 – Kohlenhydrate als chirale Ausgangsstoffe<br>
+<span style="font-size:0.82em; font-weight:normal">Vollständige Lösung – L-Sorbose, Thromboxan B2 & Swainsonin aus chiralen Zuckern</span></h1>
+
+<!-- EINLEITUNG -->
+<div class="aufgabe">
+<h2>📚 Grundprinzip: Der chirale Pool</h2>
+<div class="box">
+Der <strong>chirale Pool</strong> bezeichnet den Vorrat an enantiomerenreinen Naturstoffen (Zucker, Aminosäuren, Terpene), die als Ausgangsstoffe für die Synthese chiraler Wirkstoffe dienen. <strong>Kohlenhydrate</strong> sind besonders wertvoll, da sie:
+<ul>
+  <li>Günstig und im Großmaßstab verfügbar sind</li>
+  <li>Mehrere definierte Stereozentren besitzen</li>
+  <li>Ihre Stereochemie selektiv modifiziert werden kann (Oxidation/Reduktion, SN2-Inversion)</li>
+  <li>Als Bausteine für komplexe Naturstoffe (Alkaloide, Prostanoide) geeignet sind</li>
+</ul>
+</div>
+</div>
+
+<!-- TEIL 1 -->
+<div class="teil"><h2>Teil 1: L-Sorbose → Pyrrolidinol-Alkaloid X</h2></div>
+
+<div class="aufgabe">
+<h2>Aufgaben 1 & 2: Synthese von X aus L-Sorbose-Derivat A</h2>
+
+<div class="box">
+<strong>Ausgangsstoff A:</strong> L-Sorbose-Derivat mit Dioxolan-Schutzgruppe (cyclisches Acetal), Tosylat (TsO⁻) als Abgangsgruppe und Acetat-Schutzgruppen (OAc).
+</div>
+
+<h3>Reaktionssequenz A → X</h3>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>A + LiN₃ → B</strong> (Azidierung)
+<div class="rxn-reagent" style="display:inline-block;">LiN₃ = Lithiumazid</div>
+<ul>
+  <li>TsO⁻ ist eine exzellente Abgangsgruppe (Tosylat)</li>
+  <li>N₃⁻ (Azid-Ion) als Nukleophil: SN2-Angriff → <strong>Inversion</strong> der Konfiguration am betreffenden C-Atom</li>
+  <li>Alle OAc-Gruppen bleiben erhalten</li>
+</ul>
+<div class="formula">B = Azido-Zuckerderivat (N₃ statt TsO⁻, OAc-Gruppen intact)</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>B + 1) NaOMe, 2) H₃O⁺ → C</strong> (Entacetylierung)
+<ul>
+  <li>NaOMe = Natriummethanolat (milde Base): <strong>Zemplén-Deacetylierung</strong> aller OAc → OH</li>
+  <li>Azid-Gruppe N₃ bleibt stabil gegenüber Base</li>
+  <li>H₃O⁺: saure Aufarbeitung, neutralisiert NaOMe</li>
+</ul>
+<div class="formula">C = Azido-Polyol (alle OH-Gruppen frei, N₃-Gruppe erhalten)</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>C + H₂, Pd/C → X</strong> (Reduktion + intramolekulare Cyclisierung)
+<ul>
+  <li>H₂/Pd/C: <strong>Reduktion N₃ → NH₂</strong> (Amin entsteht in situ)</li>
+  <li>Das frisch gebildete NH₂ reagiert sofort mit der benachbarten Carbonyl-Gruppe: <strong>intramolekulare reduktive Aminierung</strong></li>
+  <li>→ Bildung eines 5-gliedrigen Pyrrolidin-Rings</li>
+</ul>
+<div class="formula">X = C₆H₁₃NO₄ = Pyrrolidinol-Derivat (2,5-Dihydroxymethyl-pyrrolidin)</div>
+</div>
+
+<div class="struct">
+X = (2R,3R,4S)-2-(Hydroxymethyl)-3,4-dihydroxypyrrolidin<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HOCH₂&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CH₂OH<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C──────────C<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HO&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;OH<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C──────────C<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;N<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H<br><br>
+5-gliedriger Pyrrolidinring mit 2 CH₂OH-Gruppen und 2 OH-Gruppen
+</div>
+
+<div class="result">
+A = L-Sorbose-Derivat (mit Dioxolan, TsO⁻, OAc)<br>
+B = N₃-Zuckerderivat (SN2-Inversion, OAc erhalten)<br>
+C = N₃-Polyol (nach Zemplén-Deacetylierung)<br>
+X = <strong>2,5-Dihydroxymethyl-3,4-dihydroxypyrrolidin (DMDP-Analogon)</strong><br>
+Schlüsselschritt: H₂/Pd/C reduziert N₃ → NH₂, das spontan cyclisiert!
+</div>
+</div>
+
+<!-- TEIL 2 -->
+<div class="teil"><h2>Teil 2: D-Glucose → Thromboxan B₂ (TxB₂)</h2></div>
+
+<div class="aufgabe">
+<h2>Aufgaben 3 & 4: Synthese von Intermediat I und Reagenzienreihenfolge Z1–Z4</h2>
+
+<div class="box">
+<strong>Thromboxan B₂ (TxB₂)</strong> ist ein biologisch aktives Eicosanoid (C20-Prostanoid) mit einem charakteristischen Tetrahydropyranyl-Ring, einer Alkohol-Seitenkette (C8–OH) und einer Carbonsäure-Kette. Die D-Glucose liefert den Tetrahydropyranyl-Baustein mit korrekter Stereochemie.
+</div>
+
+<h3>Synthese von D-Glucose → I</h3>
+
+<table>
+  <tr><th>Schritt</th><th>Reaktion</th><th>Erklärung</th></tr>
+  <tr>
+    <td><strong>D-Glucose → D</strong></td>
+    <td>1) MeOH, HCl<br>2) PhCH(OMe)₂, TsOH</td>
+    <td>1) Fischer-Glycosidierung → Methyl-α-D-glucopyranosid<br>2) 4,6-O-Benzyliden-Acetalschutz (6-Ring bevorzugt durch primäre OH an C6)</td>
+  </tr>
+  <tr>
+    <td><strong>D → E</strong></td>
+    <td>1) TsCl, Py<br>2) Na₂CO₃</td>
+    <td>Tosylierung der freien sekundären OH (C2 oder C3) → Monotosylat. Na₂CO₃: milde Aufarbeitung</td>
+  </tr>
+  <tr>
+    <td><strong>E → F</strong></td>
+    <td>1) LiAlH₄<br>2) BzCl</td>
+    <td>1) LiAlH₄ verdrängt TsO⁻ reduktiv → <strong>Desoxygenierung</strong> (TsO-C → H-C, Inversion)<br>2) BzCl schützt verbleibende OH als Benzoat-Ester (OBz)</td>
+  </tr>
+  <tr>
+    <td><strong>F → G</strong></td>
+    <td>1) H₂, Pd(OH)₂/C<br>2) TBDPSCl</td>
+    <td>1) Hydrogenolyse des Benzyliden-Acetals → freie C4-OH und C6-OH<br>2) TBDPSCl schützt <em>selektiv</em> das primäre C6-OH als Silylether (OTBDPS)</td>
+  </tr>
+  <tr>
+    <td><strong>G → H</strong></td>
+    <td>1) DMSO, (COCl)₂<br>2) Et₃N</td>
+    <td><strong>Swern-Oxidation</strong>: Das verbliebene sekundäre OH → Keton<br>Et₃N: Base, neutralisiert HCl aus Swern-Reagenz</td>
+  </tr>
+  <tr>
+    <td><strong>H → I</strong></td>
+    <td>(MeO)₂P–CH(COOMe)<br>KOtBu</td>
+    <td><strong>Horner-Wadsworth-Emmons (HWE) Reaktion</strong>:<br>KOtBu deprotoniert das Phosphonat → Carbanion reagiert mit Keton (H) → E-selektives Alken<br>I = α,β-ungesättigter Methylester (C=C–COOMe)</td>
+  </tr>
+</table>
+
+<div class="result">
+I = Glucosid-Derivat mit α,β-ungesättigtem Methylester-Fragment, OTBDPS-Gruppe, OBz-Gruppen und OMe an C1.<br>
+Formel: C₂₅H₃₂SiO₅ (laut Aufgabe)
+</div>
+
+<h3>Reagenzienreihenfolge Z1–Z4 für I → TxB₂</h3>
+
+<div class="key">
+<strong>Ziel:</strong> Aus I müssen eingeführt werden: die Keton-Seitenkette (C(O)-(CH₂)₄-CH₃), die Carbonsäure-Seitenkette (COOH), freie OH-Gruppen → TxB₂
+</div>
+
+<div class="step">
+<strong>Analyse der vier Reagenz-Sätze:</strong>
+<ul>
+  <li><strong>Z1:</strong> 1) PCC, 2) Ph₃P=CH–C(O)(CH₂)₄CH₃ → Oxidation OH→Aldehyd, dann Wittig → Keton-Seitenkette</li>
+  <li><strong>Z2:</strong> 1) BzCl, 2) Bu₄NF → OH schützen als OBz, dann OTBDPS entfernen (TBAF)</li>
+  <li><strong>Z3:</strong> 1) NaBH₄, 2) K₂CO₃, 3) HCl → Keton/Aldehyd → OH, Verseifung OBz→OH, saure Entschützung</li>
+  <li><strong>Z4:</strong> 1) DIBAL-H, 2) Ph₃P=CH(CH₂)₃COOH, 3) CH₂N₂ → Ester→Aldehyd, Wittig→Alken-COOH, CH₂N₂ schützt COOH als COOMe</li>
+</ul>
+</div>
+
+<div class="step">
+<strong>Logische Reihenfolge:</strong>
+<ol>
+  <li><strong>Z2 zuerst:</strong> BzCl schützt neu zugängliche OH (nach TBDPS-Entfernung würde C6-OH frei → schützen). Bu₄NF entfernt OTBDPS → C6-OH frei für nächste Reaktion</li>
+  <li><strong>Z1:</strong> PCC oxidiert das freie primäre C6-OH zum Aldehyd. Wittig-Reaktion führt die Keton-Seitenkette (Thromban-Kette) ein</li>
+  <li><strong>Z4:</strong> DIBAL-H reduziert den COOMe-Ester selektiv zum Aldehyd (−78°C). Wittig-Reaktion mit dem Ylid (COOH-Kette). CH₂N₂ schützt COOH temporär als COOMe</li>
+  <li><strong>Z3 zuletzt:</strong> NaBH₄ reduziert Keton → OH (stereoselektiv). K₂CO₃ verseift OBz → OH. HCl entfernt letzte Acetal-Schutzgruppen → TxB₂ fertig</li>
+</ol>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">Reihenfolge: Z2 → Z1 → Z4 → Z3</div>
+</div>
+</div>
+
+<!-- TEIL 3 -->
+<div class="teil"><h2>Teil 3: D-Mannose → (−)-Swainsonin</h2></div>
+
+<div class="aufgabe">
+<h2>Aufgaben 5–7: Synthese von (−)-Swainsonin aus Benzyl-α-D-mannopyranosid</h2>
+
+<div class="box">
+<strong>Swainsonin</strong> ist ein Indolizidinalkaloid (bicyclischer N-Heterocyclus: Pyrrolidin + Piperidin fusioniert) mit drei OH-Gruppen und starker biologischer Wirkung (Glycosidase-Inhibitor). D-Mannose liefert die vier benötigten Stereozentren.
+</div>
+
+<h3>Konfigurationen</h3>
+<div class="grid2">
+  <div class="mol-card">
+    <div class="mol-title">Benzyl-α-D-mannopyranosid (Startmaterial)</div>
+    <ul>
+      <li>C1: R (anomeres C, α-Konfiguration, axialer OBn)</li>
+      <li>C2: R (OH axial, Mannose-spezifisch – Epimerismus an C2 vs. Glucose)</li>
+      <li>C3: S</li>
+      <li>C4: R</li>
+      <li>C5: R</li>
+    </ul>
+    <p>5 Stereozentren gesamt</p>
+  </div>
+  <div class="mol-card">
+    <div class="mol-title">(−)-Swainsonin (Produkt)</div>
+    <ul>
+      <li>C1: S</li>
+      <li>C2: R</li>
+      <li>C3: R</li>
+      <li>C8a: S (N-Brückenposition)</li>
+    </ul>
+    <p>4 Stereozentren im bicyclischen System</p>
+    <p><em>3 der Mannose-Stereozentren werden direkt übernommen!</em></p>
+  </div>
+</div>
+
+<h3>Syntheseweg P → (−)-Swainsonin</h3>
+
+<table>
+  <tr><th>Schritt</th><th>Reaktion</th><th>Erklärung</th></tr>
+  <tr>
+    <td><strong>Start → P</strong></td>
+    <td>1) TBDPSCl, Imidazol<br>2) (MeO)₃CH, CSA</td>
+    <td>1) Selektive Silylierung der primären C6-OH → OTBDPS<br>2) Trimethylorthoformiat + CSA: 2,3-O-Methylorthoformiat-Schutzgruppe (cyclischer Orthoester schützt C2,C3-Diol)</td>
+  </tr>
+  <tr>
+    <td><strong>P → Q</strong></td>
+    <td>1) PCC<br>2) NaBH₄</td>
+    <td>1) PCC oxidiert C4-OH → Keton (C4-Carbonyl)<br>2) NaBH₄ reduziert Keton → OH, aber mit <strong>invertierter Stereochemie!</strong><br>→ Epimerisation an C4: Manno-Konfiguration → Talo-Konfiguration<br>Q und P sind Epimere an C4</td>
+  </tr>
+  <tr>
+    <td><strong>Q → R</strong></td>
+    <td>1) Tf₂O, Py<br>2) NaN₃</td>
+    <td>1) Tf₂O aktiviert C4-OH als Triflat (beste Abgangsgruppe)<br>2) NaN₃: SN2 mit Inversion → N₃ an C4 statt OTf<br>→ Doppelte Inversion (PCC/NaBH₄ + Tf/NaN₃) = Netto-Retention der Mannose-Konfiguration an C4</td>
+  </tr>
+  <tr>
+    <td><strong>R → S</strong></td>
+    <td>1) TBAF<br>2) PCC</td>
+    <td>1) TBAF entfernt OTBDPS → freies primäres C6-OH<br>2) PCC oxidiert C6-OH → Aldehyd<br>S = Azido-Glycosid-Aldehyd (N₃ an C4, CHO an C6)</td>
+  </tr>
+  <tr>
+    <td><strong>S → T</strong></td>
+    <td>1) Ph₃P=CH–CHO<br>2) H₂, Pd/C, MeOH</td>
+    <td>1) <strong>Wittig-Reaktion</strong>: Aldehyd + stab. Ylid → (E)-Alken-Aldehyd (C=C–CHO verlängert die Kette)<br>2) H₂/Pd/C: (a) Hydrierung der C=C-Doppelbindung, (b) Hydrogenolyse OBn → OH, (c) <strong>N₃ → NH₂</strong><br>T = Amino-Keto-Alkohol (frisches NH₂ + Aldehyd → bereit zur Cyclisierung)</td>
+  </tr>
+  <tr>
+    <td><strong>T → U</strong></td>
+    <td>TFA, dann Cyclisierung</td>
+    <td>TFA entfernt Orthoformiat-Schutzgruppe → C2,C3-Diol frei.<br><strong>Intramolekulare reduktive Aminierung</strong>: NH₂ + Aldehyd → Iminiumion → Angriff → Pyrrolidin-Ring schließt<br>U = Indolizidin-Grundgerüst (bicyclischer N-Heterocyclus)</td>
+  </tr>
+  <tr>
+    <td><strong>U → (−)-Swainsonin</strong></td>
+    <td>H₂, Pd/C, AcOH</td>
+    <td>Hydrogenolyse: OBn-Schutzgruppe (falls noch vorhanden) → OH.<br>AcOH: Aktivierung der Protonierung des N-Atoms für Reduktion.<br>→ Finale Freisetzung der OH-Gruppen → <strong>(−)-Swainsonin</strong></td>
+  </tr>
+</table>
+
+<h3>Aufgabe 7: Erhaltene vs. neu gesetzte Stereozentren</h3>
+<div class="step">
+<strong>Analyse der Stereochemie-Übertragung:</strong>
+<ul>
+  <li><strong>Aus D-Mannose DIREKT übernommen (unverändert):</strong> C2 und C3 (beide werden durch den Orthoformiat-Schutz nicht angegriffen; ihre relative Konfiguration bleibt exakt erhalten)</li>
+  <li><strong>C4 (Mannose) → C4 in Swainsonin:</strong> Doppelte Inversion (Oxidation/Reduktion + Triflat/Azid-SN2) → Netto-Retention der ursprünglichen Mannose-Konfiguration an dieser Position!</li>
+  <li><strong>C5 (Mannose):</strong> Bleibt im Ring, Konfiguration übernommen</li>
+  <li><strong>NEU gesetzt:</strong> C8a (das N-Brücken-C beim Ringschluss) – dieses Stereozentrum entsteht beim intramolekularen Iminiumion-Angriff (durch thermodynamische Kontrolle bevorzugt)</li>
+</ul>
+</div>
+
+<div class="stereo">
+<strong>Eleganz der Synthesestrategie:</strong><br>
+Die Mannose-Stereochemie wird direkt auf das Alkaloid übertragen. Durch gezielten Einsatz von Oxidation/Reduktion und SN2-Reaktionen mit Inversion kann die natürliche Konfiguration der Mannose selektiv modifiziert werden, um die gewünschte Swainsonin-Stereochemie zu erhalten – ohne aufwändige asymmetrische Katalyse!
+</div>
+
+<div class="result">
+Erhaltene Stereozentren aus D-Mannose: <strong>C2, C3, C5</strong> (Konfiguration direkt übernommen)<br>
+Modifiziert durch doppelte Inversion: <strong>C4</strong> (Netto-Retention)<br>
+Neu eingeführt: <strong>C8a</strong> (durch intramolekulare Cyclisierung)<br><br>
+→ (−)-Swainsonin: (1S,2R,3R,8aS)-1,2,3-Trihydroxyindolizidin
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background:#f5fff8;">
+<h2>📋 Zusammenfassung aller drei Syntheserouten</h2>
+
+<table>
+  <tr><th>Route</th><th>Ausgangsstoff</th><th>Zielverbindung</th><th>Schlüsselschritte</th></tr>
+  <tr>
+    <td><strong>Teil 1</strong></td>
+    <td>L-Sorbose-Derivat A</td>
+    <td>X = Pyrrolidinol (C₆H₁₃NO₄)</td>
+    <td>SN2 (TsO→N₃), Zemplén-Deacet., reduktive Cyclisierung (N₃→NH₂→Ring)</td>
+  </tr>
+  <tr>
+    <td><strong>Teil 2</strong></td>
+    <td>D-Glucose</td>
+    <td>Thromboxan B₂ (TxB₂)</td>
+    <td>Benzyliden-Schutz, Desoxygenierung (LiAlH₄/TsO), Swern-Oxidation, HWE-Reaktion<br>Reihenfolge: Z2→Z1→Z4→Z3</td>
+  </tr>
+  <tr>
+    <td><strong>Teil 3</strong></td>
+    <td>Benzyl-α-D-mannopyranosid</td>
+    <td>(−)-Swainsonin</td>
+    <td>Epimerisation (PCC/NaBH₄), Azidierung (Tf₂O/NaN₃), Wittig, H₂/Pd (N₃→NH₂), intramol. Cyclisierung</td>
+  </tr>
+</table>
+
+<div class="box" style="margin-top:16px;">
+<strong>Gemeinsames Designprinzip aller drei Syntheserouten:</strong><br>
+Die Stereochemie des Zuckers wird gezielt genutzt: (1) Direkte Übertragung erhaltener Zentren, (2) Kontrollierte Inversion durch SN2-Reaktionen, (3) Diastereoselektive Reduktionen nutzen die vorhandene Chiralität als dirigierende Gruppe. Kein aufwändiger chiraler Katalysator ist nötig!
+</div>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #c8e6c9; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 19 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>
