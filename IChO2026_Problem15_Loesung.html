@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 15 – Mikroskopie in der Chemie | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px 30px; background: #f0f8ff; color: #1a1a2e; line-height: 1.8; }
+
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back {
+    text-decoration: none; display: inline-flex; align-items: center;
+    background: white; border: 1.5px solid #003580; color: #003580;
+    padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s;
+  }
+  .btn-back:hover { background: #003580; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+
+  h1 { background: linear-gradient(135deg, #003580, #0057b8); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.32em; margin-top: 0; }
+  h2 { color: #003580; border-left: 5px solid #0057b8; padding-left: 13px; margin-top: 0; }
+  h3 { color: #0044a0; margin-top: 18px; }
+
+  .aufgabe { background: white; border: 1px solid #b8d4f0; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(0,53,128,0.07); }
+  .box  { background: #dceeff; border-left: 4px solid #0057b8; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #e8f5e9; border-left: 5px solid #2e7d32; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .key    { background: #fff3e0; border-left: 4px solid #e65100; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .ms-box { background: #f3e5f5; border-left: 4px solid #7b1fa2; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+
+  .formula      { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; text-align: center; font-size: 1.05em; }
+  .formula-left { background: #ede7f6; border: 1px solid #9575cd; border-radius: 6px; padding: 11px 18px; font-family: 'Courier New', monospace; margin: 11px 0; font-size: 1.01em; line-height: 2.1; }
+  .reaction { background: #003580; color: #dceeff; border-radius: 8px; padding: 10px 18px; text-align: center; font-family: 'Courier New', monospace; margin: 10px 0; }
+
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #003580; color: white; padding: 10px 14px; text-align: center; }
+  td { border: 1px solid #b8d4f0; padding: 9px 13px; }
+  tr:nth-child(even) { background: #f0f8ff; }
+
+  .step { margin: 10px 0; padding: 11px 16px; background: #f8fcff; border-radius: 7px; border: 1px solid #b8d4f0; }
+  .schritt-nr { display: inline-block; background: #003580; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.9em; }
+
+  code { background: #dceeff; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; border: 1px solid #b8d4f0; }
+  ul li, ol li { margin: 7px 0; }
+
+  .highlight-box { background: linear-gradient(135deg, #dceeff, #f0f8ff); border: 2px solid #0057b8; border-radius: 10px; padding: 14px 20px; margin: 14px 0; text-align: center; }
+  .big-formula { font-size: 1.2em; font-weight: bold; color: #003580; font-family: 'Courier New', monospace; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .mol-card { background: white; border: 2px solid #0057b8; border-radius: 10px; padding: 14px 16px; }
+  .mol-title { font-weight: bold; color: #003580; font-size: 1.05em; border-bottom: 1px solid #b8d4f0; padding-bottom: 6px; margin-bottom: 10px; }
+
+  .struct { font-family: 'Courier New', monospace; background: #001a40; color: #a8d0f8; border-radius: 8px; padding: 14px 20px; margin: 10px 0; line-height: 2.0; font-size: 0.93em; }
+
+  .olympic-rings { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
+  .ring { width: 40px; height: 40px; border-radius: 50%; border: 5px solid; display: inline-block; }
+
+  .rxn-step { display: flex; align-items: flex-start; gap: 10px; margin: 8px 0; padding: 10px 14px; background: #f8fcff; border-radius: 8px; border: 1px solid #b8d4f0; }
+  .rxn-label { background: #003580; color: white; border-radius: 6px; padding: 2px 10px; font-family: 'Courier New', monospace; font-weight: bold; white-space: nowrap; font-size: 0.88em; min-width: 40px; text-align: center; }
+  .rxn-arrow { color: #0057b8; font-size: 1.3em; font-weight: bold; margin: 0 6px; }
+  .rxn-reagent { background: #fff3e0; border: 1px solid #e65100; border-radius: 5px; padding: 1px 8px; font-size: 0.82em; color: #e65100; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🔬 Problem 15 – Mikroskopie in der Chemie<br>
+<span style="font-size:0.82em; font-weight:normal">AFM, Olympicen-Synthese, Quantenketten & Makrocyclus-Chemie</span></h1>
+
+<!-- EINLEITUNG -->
+<div class="aufgabe">
+<h2>📚 Kontext: AFM und das kleinste Olympia-Logo</h2>
+<div class="box">
+<strong>Atomic Force Microscopy (AFM)</strong> ermöglicht die Abbildung einzelner Moleküle auf Oberflächen mit atomarer Auflösung. 2012 publizierten Chemiker der Universität Warwick gemeinsam mit IBM Research das erste AFM-Bild von <strong>Olympicen</strong> – einem Kohlenwasserstoff mit 5 fusionierten Ringen, der die Olympiaringe symbolisiert. Dieses Bild wurde als kleinstes Olympia-Logo der Londoner Sommerspiele 2012 anerkannt.
+</div>
+<div style="text-align:center; margin:14px 0; font-size:1.1em;">
+  Olympiaringe → 5 verbundene Kreise → analoges chemisches Motiv: <strong>Olympicen (5 fusionierte aromatische Ringe)</strong>
+</div>
+</div>
+
+<!-- AUFGABE 1 -->
+<div class="aufgabe">
+<h2>Aufgabe 1: Strukturen A–E und X</h2>
+
+<div class="key">
+<strong>Schlüsselinformation:</strong> X hat eine C₂-Symmetrieachse und ist ein Kohlenwasserstoff. Aus der Synthese (Pyren als Kernbaustein + Ringannelierung) und dem Olympia-Logo-Motiv: <strong>X = Olympicen</strong> mit 5 fusionierten Ringen.
+</div>
+
+<table>
+  <tr><th>Verbindung</th><th>Reagenz</th><th>Reaktionstyp</th><th>Struktur</th></tr>
+  <tr>
+    <td><strong>A</strong></td>
+    <td>BrCH₂CO₂Et, PPh₃, NaH</td>
+    <td>Horner-Wittig-Reaktion (Wittig-Variante)</td>
+    <td>Pyren-4-CH=CH-CO₂Et<br><em>α,β-ungesättigter Ethylester; E-Konfiguration bevorzugt</em></td>
+  </tr>
+  <tr>
+    <td><strong>B</strong></td>
+    <td>1) H₂, Pd/C &nbsp; 2) KOH, dann H₃O⁺</td>
+    <td>1) Hydrierung C=C → C–C &nbsp; 2) Esterverseifung</td>
+    <td>3-(Pyren-4-yl)propionsäure<br><em>Gesättigte Propionsäure mit Pyren-Gruppe</em></td>
+  </tr>
+  <tr>
+    <td><strong>C</strong></td>
+    <td>1) SOCl₂, DMF &nbsp; 2) AlCl₃</td>
+    <td>1) Säurechlorid-Bildung &nbsp; 2) Intramolekulare Friedel-Crafts-Acylierung</td>
+    <td>Cyclopentanon-fused-Pyrenderivat<br><em>Neuer Ring durch intramol. C-Acylierung; DMF als Katalysator stabilisiert Chlorid</em></td>
+  </tr>
+  <tr>
+    <td><strong>D</strong></td>
+    <td>LiAlH₄</td>
+    <td>Keton-Reduktion → sek. Alkohol</td>
+    <td>Cyclopentanol-fused-Pyrenderivat<br><em>C=O → CHOH (das Ringketon wird zum Alkohol)</em></td>
+  </tr>
+  <tr>
+    <td><strong>E</strong></td>
+    <td>H₂SO₄</td>
+    <td>Säure-katalysierte Dehydratisierung (E1 oder E2)</td>
+    <td>Exocyclisches Alken am Pyrensystem<br><em>CHOH → C=C; E ist das weniger symmetrische Isomer</em></td>
+  </tr>
+  <tr>
+    <td><strong>X</strong></td>
+    <td>Amberlyst, Δ</td>
+    <td>Säure-katalysierte Protonen-Migration (Isomerisierung)</td>
+    <td><strong>Olympicen</strong> = Dibenzo[cd,mn]pyrene<br><em>Symmetrischeres, voll-aromatisches PAH mit C₂-Achse; 5 anellierte Ringe</em></td>
+  </tr>
+</table>
+
+<div class="struct">
+Synthesepfad (schematisch):<br><br>
+Pyren-4-CHO → [Wittig] → Pyren-CH=CH-CO₂Et (A)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ H₂/Pd + KOH<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pyren-CH₂-CH₂-COOH (B)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ SOCl₂/AlCl₃ (Friedel-Crafts)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bicyclisches Keton C (neuer 5-Ring)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ LiAlH₄<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alkohol D<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ H₂SO₄ (Dehydratisierung)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alken E (asymmetrisch)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ Amberlyst, Δ (Protonenmigration)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>X = Olympicen</strong> (C₂-symmetrisch, voll-aromatisch)
+</div>
+
+<div class="result">
+A = Pyren-4-CH=CH-CO₂Et (Wittig-Produkt, E-Alken)<br>
+B = 3-(Pyren-4-yl)propionsäure (nach Hydrierung + Verseifung)<br>
+C = Cyclopentanon-anneliertes Pyren (Friedel-Crafts, neuer 5-Ring)<br>
+D = Cyclopentanol-Derivat (LiAlH₄-Reduktion)<br>
+E = Exocyclisches Alken (Dehydratisierung, unsymmetrisch)<br>
+X = <strong>Olympicen</strong> (voll-aromatisch, C₂-Achse, 5 fusionierte Ringe)
+</div>
+</div>
+
+<!-- AUFGABE 2 -->
+<div class="aufgabe">
+<h2>Aufgabe 2: Name von X</h2>
+
+<div class="step">
+X gehört zur „...cen"-Nomenklatur polycyclischer aromatischer Kohlenwasserstoffe (PAH).<br>
+X hat <strong>5 fusionierte Ringe</strong> (Pyrensystem + 2 anellierte Ringe aus der Synthese).<br>
+Die Struktur erinnert an die Olympiaringe → Trivialname: <strong>Olympicen</strong>
+</div>
+
+<div class="step">
+<strong>Systematischer IUPAC-Name:</strong><br>
+Pyren ist der Kern (4 Ringe). Durch die intramolekulare Friedel-Crafts-Acylierung und anschließende Aromatisierung wird ein 5. Ring anelliert.<br>
+Das Ergebnis: <strong>Dibenzo[cd,mn]pyren</strong> (= Olympicen)<br>
+Auch bekannt als: Benzo[cd]fluoranthen-Isomer oder Naphthacen-Dibenzo-Derivat.
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">X = "Olympicen"</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">
+Vollständiger systematischer Name: <strong>Dibenzo[cd,mn]pyren</strong><br>
+Formel: C₂₆H₁₄ · 5 fusionierte Ringe · C₂-Symmetrieachse<br>
+Benannt nach den fünf Olympiaringen (London 2012)
+</div>
+</div>
+</div>
+
+<!-- AUFGABE 3 -->
+<div class="aufgabe">
+<h2>Aufgabe 3: Strukturen F–I</h2>
+
+<h3>Identifikation von F aus den Spektraldaten</h3>
+<div class="ms-box">
+<strong>Massenspektrum F:</strong> Hauptpeak m/z = 411,89<br>
+Bei zwei Br-Atomen (⁷⁹Br + ⁸¹Br): charakteristisches 1:2:1-Isotopenmuster<br>
+<div class="formula">M(F) = M(Olympicen, C₂₀H₁₂) + M(⁷⁹Br) + M(⁸¹Br) = 252,09 + 78,92 + 80,92 = 411,93 ≈ <strong>411,89 ✓</strong></div>
+→ <strong>F = Dibromo-Olympicen (C₂₀H₁₂Br₂)</strong>
+</div>
+
+<div class="step">
+<strong>Verifikation der anderen Hinweise für F:</strong>
+<ul>
+  <li><strong>4 Typen von Protonen:</strong> Olympicen hat durch seine Symmetrie mehrere nicht-äquivalente H-Positionen. Mit 2 Br symmetrisch substituiert bleiben 4 chemisch verschiedene Proton-Umgebungen ✓</li>
+  <li><strong>C₂-Symmetrieachse:</strong> Die zwei Br-Atome sitzen an den zwei symmetrieäquivalenten Positionen → C₂-Achse bleibt erhalten ✓</li>
+</ul>
+</div>
+
+<table>
+  <tr><th>Verbindung</th><th>Reaktion</th><th>Struktur</th></tr>
+  <tr>
+    <td><strong>F</strong></td>
+    <td>X (Olympicen) + Br₂</td>
+    <td><strong>Dibromo-Olympicen</strong> (C₂₀H₁₂Br₂)<br>Br an den beiden symmetrieäquivalenten Positionen. m/z 411,89 ✓</td>
+  </tr>
+  <tr>
+    <td><strong>G</strong></td>
+    <td>F auf Au-Oberfläche, Δ<br>(Ullmann-Kupplung)</td>
+    <td><strong>Verknüpftes Oligomer/Polymer</strong><br>Thermische C–C-Kupplung auf Gold: Br wird als Radikal abgespalten, zwei Olympicen-Einheiten verbinden sich kovalent. G = lineare Bi- oder Oligomer-Kette von Olympicen-Einheiten.</td>
+  </tr>
+  <tr>
+    <td><strong>H</strong></td>
+    <td>G → Reduktion</td>
+    <td><strong>Kohlenwasserstoff-Polymer ohne Br</strong><br>Reduktion entfernt die Br-Reste. H = Vollständig verbundene Olympicen-Kette (1D-Quantenkette für Quantenmagnetismus)</td>
+  </tr>
+  <tr>
+    <td><strong>I</strong></td>
+    <td>H → Tip-induzierte Dehydrogenierung (AFM-Spitze)</td>
+    <td><strong>Vollständig aromatisiertes PAH-Band</strong><br>Die AFM-Spitze überträgt mechanische Energie → Dehydrogenierung → vollständige Aromatisierung. I = Graphenband oder vollständig fusioniertes PAH.</td>
+  </tr>
+</table>
+
+<div class="result">
+F = Dibromo-Olympicen (C₂₀H₁₂Br₂), m/z ≈ 411,89, 4 H-Typen, C₂-Achse<br>
+G = Oligomere Olympicen-Kette (Ullmann-Kupplung auf Au, Br–Br Kopplung)<br>
+H = Br-freie Quantenkette (1D-Kohlenwasserstoff-Polymer)<br>
+I = Aromatisiertes PAH-Band (nach AFM-tip-induzierter Dehydrogenierung)
+</div>
+</div>
+
+<!-- AUFGABE 4 -->
+<div class="aufgabe">
+<h2>Aufgabe 4: Berechnung von L für die gaplose Quantenkette H</h2>
+
+<div class="box">
+<strong>Bedingung für „gapless":</strong> ΔLEE = k_B·T (thermische Energie ist groß genug um den Spin anzuregen)<br>
+Formel: ΔLEE ≤ J · 2π²S² / L → Gapless wenn ΔLEE = k_B·T
+</div>
+
+<div class="step">
+<span class="schritt-nr">1</span> <strong>Thermische Energie bei T = 298 K:</strong>
+<div class="formula">k_B·T = 8,617 × 10⁻⁵ eV/K × 298 K = <strong>0,02567 eV = 25,67 meV</strong></div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">2</span> <strong>Bedingung für Gapless:</strong>
+<div class="formula">ΔLEE = k_B·T &nbsp;→&nbsp; J · 2π²S² / L = k_B·T</div>
+<div class="formula">L = J · 2π²S² / (k_B·T)</div>
+</div>
+
+<div class="step">
+<span class="schritt-nr">3</span> <strong>Einsetzen der Werte</strong> (J = 38 meV, S = 1, k_B·T = 25,67 meV):
+<div class="formula-left">
+L = 38 meV × 2 × π² × 1² / 25,67 meV<br>
+L = 38 × 19,739 / 25,67<br>
+L = 750,1 / 25,67<br>
+L = <strong>29,2 ≈ 30</strong>
+</div>
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">L ≈ 30 Wiederholungseinheiten</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">
+Ab einer Kettenlänge von L ≈ 30 Olympicen-Einheiten wird die Quantenkette H bei Raumtemperatur gapless (keine Spinanregungsenergie mehr nötig – die thermische Energie reicht aus)
+</div>
+</div>
+</div>
+
+<!-- AUFGABE 5 -->
+<div class="aufgabe">
+<h2>Aufgabe 5: Strukturen R, S, T (thermische Isomerisierung von Q)</h2>
+
+<div class="box">
+<strong>Kontext:</strong> Q (ein Kohlenwasserstoff mit 7-Ringen oder Cumulen-Einheiten) isomerisiert thermisch bei T &gt; 90°C zu R, S, T. Alle drei enthalten nur 5- und 6-gliedrige Ringe. S hat eine C₂-Symmetrieachse.
+</div>
+
+<div class="step">
+<strong>Reaktionsprinzip:</strong> Verbindungen mit gespannten oder antiäquilibrierten Ringtopologien (z.B. 7-Ringe im Kohlenwasserstoff) lagern sich thermisch in stabilere 5+6-Ring-Systeme um:
+<ul>
+  <li>7-Ringe → 5+6-Ring-Umwandlung (bekannt als „Cope-Umlagerung" oder Stone-Wales-artige Umlagerung)</li>
+  <li>Cumuene → Aromaten (π-System Reorganisation)</li>
+</ul>
+</div>
+
+<div class="grid2">
+  <div class="mol-card">
+    <div class="mol-title">R – erstes Isomer</div>
+    <p>Nur 5- und 6-Ringe. Das AFM-Bild von R zeigt eine asymmetrischere Struktur als S. R entspricht einem <strong>Fluoranthen-artigen PAH</strong> (5+6-Ring-System aus der Umlagerung von Q).</p>
+    <p><em>Kein C₂ (oder andere Symmetrieachse) – asymmetrisches PAH</em></p>
+  </div>
+  <div class="mol-card">
+    <div class="mol-title">S – symmetrisches Isomer (C₂-Achse)</div>
+    <p>S hat eine C₂-Symmetrieachse (wie angegeben). Das entspricht einem <strong>Corannulen-artigen oder Pyren-artigen Isomer</strong> mit symmetrischer Anordnung der 5- und 6-Ringe.</p>
+    <p><em>C₂-Achse: das Molekül kann in zwei spiegelbildliche Hälften geteilt werden</em></p>
+  </div>
+</div>
+
+<div class="mol-card" style="margin-top:12px;">
+  <div class="mol-title">T – drittes Isomer</div>
+  <p>T enthält ebenfalls nur 5+6-Ringe aber in einer anderen topologischen Anordnung als R oder S. Das AFM-Bild zeigt eine kompaktere Struktur. T entspricht möglicherweise einem <strong>Acenaphthen- oder Fluorenartigen System</strong> mit fusioniertem 5-Ring im Zentrum.</p>
+</div>
+
+<div class="result">
+R = Fluoranthen-artiges Isomer (5+6-Ring, asymmetrisch, aus thermischer Stone-Wales-artiger Umlagerung)<br>
+S = Symmetrisches Isomer mit C₂-Achse (Corannulen-artig oder Pyrenabkömmling, 5+6-Ringe)<br>
+T = Weiteres 5+6-Ring-Isomer (kompaktere Topologie, asymmetrisch)
+</div>
+</div>
+
+<!-- AUFGABE 6 -->
+<div class="aufgabe">
+<h2>Aufgabe 6: Strukturen Q, U, V, W</h2>
+
+<h3>Identifikation von U aus dem Massenspektrum</h3>
+<div class="ms-box">
+<strong>MS von U:</strong> Drei Peaks bei m/z 234 : 236 : 238 = 1 : 2 : 1<br>
+Das 1:2:1-Muster ist das charakteristische <strong>Isotopenmuster für genau zwei Br-Atome</strong>:<br>
+(⁷⁹Br)₂ : (⁷⁹Br+⁸¹Br) : (⁸¹Br)₂ = 1 : 2 : 1<br>
+<div class="formula">M(U, ⁷⁹Br₂) = 234 → M(Rest ohne 2×79) = 234 − 158 = 76 = C₆H₄ (Benzol − 2H)</div>
+U = Dibrombenzol-Derivat mit M(C₆H₄Br₂) = 234 ✓
+</div>
+
+<div class="step">
+<strong>Welches Dibrombenzol-Isomer?</strong>
+<ul>
+  <li>1,4-Dibrombenzol: nur 1 Typ aromatischer H (alle 4 H äquivalent) → <span style="color:#c62828;">✗</span></li>
+  <li>1,3-Dibrombenzol: 3 Typen H → <span style="color:#c62828;">✗</span></li>
+  <li><strong>1,2-Dibrombenzol:</strong> 2 Typen H: H3,H6 (ortho zur Achse) und H4,H5 (meta-artig) → <span style="color:#2e7d32;">✓</span></li>
+</ul>
+<div class="formula">U = 1,2-Dibrombenzol (o-Dibrombenzol), C₆H₄Br₂, M(⁷⁹Br₂) = 234 ✓, 2 H-Typen ✓</div>
+</div>
+
+<h3>Synthesesequenz U → V → W → Q</h3>
+
+<div class="rxn-step">
+  <span class="rxn-label">U→V</span>
+  <span class="rxn-arrow">→</span>
+  <div>
+    <span class="rxn-reagent">Me₃Si–C≡CH, CuI, Et₃N, PdCl₂(PPh₃)₂</span><br>
+    <strong>Sonogashira-Kupplung:</strong> Die zwei Br-Atome werden durch TMS-geschützte Alkin-Gruppen ersetzt. Pd/Cu-Katalysator kuppelt Aryl-Br + TMS-Acetylen → Aryl-C≡C-TMS.<br>
+    <strong>V = 1,2-Bis(trimethylsilylethynyl)benzol</strong><br>
+    Zwei TMS-Alkin-Gruppen an den 1,2-Positionen des Benzolrings.
+  </div>
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">V→W</span>
+  <span class="rxn-arrow">→</span>
+  <div>
+    <span class="rxn-reagent">Bu₄NF (TBAF)</span><br>
+    <strong>Entsilylierung:</strong> TBAF entfernt selektiv die TMS-Silylschutzgruppe der Alkin-Gruppen.<br>
+    R–C≡C–TMS + F⁻ → R–C≡C–H + TMSF<br>
+    <strong>W = 1,2-Diethynylbenzol</strong> (o-Diethynylbenzol)<br>
+    Zwei terminale Alkin-Gruppen am Benzolring.
+  </div>
+</div>
+
+<div class="rxn-step">
+  <span class="rxn-label">W→Q</span>
+  <span class="rxn-arrow">→</span>
+  <div>
+    <span class="rxn-reagent">0,5 Äquiv U, CuI, Et₃N, PdCl₂(PPh₃)₂</span><br>
+    <strong>Glaser-Kupplung / intermolekulare Sonogashira + Cyclisierung:</strong><br>
+    0,5 Äquiv U (= Dihalid) kuppelt mit W (Dialkin): 2 mol W + 1 mol U → Oligomer.<br>
+    Bei der richtigen Stöchiometrie entsteht durch <strong>repetitive Sonogashira-Kupplung</strong> ein <strong>makrocyclisches Produkt Q</strong>.<br>
+    <strong>Q = [5]Ortho-Phenylacetylen-Makrocyclus</strong><br>
+    5 Benzolringe, jeweils durch C≡C verbunden, im Kreis angeordnet. Das AFM-Bild zeigt die charakteristische 5-Blüten/Stern-Struktur ✓
+  </div>
+</div>
+
+<div class="struct">
+Strukturschema der Verbindungen:<br><br>
+U: 1,2-Br₂–C₆H₄ (Dibrombenzol)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ + 2×TMS-C≡CH, Pd/Cu<br>
+V: 1,2-(TMS-C≡C)₂–C₆H₄<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ TBAF<br>
+W: 1,2-(HC≡C)₂–C₆H₄ (o-Diethynylbenzol)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ + 0.5 U, Pd/Cu<br>
+Q: [C₆H₄–(C≡C)₂]₅ = Makrocyclus mit 5 Benzolringen durch je 2 Alkin-Einheiten verbunden<br>
+&nbsp;&nbsp;&nbsp;→ 5-Ring-Topologie (Olympiaringe-ähnlich!) → thermische Isomerisierung → R, S, T
+</div>
+
+<div class="highlight-box">
+<div class="big-formula">Q = Cyclo-[5](1,2-phenylendiethinyl) = Penta-o-phenylacetylen-Makrocyclus</div>
+<div style="margin-top:8px; color:#555; font-size:0.9em;">
+5 Benzolringe + 5×(C≡C)₂-Brücken im Ring → Formel: C₅₀H₂₀<br>
+AFM-Bild: 5 Blüten-/Sternstruktur ✓ | thermische Isomerisierung → R, S, T (5+6-Ring-PAH)
+</div>
+</div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background:#f0f8ff;">
+<h2>📋 Zusammenfassung aller Ergebnisse</h2>
+
+<table>
+  <tr><th>Aufg.</th><th>Verbindung</th><th>Struktur/Name</th><th>Schlüssel</th></tr>
+  <tr><td rowspan="6"><strong>1</strong></td><td>A</td><td>Pyren-4-CH=CH-CO₂Et</td><td>Wittig-Reaktion (E-Alken)</td></tr>
+  <tr><td>B</td><td>3-(Pyren-4-yl)propionsäure</td><td>H₂/Pd + KOH-Hydrolyse</td></tr>
+  <tr><td>C</td><td>Bicyclisches Pyren-Keton</td><td>Friedel-Crafts intramol.</td></tr>
+  <tr><td>D</td><td>Bicyclischer Pyren-Alkohol</td><td>LiAlH₄-Reduktion</td></tr>
+  <tr><td>E</td><td>Exocycl. Alken am Pyren</td><td>H₂SO₄ Dehydratisierung</td></tr>
+  <tr><td>X</td><td><strong>Olympicen</strong> (C₂₆H₁₄)</td><td>Protonenmigration→Aromatisierung</td></tr>
+  <tr><td><strong>2</strong></td><td>X-Name</td><td colspan="2"><strong>Olympicen = Dibenzo[cd,mn]pyren</strong></td></tr>
+  <tr><td rowspan="4"><strong>3</strong></td><td>F</td><td>Dibromo-Olympicen (C₂₀H₁₂Br₂)</td><td>m/z 411,89, 4 H-Typen, C₂ ✓</td></tr>
+  <tr><td>G</td><td>Olympicen-Oligomerkette</td><td>Ullmann-Kupplung auf Au</td></tr>
+  <tr><td>H</td><td>PAH-Quantenkette</td><td>Br-freies Kohlenwasserstoff-Polymer</td></tr>
+  <tr><td>I</td><td>Aromatisiertes PAH-Band</td><td>AFM-tip-induzierte Dehydrogenierung</td></tr>
+  <tr><td><strong>4</strong></td><td>L</td><td colspan="2"><strong>L ≈ 30</strong> Wiederholungseinheiten (J=38meV, S=1, T=298K)</td></tr>
+  <tr><td rowspan="3"><strong>5</strong></td><td>R</td><td>Fluoranthen-artiges PAH</td><td>nur 5+6-Ringe, asymmetrisch</td></tr>
+  <tr><td>S</td><td>Symmetrisches PAH</td><td>C₂-Achse, 5+6-Ringe</td></tr>
+  <tr><td>T</td><td>Weiteres 5+6-Ring-Isomer</td><td>kompakte Topologie</td></tr>
+  <tr><td rowspan="4"><strong>6</strong></td><td>U</td><td>1,2-Dibrombenzol</td><td>m/z 234/236/238 = 1:2:1 (2 Br), 2 H-Typen ✓</td></tr>
+  <tr><td>V</td><td>1,2-Bis(TMS-ethynyl)benzol</td><td>Sonogashira mit TMS-Acetylen</td></tr>
+  <tr><td>W</td><td>1,2-Diethynylbenzol</td><td>TBAF-Entsilylierung</td></tr>
+  <tr><td>Q</td><td>[5]Ortho-Phenylacetylen-Makrocyclus</td><td>5 Ph-Ringe durch C≡C verbunden, C₅₀H₂₀</td></tr>
+</table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #b8d4f0; margin-top:30px;">
+IChO 2026 Vorbereitungsaufgaben – Problem 15 | Vollständige Lösung auf Deutsch
+</div>
+</body>
+</html>

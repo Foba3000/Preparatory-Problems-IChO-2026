@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem 22 – Übergangsmetalle in der Katalyse | IChO 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 980px; margin: 0 auto; padding: 20px 30px; background: #fff8f0; color: #1a1a1a; line-height: 1.8; }
+  .back-nav-container { margin: 0 0 25px 0; }
+  .btn-back { text-decoration: none; display: inline-flex; align-items: center; background: white; border: 1.5px solid #bf360c; color: #bf360c; padding: 10px 18px; border-radius: 10px; font-weight: 600; transition: 0.2s; }
+  .btn-back:hover { background: #bf360c; color: white; transform: translateX(-3px); }
+  .btn-back span { margin-right: 8px; font-size: 1.2em; }
+  h1 { background: linear-gradient(135deg, #bf360c, #e64a19); color: white; padding: 18px 26px; border-radius: 12px; font-size: 1.3em; margin-top: 0; }
+  h2 { color: #bf360c; border-left: 5px solid #e64a19; padding-left: 13px; margin-top: 0; }
+  h3 { color: #e64a19; margin-top: 16px; }
+  .aufgabe { background: white; border: 1px solid #ffccbc; border-radius: 12px; padding: 22px 28px; margin: 28px 0; box-shadow: 0 2px 10px rgba(191,54,12,0.07); }
+  .box { background: #fff3e0; border-left: 4px solid #e64a19; border-radius: 6px; padding: 13px 18px; margin: 14px 0; }
+  .result { background: #fbe9e7; border-left: 5px solid #bf360c; border-radius: 6px; padding: 13px 18px; margin: 14px 0; font-weight: bold; }
+  .step { margin: 11px 0; padding: 11px 16px; background: #fffbf8; border-radius: 7px; border: 1px solid #ffe0b2; }
+  .nr { display: inline-block; background: #bf360c; color: white; border-radius: 50%; width: 26px; height: 26px; text-align: center; line-height: 26px; font-weight: bold; margin-right: 8px; font-size: 0.88em; }
+  .formula { background: #fff8f5; border: 1px solid #ffab91; border-radius: 6px; padding: 10px 16px; font-family: 'Courier New', monospace; margin: 10px 0; text-align: center; }
+  .info { background: #e3f2fd; border-left: 4px solid #1565c0; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  .warn { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 11px 16px; margin: 11px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 0.93em; }
+  th { background: #bf360c; color: white; padding: 9px 12px; text-align: center; }
+  td { border: 1px solid #ffccbc; padding: 8px 11px; text-align: center; }
+  tr:nth-child(even) { background: #fff3e0; }
+  code { background: #fff3e0; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+  ul li, ol li { margin: 6px 0; }
+  .badge-j { display: inline-block; border-radius: 20px; padding: 2px 10px; background: #43a047; color: white; font-weight: bold; font-size: 0.85em; }
+  .badge-n { display: inline-block; border-radius: 20px; padding: 2px 10px; background: #e53935; color: white; font-weight: bold; font-size: 0.85em; }
+  .sum-table td { text-align: left; }
+</style>
+</head>
+<body>
+
+<nav class="back-nav-container">
+  <a href="index.html" class="btn-back"><span>←</span> Zurück zur Übersicht</a>
+</nav>
+
+<h1>🧪 Problem 22 – Transition Metals in Organometallic Catalysis<br>
+<span style="font-size:0.82em;font-weight:normal">OS · CN · VE · Elementarschritte · Wilkinson-Katalyse · SET-Prozesse · Photokatalyse</span></h1>
+
+<!-- REGELN -->
+<div class="aufgabe">
+  <h2>📚 Grundregeln (ionisches Modell)</h2>
+  <div class="box">
+    <strong>VE = d-Elektronen des Metalls + Ligandenbeiträge</strong><br>
+    d-Elektronen = Gruppennummer − OS<br>
+    L-Ligand (neutral, z.B. PPh₃, S, Alken η², py, CO): <strong>2e</strong> |
+    X-Ligand (anionisch, z.B. Cl⁻, H⁻, Alkyl⁻): <strong>2e</strong> |
+    ppy⁻ (bidentat, C^N): <strong>4e</strong> |
+    Cp⁻ (η⁵): <strong>6e</strong> |
+    COD (η⁴): <strong>4e</strong> (= 2 × L)
+  </div>
+  <div class="info">
+    OS-Bestimmung: Σ Ladungen aller Liganden + OS(Metall) = Gesamtladung des Komplexes.
+    Anionische Liganden (Cl⁻, H⁻, ppy⁻, Cp⁻) tragen je −1 bei. Neutrale Liganden 0.
+  </div>
+</div>
+
+<!-- Q1 -->
+<div class="aufgabe">
+  <h2>Aufgabe 1: OS, CN und VE für Komplexe 1–4</h2>
+
+  <div class="step">
+    <span class="nr">1</span><strong>Komplex 1: Pd(PPh₃)₂Cl₂</strong><br>
+    OS: Pd(x) + 2·(0) + 2·(−1) = 0 → <strong>OS = +2</strong> (Pd²⁺ in Gruppe 10 = d⁸)<br>
+    CN = 2 PPh₃ + 2 Cl = <strong>4</strong><br>
+    VE = d⁸ + 2·2(PPh₃) + 2·2(Cl⁻) = 8+4+4 = <strong>16</strong>
+  </div>
+
+  <div class="step">
+    <span class="nr">2</span><strong>Komplex 2: Pt(PPh₃)₄</strong><br>
+    OS: Pt(x) + 4·(0) = 0 → <strong>OS = 0</strong> (Pt⁰ in Gruppe 10 = d¹⁰)<br>
+    CN = <strong>4</strong><br>
+    VE = d¹⁰ + 4·2(PPh₃) = 10+8 = <strong>18</strong>
+  </div>
+
+  <div class="step">
+    <span class="nr">3</span><strong>Komplex 3: Rh(PPh₃)₃Cl (Wilkinson-Katalysator)</strong><br>
+    OS: Rh(x) + 3·(0) + (−1) = 0 → <strong>OS = +1</strong> (Rh⁺ in Gruppe 9 = d⁸)<br>
+    CN = 3 PPh₃ + 1 Cl = <strong>4</strong><br>
+    VE = d⁸ + 3·2(PPh₃) + 2(Cl⁻) = 8+6+2 = <strong>16</strong>
+  </div>
+
+  <div class="step">
+    <span class="nr">4</span><strong>Komplex 4: fac-Ir(ppy)₃</strong> [ppy⁻ = 2-Phenylpyridinato, bidentat C^N]<br>
+    Jedes ppy⁻: monoanionis., gibt 2e von C⁻ (X-Typ) + 2e von N (L-Typ) = 4e.<br>
+    OS: Ir(x) + 3·(−1) = 0 → <strong>OS = +3</strong> (Ir³⁺ in Gruppe 9 = d⁶)<br>
+    CN = 3 bidentate × 2 = <strong>6</strong><br>
+    VE = d⁶ + 3·4(ppy⁻) = 6+12 = <strong>18</strong>
+  </div>
+
+  <div class="result">
+    <table>
+      <tr><th>Komplex</th><th>Formel</th><th>OS</th><th>CN</th><th>VE</th></tr>
+      <tr><td><strong>1</strong></td><td>Pd(PPh₃)₂Cl₂</td><td>+2</td><td>4</td><td>16</td></tr>
+      <tr><td><strong>2</strong></td><td>Pt(PPh₃)₄</td><td>0</td><td>4</td><td>18</td></tr>
+      <tr><td><strong>3</strong></td><td>Rh(PPh₃)₃Cl</td><td>+1</td><td>4</td><td>16</td></tr>
+      <tr><td><strong>4</strong></td><td>fac-Ir(ppy)₃</td><td>+3</td><td>6</td><td>18</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="aufgabe">
+  <h2>Aufgabe 2: Parameter nach Elementarschritten</h2>
+  <p>Ausgangskomplex: OS = +x, CN = n, VE = y. Gesucht: Parameter des Produktkomplexes.</p>
+
+  <table>
+    <tr>
+      <th>Elementarschritt</th>
+      <th>Typ</th>
+      <th>OS (Produkt)</th>
+      <th>CN (Produkt)</th>
+      <th>VE (Produkt)</th>
+      <th>Ladung</th>
+    </tr>
+    <tr>
+      <td>ML<sub>n</sub> + PPh₃ → Ph₃P–ML<sub>n</sub></td>
+      <td>L-Ligandaddition</td>
+      <td>+x</td><td>n+1</td><td>y+2</td><td>unverändert</td>
+    </tr>
+    <tr>
+      <td>ML<sub>n</sub> + Cl⁻ → [Cl–ML<sub>n</sub>]⁻</td>
+      <td>X⁻-Anionaddition</td>
+      <td>+x</td><td>n+1</td><td>y+2</td><td>−1</td>
+    </tr>
+    <tr>
+      <td>ML<sub>n</sub> → ML<sub>n−1</sub> + L</td>
+      <td>L-Liganddissoziation</td>
+      <td>+x</td><td>n−1</td><td>y−2</td><td>unverändert</td>
+    </tr>
+    <tr>
+      <td>ML<sub>n</sub> + 1e⁻ → [ML<sub>n</sub>]<sup>−</sup></td>
+      <td>1-e⁻-Reduktion</td>
+      <td>+(x−1)</td><td>n</td><td>y+1</td><td>−1</td>
+    </tr>
+    <tr>
+      <td>ML<sub>n</sub> + H₃C–I → I(CH₃)ML<sub>n</sub></td>
+      <td>Oxidative Addition (OA)</td>
+      <td>+(x+2)</td><td>n+2</td><td>y+2</td><td>unverändert</td>
+    </tr>
+    <tr>
+      <td>M(H)(η²-Alken)L<sub>n</sub> → M(Alkyl)L<sub>n</sub></td>
+      <td>1,2-Insertion (migr. Ins.)</td>
+      <td>+x</td><td>n−1</td><td>y−2</td><td>unverändert</td>
+    </tr>
+    <tr>
+      <td>M(Alkyl)L<sub>n</sub> → M(H)(η²-Alken)L<sub>n</sub></td>
+      <td>β-Hydrideliminierung</td>
+      <td>+x</td><td>n+1</td><td>y+2</td><td>unverändert</td>
+    </tr>
+    <tr>
+      <td>M(R)(R')L<sub>n</sub> → ML<sub>n</sub> + R–R'</td>
+      <td>Reduktive Eliminierung (RE)</td>
+      <td>+(x−2)</td><td>n−2</td><td>y−2</td><td>unverändert</td>
+    </tr>
+  </table>
+
+  <div class="box">
+    <strong>Merkhilfen:</strong>
+    OA und RE sind invers (OS ±2, CN ±2, VE ±2).
+    Insertion und β-H-Eliminierung sind invers (OS gleich, CN ±1, VE ±2).
+    Alle Ligandadditionen geben +2e (L oder X), alle Dissociationen −2e.
+    1e⁻-Transfer: OS ∓1, VE ±1.
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="aufgabe">
+  <h2>Aufgabe 3: Katalysezyklus – Komplexe 5–10</h2>
+  <p>
+    Komplex <strong>3</strong> katalysiert: C₆H₁₃CH=CH₂ + H₂ → C₆H₁₃CH₂CH₃ (n-Octan).<br>
+    S = koordinierfähiges Lösungsmittel (L-Typ, 2e). Alle Spezies sind neutral (Gesamtladung = 0).
+  </p>
+
+  <div class="step">
+    <span class="nr">5</span>
+    <strong>3 + H₂ → 5</strong> (OA von H₂: OS+2, CN+2, VE+2)<br>
+    Struktur: RhH₂(PPh₃)₃Cl<br>
+    OS = +1+2 = <strong>+3</strong> | CN = 4+2 = <strong>6</strong> | VE = 16+2 = <strong>18</strong><br>
+    Prüfung: Rh³⁺(d⁶) + 2·2(H⁻) + 3·2(PPh₃) + 2(Cl⁻) = 6+4+6+2 = 18 ✓
+  </div>
+
+  <div class="step">
+    <span class="nr">6</span>
+    <strong>5 + S − PPh₃ → 6</strong> (L↔L Substitution: OS/VE/CN unverändert)<br>
+    Struktur: RhH₂(PPh₃)₂(S)Cl<br>
+    OS = <strong>+3</strong> (gegeben) | CN = <strong>6</strong> | VE = <strong>18</strong> (gegeben)<br>
+    Prüfung: d⁶ + 4(2H) + 4(2PPh₃) + 2(S) + 2(Cl) = 6+4+4+2+2 = 18 ✓
+  </div>
+
+  <div class="step">
+    <span class="nr">7</span>
+    <strong>6 − S → 7</strong> (Liganddissoziation: CN−1, VE−2)<br>
+    Struktur: RhH₂(PPh₃)₂Cl<br>
+    OS = <strong>+3</strong> | CN = 6−1 = <strong>5</strong> | VE = 18−2 = <strong>16</strong><br>
+    Prüfung: d⁶ + 4(2H) + 4(2PPh₃) + 2(Cl) = 6+4+4+2 = 16 ✓
+  </div>
+
+  <div class="step">
+    <span class="nr">8</span>
+    <strong>7 + 1-Octen → 8</strong> (L-Alkenkoordination: CN+1, VE+2)<br>
+    Struktur: RhH₂(PPh₃)₂Cl(η²-C₈H₁₆)<br>
+    OS = <strong>+3</strong> | CN = 5+1 = <strong>6</strong> | VE = 16+2 = <strong>18</strong> (gegeben) ✓
+  </div>
+
+  <div class="step">
+    <span class="nr">9</span>
+    <strong>8 → [Insertion] → Rh(H)(Octyl)(PPh₃)₂Cl + S → 9</strong><br>
+    Zwischenstufe nach Insertion: OS=+3, CN=5, VE=16<br>
+    +S: CN+1, VE+2 → Struktur: Rh(H)(Octyl)(PPh₃)₂(S)Cl<br>
+    OS = <strong>+3</strong> | CN = <strong>6</strong> (gegeben) | VE = 16+2 = <strong>18</strong><br>
+    Prüfung: d⁶ + 2(H) + 2(Octyl) + 4(2PPh₃) + 2(S) + 2(Cl) = 6+2+2+4+2+2 = 18 ✓
+  </div>
+
+  <div class="step">
+    <span class="nr">10</span>
+    <strong>9 → RE von H + Octyl → 10 + n-Octan (= Verbindung 11)</strong><br>
+    Struktur: Rh(PPh₃)₂(S)Cl<br>
+    OS = <strong>+1</strong> (gegeben, RE: OS−2: +3→+1) | CN = 6−2 = <strong>4</strong> | VE = 18−2 = <strong>16</strong><br>
+    Prüfung: d⁸(Rh⁺) + 4(2PPh₃) + 2(S) + 2(Cl) = 8+4+2+2 = 16 ✓<br>
+    Anschließend: 10 + PPh₃ − S → Komplex 3 (Katalysatorregeneration)
+  </div>
+
+  <div class="result">
+    <table>
+      <tr><th>Komplex</th><th>Struktur</th><th>Schritt</th><th>OS</th><th>CN</th><th>VE</th></tr>
+      <tr><td><strong>5</strong></td><td>RhH₂(PPh₃)₃Cl</td><td>3 + H₂ (OA)</td><td>+3</td><td>6</td><td>18</td></tr>
+      <tr><td><strong>6</strong></td><td>RhH₂(PPh₃)₂(S)Cl</td><td>5 + S − PPh₃</td><td>+3</td><td>6</td><td>18</td></tr>
+      <tr><td><strong>7</strong></td><td>RhH₂(PPh₃)₂Cl</td><td>6 − S</td><td>+3</td><td>5</td><td>16</td></tr>
+      <tr><td><strong>8</strong></td><td>RhH₂(PPh₃)₂Cl(η²-Alken)</td><td>7 + 1-Octen</td><td>+3</td><td>6</td><td>18</td></tr>
+      <tr><td><strong>9</strong></td><td>Rh(H)(Octyl)(PPh₃)₂(S)Cl</td><td>Insertion + S</td><td>+3</td><td>6</td><td>18</td></tr>
+      <tr><td><strong>10</strong></td><td>Rh(PPh₃)₂(S)Cl</td><td>RE (→ 11 + 10)</td><td>+1</td><td>4</td><td>16</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="aufgabe">
+  <h2>Aufgabe 4: Struktur von Verbindung 11</h2>
+  <div class="step">
+    In Komplex 9 [Rh(III)(H)(Octyl)(PPh₃)₂(S)Cl] eliminieren H und Octyl reduktiv (C–H-Bindungsknüpfung) und verlassen das Metall als <strong>n-Octan</strong>. Dies ist das Hydrierungsprodukt von 1-Octen.
+  </div>
+  <div class="result">
+    <strong>11 = n-Octan = CH₃(CH₂)₆CH₃</strong> (C₈H₁₈)<br>
+    Es entsteht durch RE von H und Octyl aus Komplex 9. Das Metall wird dabei von Rh(III) zu Rh(I) reduziert (RE: OS −2).
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="aufgabe">
+  <h2>Aufgabe 5: Alternativer Katalysezyklus mit dem 14-VE-Komplex</h2>
+
+  <div class="step">
+    <span class="nr">→</span> <strong>Bildung des 14-VE-Komplexes aus 3:</strong><br>
+    3 [Rh(PPh₃)₃Cl] − PPh₃ → <strong>Rh(PPh₃)₂Cl</strong> (14-VE, neutral)<br>
+    OS = +1 | CN = 3 | VE = d⁸ + 4(2PPh₃) + 2(Cl⁻) = 8+4+2 = <strong>14</strong> ✓
+  </div>
+
+  <div class="box">
+    Alle Intermediate des alternativen Zyklus müssen VE ≥ 14 haben.
+  </div>
+
+  <table>
+    <tr><th>Intermediate</th><th>Struktur</th><th>Schritt</th><th>OS</th><th>CN</th><th>VE</th></tr>
+    <tr>
+      <td><strong>A</strong></td><td>Rh(PPh₃)₂Cl</td>
+      <td>3 − PPh₃</td><td>+1</td><td>3</td><td>14 ✓</td>
+    </tr>
+    <tr>
+      <td><strong>B</strong></td><td>RhH₂(PPh₃)₂Cl</td>
+      <td>A + H₂ (OA)</td><td>+3</td><td>5</td><td>16 ✓</td>
+    </tr>
+    <tr>
+      <td><strong>C</strong></td><td>RhH₂(PPh₃)₂Cl(η²-Alken)</td>
+      <td>B + 1-Octen</td><td>+3</td><td>6</td><td>18 ✓</td>
+    </tr>
+    <tr>
+      <td><strong>D</strong></td><td>Rh(H)(Octyl)(PPh₃)₂Cl</td>
+      <td>C → Insertion</td><td>+3</td><td>5</td><td>16 ✓</td>
+    </tr>
+    <tr>
+      <td><strong>A</strong></td><td>Rh(PPh₃)₂Cl</td>
+      <td>D → RE + n-Octan</td><td>+1</td><td>3</td><td>14 ✓</td>
+    </tr>
+  </table>
+
+  <div class="result">
+    Alternativer Zyklus: A(14VE) → [+H₂,OA] → B(16VE) → [+Alken] → C(18VE) → [Insertion] → D(16VE) → [RE] → A(14VE) + n-Octan.<br>
+    Alle VE ≥ 14 ✓. Der 14-VE-Komplex A ist reaktiver als 3 (16VE), da er koordinativ ungesättigter ist.
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="aufgabe">
+  <h2>Aufgabe 6: Komplexe 14 und 15 (Alkenkoordination)</h2>
+  <p>
+    Ausgang: Komplex <strong>13</strong> (ML<sub>n</sub>: OS=+x, CN=n, VE=y) + Alken R₂C=CR₂ (<strong>12</strong>) → <strong>14</strong> (η²-Alken) oder <strong>15</strong> (Metallacyclopropan).
+  </p>
+
+  <div class="step">
+    <span class="nr">14</span> <strong>η²-Alkenkoordination (L-Typ, mode a):</strong><br>
+    Das π-System des Alkens koordiniert als neutraler 2e-Donor an das Metall.<br>
+    → OS = <strong>+x</strong> (unverändert, neutraler Ligand)<br>
+    → CN = <strong>n+1</strong> (ein neuer Ligand)<br>
+    → VE = <strong>y+2</strong> (L-Typ: +2e)
+  </div>
+
+  <div class="step">
+    <span class="nr">15</span> <strong>Metallacyclopropan-Koordination (X₂-Typ, mode b):</strong><br>
+    Das Alken wird formal wie eine OA behandelt: beide C-Atome bilden σ-Bindungen zum Metall (je X-Typ, 2e). Das Alken wirkt formal dianionisch (2×X⁻).<br>
+    → OS = <strong>+(x+2)</strong> (formale Oxidation um 2, wie bei OA)<br>
+    → CN = <strong>n+2</strong> (zwei neue M–C σ-Bindungen)<br>
+    → VE = <strong>y+2</strong> (d-count: −2, Ligand: +4e → netto +2e)<br>
+    <span style="font-size:0.9em;color:#666;">Hinweis: VE ist für 14 und 15 identisch! Der Unterschied liegt in OS und CN.</span>
+  </div>
+
+  <div class="result">
+    <table>
+      <tr><th>Komplex</th><th>Modus</th><th>OS</th><th>CN</th><th>VE</th></tr>
+      <tr><td><strong>14</strong></td><td>η²-Alken (L-Typ)</td><td>+x</td><td>n+1</td><td>y+2</td></tr>
+      <tr><td><strong>15</strong></td><td>Metallacyclopropan (X₂-Typ, formal OA)</td><td>+(x+2)</td><td>n+2</td><td>y+2</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="aufgabe">
+  <h2>Aufgabe 7: OS und VE für Komplex 16 = RhCp(H₂CCH₂)(F₂CCF₂)</h2>
+
+  <div class="step">
+    <span class="nr">1</span> <strong>Koordinationsmodi aus Bindungslängen bestimmen:</strong>
+    <ul>
+      <li><strong>H₂C=CH₂ (Ethylen):</strong> C–C = 1,36 Å (freies Ethen: 1,34 Å) → kaum verlängert → η²-Alkenkoordination (<strong>L-Typ, neutral, 2e</strong>)</li>
+      <li><strong>F₂C=CF₂ (Tetrafluorethen, TFE):</strong> C–C = 1,41 Å (freies TFE: 1,32 Å) → stark verlängert (+0,09 Å) + C–C–F-Winkel = 106,3° (≪120°, sp³-artig) → <strong>Metallacyclopropan (X₂-Typ, formal TFE²⁻, 4e)</strong></li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <span class="nr">2</span> <strong>OS-Berechnung:</strong>
+    <div class="formula">
+      Rh(x) + Cp⁻(−1) + H₂CCH₂(0) [η²-L] + F₂CCF₂²⁻(−2) [Metallacyclopropan] = 0<br>
+      x − 1 + 0 − 2 = 0 → <strong>OS = +3</strong>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="nr">3</span> <strong>VE-Berechnung:</strong>
+    <div class="formula">
+      Rh³⁺ (Gruppe 9, d⁶): 6e<br>
+      + Cp⁻ (η⁵, X-Typ anionisch): 6e<br>
+      + H₂CCH₂ (η²-Alken, L-Typ): 2e<br>
+      + F₂CCF₂²⁻ (Metallacyclopropan, 2×X-Typ): 4e<br>
+      VE = 6+6+2+4 = <strong>18</strong>
+    </div>
+  </div>
+
+  <div class="result">
+    Komplex 16: <strong>OS = +3, VE = 18</strong> (stabiler 18-VE-Komplex)
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="aufgabe">
+  <h2>Aufgabe 8: Koordinationsmodus von Ethylen und Tetrafluorethen in Komplex 16</h2>
+
+  <table>
+    <tr><th>Ligand</th><th>C–C-Bindungslänge (im Komplex)</th><th>C–C-Bindungslänge (frei)</th><th>Verlängerung</th><th>C–C–X-Winkel</th><th>Koordinationsmodus</th></tr>
+    <tr>
+      <td><strong>H₂C=CH₂</strong></td>
+      <td>1,36 Å</td><td>1,34 Å</td><td>+0,02 Å (gering)</td>
+      <td>118,8° (≈120°)</td>
+      <td><span class="badge-j">a) η²-Alken</span></td>
+    </tr>
+    <tr>
+      <td><strong>F₂C=CF₂</strong></td>
+      <td>1,41 Å</td><td>1,32 Å</td><td>+0,09 Å (stark!)</td>
+      <td>106,3° (sp³-artig)</td>
+      <td><span class="badge-j">b) Metallacyclopropan</span></td>
+    </tr>
+  </table>
+
+  <div class="box">
+    <strong>Interpretation:</strong> Ethylen bleibt nahezu unverändert → schwache Rückbindung → η²-Alken-Modus.
+    TFE (stark elektronenarmes Alken durch 4 F-Atome) akzeptiert viel Elektronendichte vom Rh → starke Rückbindung → C–C-Bindung elongiert, C-Atome sp³-artig → Metallacyclopropan-Charakter. Formal: Rh(III) statt Rh(I).
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="aufgabe">
+  <h2>Aufgabe 9: Vergleich 17 und 18 – Parameter und Gesamtladung</h2>
+
+  <div class="step">
+    <span class="nr">17</span> <strong>IrCl(PPh₃)₃</strong> (Iridium-Analogon des Wilkinson-Katalysators):<br>
+    OS: Ir(x) + (−1)[Cl⁻] + 3·(0)[PPh₃] = 0 → <strong>OS = +1</strong><br>
+    CN = 1 Cl + 3 PPh₃ = <strong>4</strong><br>
+    VE: Ir⁺ in Gruppe 9 → d⁸; d⁸ + 2(Cl⁻) + 3·2(PPh₃) = 8+2+6 = <strong>16</strong><br>
+    Gesamtladung der metallhaltigen Spezies: <strong>0 (neutral)</strong>
+  </div>
+
+  <div class="step">
+    <span class="nr">18</span> <strong>Ir(COD)(py)(PCy₃)(PF₆)</strong>:<br>
+    PF₆⁻ ist ein nicht-koordinierendes Gegenion. Die metallhaltige Einheit ist <strong>[Ir(COD)(py)(PCy₃)]⁺</strong>.<br>
+    Bedingung: OS, CN, VE gleich wie 17.<br><br>
+    OS-Prüfung: Ir(x) + COD(0)[η⁴, neutral] + py(0)[neutral] + PCy₃(0)[neutral] = +1 → <strong>OS = +1</strong> ✓<br>
+    CN: COD (η⁴, 2 Alkene) = 2 Koordinationsstellen + py = 1 + PCy₃ = 1 → CN = <strong>4</strong> ✓<br>
+    VE: Ir⁺(d⁸) + 4(COD, η⁴: 2 L) + 2(py) + 2(PCy₃) = 8+4+2+2 = <strong>16</strong> ✓
+  </div>
+
+  <div class="result">
+    <table>
+      <tr><th>Komplex</th><th>OS</th><th>CN</th><th>VE</th><th>Ladung der metallhaltigen Einheit</th></tr>
+      <tr><td><strong>17</strong> IrCl(PPh₃)₃</td><td>+1</td><td>4</td><td>16</td><td>0 (neutral)</td></tr>
+      <tr><td><strong>18</strong> [Ir(COD)(py)(PCy₃)]⁺[PF₆]⁻</td><td>+1</td><td>4</td><td>16</td><td style="background:#fbe9e7"><strong>+1</strong></td></tr>
+    </table>
+    Gesamtladung der metallhaltigen Einheit von 18: <strong>[Ir(COD)(py)(PCy₃)]⁺</strong> (Ladung = +1, analog zu AlCl₄⁻ mit Ladung −1).
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="aufgabe">
+  <h2>Aufgabe 10: Parameter nach SET-Prozessen (Single Electron Transfer)</h2>
+  <p>SET: D (Donor) gibt 1e an A (Akzeptor) → D wird zu D⁺• (Radikalkation), A wird zu A⁻• (Radikalanion).</p>
+
+  <div class="step">
+    <span class="nr">→</span> <strong>Fall 1: ML<sub>n</sub> + A → [ML<sub>n</sub>]ᵏ + A⁻</strong><br>
+    ML<sub>n</sub> ist der <strong>Donor</strong> (gibt 1e an A ab → Metall verliert 1 Elektron → Oxidation).<br>
+    k = +1 (neutrale Ausgangsladung +1 durch Verlust eines e⁻)<br>
+    OS = +(x+1) (Metall wird um 1 oxidiert)<br>
+    CN = n (unverändert, keine Ligandenänderung)<br>
+    VE = y−1 (1 Elektron weniger)
+  </div>
+
+  <div class="step">
+    <span class="nr">→</span> <strong>Fall 2: ML<sub>n</sub> + D → [ML<sub>n</sub>]ᵐ + D⁺</strong><br>
+    ML<sub>n</sub> ist der <strong>Akzeptor</strong> (nimmt 1e von D auf → Metall gewinnt 1 Elektron → Reduktion).<br>
+    m = −1 (neutrale Ausgangsladung −1 durch Aufnahme eines e⁻)<br>
+    OS = +(x−1) (Metall wird um 1 reduziert)<br>
+    CN = n (unverändert)<br>
+    VE = y+1 (1 Elektron mehr)
+  </div>
+
+  <div class="result">
+    <table>
+      <tr><th>Reaktion</th><th>Rolle von ML<sub>n</sub></th><th>k / m</th><th>OS</th><th>CN</th><th>VE</th></tr>
+      <tr><td>ML<sub>n</sub> + A → [ML<sub>n</sub>]ᵏ + A⁻</td><td>Donor</td><td>k = +1</td><td>+(x+1)</td><td>n</td><td>y−1</td></tr>
+      <tr><td>ML<sub>n</sub> + D → [ML<sub>n</sub>]ᵐ + D⁺</td><td>Akzeptor</td><td>m = −1</td><td>+(x−1)</td><td>n</td><td>y+1</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="aufgabe">
+  <h2>Aufgabe 11: Donor und Akzeptor im SET-Prozess mit 4*</h2>
+  <p>
+    Verbindungen: <strong>19</strong> = 1,4-Dicyanobenzol (NC–C₆H₄–CN) und <strong>20</strong> = N-Phenylpyrrolidin.
+  </p>
+  <div class="step">
+    <strong>19 (1,4-Dicyanobenzol)</strong>: Zwei elektronenziehende CN-Gruppen → stark elektronenarm → niedrige LUMO-Energie → bereitwilliger Elektronenakzeptor.
+    → <strong>19 ist der AKZEPTOR</strong>
+  </div>
+  <div class="step">
+    <strong>20 (N-Phenylpyrrolidin)</strong>: Tertiäres Amin mit freiem Elektronenpaar am N → elektronenreich → hohe HOMO-Energie → bereitwilliger Elektronendonor.
+    → <strong>20 ist der DONOR</strong>
+  </div>
+  <div class="result">
+    <strong>19 = Akzeptor</strong> (elektronenarm, CN-Gruppen)<br>
+    <strong>20 = Donor</strong> (elektronenreich, tertiäres Amin)
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="aufgabe">
+  <h2>Aufgabe 12: Strukturen 22–25 und Parameter von 22</h2>
+
+  <div class="box">
+    <strong>Photokatalyse-Mechanismus (oxidatives Quenching):</strong><br>
+    4* (angeregter Ir-Komplex, starkes Reduktionsmittel im angeregten Zustand) gibt 1e an 19 (Akzeptor) → 4* wird oxidiert (Ir(III)→Ir(IV)) → 22 entsteht. Dann oxidiert 22 den Donor 20.
+  </div>
+
+  <div class="step">
+    <span class="nr">22</span> <strong>Radikal-Kation von 4: [Ir(ppy)₃]⁺•</strong><br>
+    4* gibt 1e an 19 ab (SET 1: 4* = Donor). Ir(III) → Ir(IV):<br>
+    OS = +3+1 = <strong>+4</strong> (Ir(IV), d⁵)<br>
+    CN = <strong>6</strong> (unverändert, drei bidentate ppy⁻)<br>
+    VE = d⁵(Ir⁴⁺) + 3·4(ppy⁻) = 5+12 = <strong>17</strong> (Radikal mit ungepaarter e⁻!)<br>
+    Gesamtladung: Ir(+4) + 3·ppy⁻(−1) = +4−3 = <strong>+1</strong> → [Ir(ppy)₃]<sup>+</sup>•
+  </div>
+
+  <div class="step">
+    <span class="nr">23</span> <strong>Radikal-Anion von 19: [NC–C₆H₄–CN]⁻•</strong><br>
+    19 nimmt 1e von 4* auf → 23 = 1,4-Dicyanobenzol-Radikalanion (aromatisches π-System mit extra e⁻).
+  </div>
+
+  <div class="step">
+    <span class="nr">24</span> <strong>Radikal-Kation von 20: [N-Ph-Pyrrolidin]⁺•</strong><br>
+    SET 2: 22 (Ir(IV), Akzeptor) + 20 (Donor) → 4 (Ir(III), regeneriert) + 24<br>
+    24 = N-Phenylpyrrolidin-Radikalkation (Radikal lokalisiert am N-Atom / α-C).
+  </div>
+
+  <div class="step">
+    <span class="nr">25</span> <strong>α-Aminyl-Radikal: N-Phenylpyrrolidin-2-yl-Radikal</strong><br>
+    24 verliert H⁺ (Deprotonierung am α-C, d.h. C-2 des Pyrrolidinrings) → 25 = stabiles Kohlenstoff-Radikal am α-C des Amins (C–N in Nachbarschaft stabilisiert das Radikal).
+  </div>
+
+  <div class="result">
+    <strong>22 = [Ir(ppy)₃]⁺•</strong>: OS = +4, CN = 6, VE = 17, Gesamtladung = <strong>+1</strong><br>
+    <strong>23</strong> = Radikal-Anion von 19 (NC–C₆H₄–CN)⁻•<br>
+    <strong>24</strong> = Radikal-Kation von 20 (N-Phenylpyrrolidin)⁺•<br>
+    <strong>25</strong> = α-Aminyl-Radikal (N-Phenylpyrrolidin-2-yl-Radikal, nach −H⁺ von 24)
+  </div>
+</div>
+
+<!-- Q13 -->
+<div class="aufgabe">
+  <h2>Aufgabe 13: Substituent R in Produkt 21</h2>
+  <div class="step">
+    Mechanismus der C–H-Funktionalisierung (letzte Schritte):<br>
+    23⁻• (Radikalanion von 19) + 25 (α-Aminyl-Radikal) → Radikalkupplung → Zwischenprodukt<br>
+    → das C-Atom von 19 (das zuvor eine CN-Gruppe trug) bindet an das α-C des Pyrrolidins → CN⁻ als Abgangsgruppe → Rearomatisierung → <strong>Produkt 21</strong>
+  </div>
+  <div class="step">
+    In 21 ist die 1,4-Dicyanobenzol-Einheit so verbunden, dass eine CN-Gruppe abgegangen ist. Die verbleibende CN-Gruppe (am para-Kohlenstoff) ist substituent R.
+  </div>
+  <div class="result">
+    <strong>R = CN</strong> (Cyanogruppe)<br>
+    Produkt 21 = 2-(4-Cyanophenyl)-1-phenylpyrrolidin: Der α-C des N-Phenylpyrrolidins ist über eine C–C-Bindung mit dem para-Cyanophenyl-Ring verknüpft (die andere CN-Gruppe ist als CN⁻ abgegangen).
+  </div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="aufgabe" style="background:#fbe9e7;">
+  <h2>📋 Zusammenfassung aller Ergebnisse</h2>
+  <table class="sum-table">
+    <tr><th>Aufgabe</th><th>Kernaussage / Ergebnis</th></tr>
+    <tr><td><strong>1</strong></td><td>1: OS=+2, CN=4, VE=16 | 2: OS=0, CN=4, VE=18 | 3: OS=+1, CN=4, VE=16 | 4: OS=+3, CN=6, VE=18</td></tr>
+    <tr><td><strong>2</strong></td><td>+PPh₃: CN+1,VE+2 | +Cl⁻: CN+1,VE+2,q−1 | −L: CN−1,VE−2 | +1e⁻: OS−1,VE+1 | OA: OS+2,CN+2,VE+2 | Ins.: CN−1,VE−2 | β-H-Elim.: CN+1,VE+2 | RE: OS−2,CN−2,VE−2</td></tr>
+    <tr><td><strong>3</strong></td><td>5: OS+3,CN6,VE18 | 6: OS+3,CN6,VE18 | 7: OS+3,CN5,VE16 | 8: OS+3,CN6,VE18 | 9: OS+3,CN6,VE18 | 10: OS+1,CN4,VE16</td></tr>
+    <tr><td><strong>4</strong></td><td>11 = <strong>n-Octan</strong> (C₈H₁₈), Produkt der RE aus Komplex 9</td></tr>
+    <tr><td><strong>5</strong></td><td>14-VE-Komplex = Rh(PPh₃)₂Cl (OS+1,CN3,VE14). Alternativer Zyklus: 14VE→16VE→18VE→16VE→14VE, alle ≥14 ✓</td></tr>
+    <tr><td><strong>6</strong></td><td>14 (η²-Alken, L-Typ): OS=+x, CN=n+1, VE=y+2 | 15 (Metallacyclopropan, X₂): OS=+(x+2), CN=n+2, VE=y+2</td></tr>
+    <tr><td><strong>7</strong></td><td>Komplex 16: OS=+3 (TFE formal dianionisch), VE=18</td></tr>
+    <tr><td><strong>8</strong></td><td>Ethylen: <strong>a) η²-Alken</strong> (C–C=1,36 Å≈frei, Winkel ~120°) | TFE: <strong>b) Metallacyclopropan</strong> (C–C=1,41 Å≫frei, Winkel=106° sp³)</td></tr>
+    <tr><td><strong>9</strong></td><td>17: OS+1,CN4,VE16, Ladung=0 | 18: [Ir(COD)(py)(PCy₃)]⁺, OS+1,CN4,VE16, Ladung=<strong>+1</strong></td></tr>
+    <tr><td><strong>10</strong></td><td>ML<sub>n</sub> als Donor: k=+1, OS+(x+1), VE=y−1 | ML<sub>n</sub> als Akzeptor: m=−1, OS+(x−1), VE=y+1</td></tr>
+    <tr><td><strong>11</strong></td><td>19 (Dicyanobenzol) = <strong>Akzeptor</strong> | 20 (N-Phenylpyrrolidin) = <strong>Donor</strong></td></tr>
+    <tr><td><strong>12</strong></td><td>22=[Ir(ppy)₃]⁺• (OS+4,CN6,VE17,q=+1) | 23=19⁻• | 24=[20]⁺• | 25=α-Aminyl-Radikal (nach −H⁺)</td></tr>
+    <tr><td><strong>13</strong></td><td><strong>R = CN</strong> (Cyanogruppe, verbleibende Substitution nach CN⁻-Abgang)</td></tr>
+  </table>
+</div>
+
+<div style="text-align:center; padding:18px; color:#888; font-size:0.88em; border-top:1px solid #ffccbc; margin-top:30px;">
+  IChO 2026 Vorbereitungsaufgaben – Problem 22 | Vollständige Lösung auf Deutsch
+</div>
+
+</body>
+</html>
